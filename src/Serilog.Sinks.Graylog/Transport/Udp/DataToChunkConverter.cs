@@ -19,13 +19,13 @@ namespace Serilog.Sinks.Graylog.Transport.Udp
 
     public sealed class DataToChunkConverter : IDataToChunkConverter
     {
-        private readonly IDnsInfoProvider _dnsInfoProvider;
         private readonly ChunkSettings _settings;
+        private readonly IMessageIdGeneratorResolver _generatorResolver;
 
-        public DataToChunkConverter(IDnsInfoProvider dnsInfoProvider, ChunkSettings settings)
+        public DataToChunkConverter(ChunkSettings settings, IMessageIdGeneratorResolver generatorResolver)
         {
-            _dnsInfoProvider = dnsInfoProvider;
             _settings = settings;
+            _generatorResolver = generatorResolver;
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace Serilog.Sinks.Graylog.Transport.Udp
                 throw new ArgumentException("message was too long", nameof(message));
             }
 
-            IMessageIdGenerator messageIdGenerator = GetMessageIdGenerator(_settings.MessageIdGeneratorType, message);
+            IMessageIdGenerator messageIdGenerator = _generatorResolver.Resolve(_settings.MessageIdGeneratorType, message);
             byte[] messageId = messageIdGenerator.GenerateMessageId();
 
             var result = new List<byte[]>();
@@ -66,19 +66,6 @@ namespace Serilog.Sinks.Graylog.Transport.Udp
                 result.Add(messageChunkFull.ToArray());
             }
             return result;
-        }
-
-        private IMessageIdGenerator GetMessageIdGenerator(MessageIdGeneratortype messageIdGeneratorType, byte[] message)
-        {
-            switch (messageIdGeneratorType)
-            {
-                case MessageIdGeneratortype.Timestamp:
-                    return new TimestampMessageIdGenerator();
-                case MessageIdGeneratortype.Md5:
-                    return new Md5MessageIdGenerator(message);
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(messageIdGeneratorType), messageIdGeneratorType, null);
-            }
         }
 
         private static IList<byte> ConstructChunkHeader(byte[] messageId, byte chunkNumber, byte chunksCount)

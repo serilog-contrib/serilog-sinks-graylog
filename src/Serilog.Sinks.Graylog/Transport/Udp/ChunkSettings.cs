@@ -2,7 +2,7 @@
 
 namespace Serilog.Sinks.Graylog.Transport.Udp
 {
-    public class ChunkSettings
+    public sealed class ChunkSettings
     {
         public MessageIdGeneratortype MessageIdGeneratorType { get; set; }
 

@@ -9,7 +9,7 @@ namespace Serilog.Sinks.Graylog.Tests
 {
     public class IntegrateSinkTest
     {
-        [Fact]
+        [Fact(Skip = "temp")]
         public void TestComplex()
         {
             var loggerConfig = new LoggerConfiguration();
@@ -34,7 +34,7 @@ namespace Serilog.Sinks.Graylog.Tests
             logger.Information("SomeComplexTestEntry {@test}", test2);
         }
 
-        [Fact]
+        [Fact(Skip = "temp")]
         public void TestSimple()
         {
             var loggerConfig = new LoggerConfiguration();

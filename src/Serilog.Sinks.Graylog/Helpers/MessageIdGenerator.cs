@@ -19,11 +19,18 @@ namespace Serilog.Sinks.Graylog.Helpers
     /// Generate message id from new GUID
     /// </summary>
     /// <seealso cref="Serilog.Sinks.Graylog.Helpers.IMessageIdGenerator" />
-    public class TimestampMessageIdGenerator : IMessageIdGenerator
+    public sealed class TimestampMessageIdGenerator : IMessageIdGenerator
     {
+        private readonly DateTime _dateToGenerateId;
+
+        public TimestampMessageIdGenerator(DateTime dateToGenerateId)
+        {
+            _dateToGenerateId = dateToGenerateId;
+        }
+
         public byte[] GenerateMessageId()
         {
-            return BitConverter.GetBytes(DateTime.Now.Ticks);
+            return BitConverter.GetBytes(_dateToGenerateId.Ticks);
         }
     }
 
@@ -31,7 +38,7 @@ namespace Serilog.Sinks.Graylog.Helpers
     /// Generate message Id from first 8 bytes of MD5 hash
     /// </summary>
     /// <seealso cref="Serilog.Sinks.Graylog.Helpers.IMessageIdGenerator" />
-    public class Md5MessageIdGenerator : IMessageIdGenerator
+    public sealed class Md5MessageIdGenerator : IMessageIdGenerator
     {
         private readonly byte[] _message;
 
@@ -47,6 +54,29 @@ namespace Serilog.Sinks.Graylog.Helpers
                 byte[] messageHash = md5.ComputeHash(_message);
                 return messageHash.Take(8).ToArray();
             }
+        }
+    }
+
+    public interface IMessageIdGeneratorResolver
+    {
+        IMessageIdGenerator Resolve(MessageIdGeneratortype generatorType, byte[] message);
+    }
+
+    public sealed class MessageIdGeneratorResolver : IMessageIdGeneratorResolver
+    {
+        /// <exception cref="ArgumentOutOfRangeException">Condition.</exception>
+        public IMessageIdGenerator Resolve(MessageIdGeneratortype generatorType, byte[] message)
+        {
+            switch (generatorType)
+            {
+                case MessageIdGeneratortype.Timestamp:
+                    return new TimestampMessageIdGenerator(DateTime.Now);
+                case MessageIdGeneratortype.Md5:
+                    return new Md5MessageIdGenerator(message);
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(generatorType), generatorType, null);
+            }
+
         }
     }
 }

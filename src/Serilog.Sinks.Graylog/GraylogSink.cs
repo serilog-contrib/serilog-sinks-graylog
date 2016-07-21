@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using Newtonsoft.Json.Linq;
 using Serilog.Core;
 using Serilog.Events;
+using Serilog.Sinks.Graylog.Helpers;
 using Serilog.Sinks.Graylog.Transport;
 using Serilog.Sinks.Graylog.Transport.Udp;
 
@@ -26,10 +27,10 @@ namespace Serilog.Sinks.Graylog
 
             var ipEndpoint = new IPEndPoint(ipAdress, options.Port);
 
-            IDataToChunkConverter chunkConverter = new DataToChunkConverter(dns, new ChunkSettings
+            IDataToChunkConverter chunkConverter = new DataToChunkConverter(new ChunkSettings
             {
                 MessageIdGeneratorType = options.MessageGeneratorType
-            });
+            }, new MessageIdGeneratorResolver());
 
             var client = new UdpTransportClient(ipEndpoint);
             _transport = _options.Transport ?? new UdpTransport(client, chunkConverter);
