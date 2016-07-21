@@ -1,6 +1,7 @@
 *.dll
 *.pdb
 *.suo
+*.ncrunchproject
 **/packages/**
 **/bin/**
 **/obj/**
