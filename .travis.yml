@@ -1,0 +1,8 @@
+language: csharp
+solution: ./src/serilog-sinks-graylog.sln
+install:
+  - nuget restore ./src/serilog-sinks-graylog.sln
+  - nuget install xunit.runners -OutputDirectory testrunner -ExcludeVersion
+script:
+  - xbuild /p:Configuration=Release ./src/serilog-sinks-graylog.sln
+  - mono ./testrunner/xunit.runners/tools/xunit.console.clr4.exe ./src/*Test*/**/*Tests.dll
