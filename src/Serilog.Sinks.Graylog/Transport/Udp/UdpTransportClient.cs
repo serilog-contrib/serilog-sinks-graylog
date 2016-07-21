@@ -1,13 +1,13 @@
 ﻿using System.Net;
 using System.Net.Sockets;
 
-namespace Serilog.Sinks.Graylog.Transport
+namespace Serilog.Sinks.Graylog.Transport.Udp
 {
     /// <summary>
     /// Udp transport client
     /// </summary>
-    /// <seealso cref="Serilog.Sinks.Graylog.Transport.ITransportClient" />
-    public sealed class UdpTransportClient : ITransportClient
+    /// <seealso cref="Serilog.Sinks.Graylog.Transport.ITransportClient{System.Byte[]}" />
+    public sealed class UdpTransportClient : ITransportClient<byte[]>
     {
         private readonly IPEndPoint _target;
 
@@ -20,13 +20,12 @@ namespace Serilog.Sinks.Graylog.Transport
         /// Sends the specified payload.
         /// </summary>
         /// <param name="payload">The payload.</param>
-        /// <param name="bytesLength">Length of the bytes.</param>
         /// <exception cref="SocketException">Произошла ошибка при получении доступа к сокету.Дополнительные сведения см. в разделе "Примечания".</exception>
-        public void Send(byte[] payload, int bytesLength)
+        public void Send(byte[] payload)
         {
             using (var udpClient = new UdpClient())
             {
-                udpClient.Send(payload, bytesLength, _target);
+                udpClient.Send(payload, payload.Length, _target);
             }
         }
     }

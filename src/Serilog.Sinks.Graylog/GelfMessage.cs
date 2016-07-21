@@ -26,5 +26,8 @@ namespace Serilog.Sinks.Graylog
 
         [JsonProperty("version")]
         public string Version { get; set; }
+
+        [JsonProperty("_stringLevel")]
+        public string StringLevel { get; set; }
     }
 }

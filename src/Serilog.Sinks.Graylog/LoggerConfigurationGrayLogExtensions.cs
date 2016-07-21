@@ -10,7 +10,7 @@ namespace Serilog.Sinks.Graylog
             GraylogSinkOptions options)
         {
             var sink = (ILogEventSink) new GraylogSink(options);
-            return loggerSinkConfiguration.Sink(sink, options.MinimumLogEventLevel ?? LevelAlias.Minimum);
+            return loggerSinkConfiguration.Sink(sink, options.MinimumLogEventLevel);
         }
     }
 }

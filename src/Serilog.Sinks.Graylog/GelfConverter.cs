@@ -9,12 +9,16 @@ using Serilog.Events;
 
 namespace Serilog.Sinks.Graylog
 {
-    public class GelfConverter
+    public interface IGelfConverter
     {
-        private const int ShortMessageMaxLength = 500;
+        JObject GetGelfJson(LogEvent logEvent, GraylogSinkOptions options);
+    }
+
+    public class GelfConverter : IGelfConverter
+    {
         private const string GelfVersion = "1.1";
 
-        public JObject GetGelfJson(LogEvent logEvent, string facility)
+        public JObject GetGelfJson(LogEvent logEvent, GraylogSinkOptions options)
         {
             //string message = logEvent.MessageTemplate.ToString();
             string message = logEvent.RenderMessage();
@@ -30,9 +34,9 @@ namespace Serilog.Sinks.Graylog
                 logEvent.AddOrUpdateProperty(new LogEventProperty("StackTrace", new ScalarValue(stackDetail)));
             }
             string shortMessage = message;
-            if (shortMessage.Length > ShortMessageMaxLength)
+            if (shortMessage.Length > options.ShortMessageMaxLength)
             {
-                shortMessage = shortMessage.Substring(0, ShortMessageMaxLength);
+                shortMessage = shortMessage.Substring(0, options.ShortMessageMaxLength);
             }
 
             var gelfMessage = new GelfMessage
@@ -43,8 +47,9 @@ namespace Serilog.Sinks.Graylog
                 FullMessage = message,
                 Timestamp = logEvent.Timestamp.DateTime,
                 Level = (int)logEvent.Level,
+                StringLevel = logEvent.Level.ToString(),
                 //Spec says: facility must be set by the client to "GELF" if empty
-                Facility = (string.IsNullOrEmpty(facility) ? "GELF" : facility),
+                Facility = (string.IsNullOrEmpty(options.Facility) ? "GELF" : options.Facility),
             };
 
             JObject jsonObject = JObject.FromObject(gelfMessage);
@@ -79,9 +84,10 @@ namespace Serilog.Sinks.Graylog
                 jObject.Add(key, value);
             }
 
-            if (property.Value is StructureValue)
+            var structureValue = property.Value as StructureValue;
+            if (structureValue != null)
             {
-                var structuredValue = (StructureValue) property.Value;
+                var structuredValue = structureValue;
                 foreach (LogEventProperty logEventProperty in structuredValue.Properties)
                 {
                     AddAdditionalField(jObject, new KeyValuePair<string, LogEventPropertyValue>(logEventProperty.Name, logEventProperty.Value));

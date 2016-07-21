@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Text;
 using Serilog.Events;
 using Xunit;
 using Serilog.Sinks;
+using Serilog.Sinks.Graylog.Helpers;
 
 namespace Serilog.Sinks.Graylog.Tests
 {
@@ -14,9 +16,7 @@ namespace Serilog.Sinks.Graylog.Tests
 
             loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
             {
-                BatchSizeLimit = 1,
                 MinimumLogEventLevel = LogEventLevel.Information,
-                Period = TimeSpan.FromSeconds(1),
                 Facility = "VolkovTestFacility",
                 HostnameOrAdress = "logs.aeroclub.int",
                 Port = 12201
@@ -41,9 +41,8 @@ namespace Serilog.Sinks.Graylog.Tests
 
             loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
             {
-                BatchSizeLimit = 1,
                 MinimumLogEventLevel = LogEventLevel.Information,
-                Period = TimeSpan.FromSeconds(1),
+                MessageGeneratorType = MessageIdGeneratortype.Timestamp,
                 Facility = "VolkovTestFacility",
                 HostnameOrAdress = "logs.aeroclub.int",
                 Port = 12201
@@ -58,9 +57,20 @@ namespace Serilog.Sinks.Graylog.Tests
 
             var logger = loggerConfig.CreateLogger();
 
-            logger.Information("SomeTestEntry {TestPropertyOne} {TestPropertyTwo} {TestPropertyThree}", test.TestPropertyOne, test.TestPropertyTwo, test.TestPropertyThree);
+            var sbtemplate = "SomeTestEntry with guid {TestGuid}";
+            var sb = new StringBuilder();
+            for (int i = 0; i < 500; i++)
+            {
+                sb.AppendFormat($"sbtemplate{Guid.NewGuid()}");
+            }
+            var logstring = sb.ToString();
+            logger.Information(logstring);
         }
+
+
     }
+
+
 
 
     public class TestClass
