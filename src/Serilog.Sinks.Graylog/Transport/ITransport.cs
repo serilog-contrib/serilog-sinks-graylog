@@ -12,6 +12,6 @@ namespace Serilog.Sinks.Graylog.Transport
         /// </summary>
         /// <param name="target">The target.</param>
         /// <param name="message">The message.</param>
-        void Send(IPEndPoint target, string message);
+        void Send(string message);
     }
 }

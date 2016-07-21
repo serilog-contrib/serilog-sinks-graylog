@@ -25,10 +25,14 @@ namespace Serilog.Sinks.Graylog
         {
             _dns = new DnsWrapper();
             _options = options;
-            _transport = new UDPTransport(new UdpTransportClient());
+            
+            
             IPAddress ipAdress = _dns.GetHostAddresses(options.HostnameOrAdress)
                                      .FirstOrDefault(c => c.AddressFamily == AddressFamily.InterNetwork);
             _ipEndpoint = new IPEndPoint(ipAdress, options.Port);
+
+            var client = new UdpTransportClient(_ipEndpoint);
+            _transport = new UDPTransport(client);
 
             _converter = new GelfConverter();
         }
@@ -36,7 +40,7 @@ namespace Serilog.Sinks.Graylog
         public void Emit(LogEvent logEvent)
         {
             JObject json = _converter.GetGelfJson(logEvent, _options.Facility);
-            _transport.Send(_ipEndpoint, json.ToString(Newtonsoft.Json.Formatting.None));
+            _transport.Send(json.ToString(Newtonsoft.Json.Formatting.None));
 
         }
 

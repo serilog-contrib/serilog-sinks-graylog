@@ -55,16 +55,14 @@ namespace Serilog.Sinks.Graylog.Transport
         }
 
 
+        /// <summary>
+        /// Sends the specified target.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <exception cref="System.ArgumentException">message was too long</exception>
         /// <exception cref="ArgumentException">message was too long</exception>
-        /// <exception cref="ArgumentNullException">Свойство <paramref name="array" /> имеет значение null.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">Значение параметра <paramref name="index" /> меньше значения нижней границы массива <paramref name="array" />.</exception>
-        /// <exception cref="ArrayTypeMismatchException">Тип исходной коллекции <see cref="T:System.Array" /> нельзя автоматически привести к типу массива назначения <paramref name="array" />.</exception>
-        /// <exception cref="RankException">Исходный массив является многомерным.</exception>
-        /// <exception cref="InvalidCastException">По меньшей мере, один элемент исходного массива <see cref="T:System.Array" /> не удается привести к типу массива назначения <paramref name="array" />.</exception>
-        /// <exception cref="OverflowException">Массив является многомерным и содержит более <see cref="F:System.Int32.MaxValue" /> элементов.</exception>
-        public void Send(IPEndPoint target, string message)
+        public void Send(string message)
         {
-            IPEndPoint ipEndPoint = target;
             byte[] compressedMessage = Compress(message);
             int messageLength = compressedMessage.Length;
 
@@ -86,12 +84,12 @@ namespace Serilog.Sinks.Graylog.Transport
                     var messageChunkFull = new byte[chunkHeader.Length + chunkData.Length];
                     chunkHeader.CopyTo(messageChunkFull, 0);
                     chunkData.CopyTo(messageChunkFull, chunkHeader.Length);
-                    _transportClient.Send(messageChunkFull, messageChunkFull.Length, ipEndPoint);
+                    _transportClient.Send(messageChunkFull, messageChunkFull.Length);
                 }
             }
             else
             {
-                _transportClient.Send(compressedMessage, messageLength, target);
+                _transportClient.Send(compressedMessage, messageLength);
             }
         }
 
@@ -104,22 +102,6 @@ namespace Serilog.Sinks.Graylog.Transport
             result[10] = (byte)chunkNumber;
             result[11] = (byte)chunksCount;
             return result;
-        }
-
-        /// <summary>
-        /// Sends the specified server ip address.
-        /// </summary>
-        /// <param name="serverIpAddress">The server ip address.</param>
-        /// <param name="serverPort">The server port.</param>
-        /// <param name="message">The message.</param>
-        /// <exception cref="ArgumentNullException">Параметр <paramref name="address" /> имеет значение null.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">Значение свойства <paramref name="port" /> меньше значения <see cref="F:System.Net.IPEndPoint.MinPort" />.– или – Значение <paramref name="port" /> больше значения <see cref="F:System.Net.IPEndPoint.MaxPort" />.– или – <paramref name="address" /> меньше 0 или больше 0x00000000FFFFFFFF.</exception>
-        public void Send(string serverIpAddress, int serverPort, string message)
-        {
-            IPAddress ipAddress = IPAddress.Parse(serverIpAddress);
-            var ipEndPoint = new IPEndPoint(ipAddress, serverPort);
-
-            Send(ipEndPoint, message);
         }
 
         /// <summary>

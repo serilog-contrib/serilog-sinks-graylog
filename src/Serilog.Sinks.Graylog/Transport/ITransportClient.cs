@@ -12,7 +12,6 @@ namespace Serilog.Sinks.Graylog.Transport
         /// </summary>
         /// <param name="payload">The payload.</param>
         /// <param name="bytesLength">Length of the bytes.</param>
-        /// <param name="target">The target.</param>
-        void Send(byte[] payload, int bytesLength, IPEndPoint target);
+        void Send(byte[] payload, int bytesLength);
     }
 }

@@ -23,8 +23,7 @@ namespace Serilog.Sinks.Graylog.Transport
         /// </summary>
         /// <param name="hostNameOrAddress">The host name or address.</param>
         /// <returns></returns>
-        /// <remarks>Fucking russian locale</remarks>
-        /// <exception cref="SocketException">При разрешении <paramref name="hostNameOrAddress" /> возникает ошибка.</exception>
+        /// <exception cref="SocketException">When resolve <paramref name="hostNameOrAddress" /> trows exception.</exception>
         public override IPAddress[] GetHostAddresses(string hostNameOrAddress)
         {
             return Dns.GetHostAddresses(hostNameOrAddress);
