@@ -71,8 +71,7 @@ namespace Serilog.Sinks.Graylog.Transport.Udp
         private static IList<byte> ConstructChunkHeader(byte[] messageId, byte chunkNumber, byte chunksCount)
         {
             var result = new List<byte>(ChunkSettings.PrefixSize);
-            result.Add(0x1e);
-            result.Add(0x0f);
+            result.AddRange(ChunkSettings.GelfMagicBytes);
             result.AddRange(messageId);
             result.Add(chunkNumber);
             result.Add(chunksCount);

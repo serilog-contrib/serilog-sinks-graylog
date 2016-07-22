@@ -32,6 +32,8 @@ namespace Serilog.Sinks.Graylog.Transport.Udp
         /// </summary>
         public const int MaxMessageSizeInUdp = 8192;
 
+
+        public static readonly byte[] GelfMagicBytes = {0x1e, 0x0f};
         /// <summary>
         /// The maximum message size in chunk
         /// </summary>

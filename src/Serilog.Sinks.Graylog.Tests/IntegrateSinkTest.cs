@@ -9,7 +9,7 @@ namespace Serilog.Sinks.Graylog.Tests
 {
     public class IntegrateSinkTest
     {
-        [Fact(Skip = "temp")]
+        [Fact]
         public void TestComplex()
         {
             var loggerConfig = new LoggerConfiguration();
@@ -34,7 +34,7 @@ namespace Serilog.Sinks.Graylog.Tests
             logger.Information("SomeComplexTestEntry {@test}", test2);
         }
 
-        [Fact(Skip = "temp")]
+        [Fact]
         public void TestSimple()
         {
             var loggerConfig = new LoggerConfiguration();
@@ -57,14 +57,8 @@ namespace Serilog.Sinks.Graylog.Tests
 
             var logger = loggerConfig.CreateLogger();
 
-            var sbtemplate = "SomeTestEntry with guid {TestGuid}";
-            var sb = new StringBuilder();
-            for (int i = 0; i < 500; i++)
-            {
-                sb.AppendFormat($"sbtemplate{Guid.NewGuid()}");
-            }
-            var logstring = sb.ToString();
-            logger.Information(logstring);
+
+            logger.Information("Some message {TestPropertyOne} {TestPropertyTwo} {TestPropertyThree}", test.TestPropertyOne, test.TestPropertyTwo, test.TestPropertyThree);
         }
 
 
