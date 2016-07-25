@@ -36,7 +36,7 @@ namespace Serilog.Sinks.Graylog.Tests
 
             var jobject = new JObject();
 
-            gelfConverter.Setup(c => c.GetGelfJson(logevent, options)).Returns(jobject);
+            gelfConverter.Setup(c => c.GetGelfJson(logevent)).Returns(jobject);
 
             target.Emit(logevent);
 

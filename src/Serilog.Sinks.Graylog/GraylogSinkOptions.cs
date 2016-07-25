@@ -15,6 +15,9 @@ namespace Serilog.Sinks.Graylog
             MessageGeneratorType = MessageIdGeneratortype.Timestamp;
             ShortMessageMaxLength = 500;
             MinimumLogEventLevel = LevelAlias.Minimum;
+            //Spec says: facility must be set by the client to "GELF" if empty
+            Facility = "GELF";
+            StackTraceDepth = 10;
         }
 
         /// <summary>
@@ -88,5 +91,7 @@ namespace Serilog.Sinks.Graylog
         /// its timestamp or first 8 bytes of md5 hash
         /// </remarks>
         public MessageIdGeneratortype MessageGeneratorType { get; set; }
+
+        public int StackTraceDepth { get; set; }
     }
 }

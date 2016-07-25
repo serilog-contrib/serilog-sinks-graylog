@@ -16,5 +16,12 @@ namespace Serilog.Sinks.Graylog.Extensions
             }
             return resultStream.ToArray();
         }
+
+        public static string ShortMessage(this string source, int maxLength)
+        {
+            return source.Length > maxLength 
+                ? source.Substring(0, maxLength) 
+                : source;
+        }
     }
 }

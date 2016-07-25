@@ -6,122 +6,36 @@ using System.Net;
 using System.Text;
 using Newtonsoft.Json.Linq;
 using Serilog.Events;
+using Serilog.Sinks.Graylog.Extensions;
+using Serilog.Sinks.Graylog.MessageBuilder;
 
 namespace Serilog.Sinks.Graylog
 {
     public interface IGelfConverter
     {
-        JObject GetGelfJson(LogEvent logEvent, GraylogSinkOptions options);
+        JObject GetGelfJson(LogEvent logEvent);
     }
 
     public class GelfConverter : IGelfConverter
     {
-        private const string GelfVersion = "1.1";
+        private readonly string _hostName;
+        private readonly GraylogSinkOptions _options;
+        private readonly IDictionary<BuilderType, IMessageBuilder> _messageBuilders;
 
-        public JObject GetGelfJson(LogEvent logEvent, GraylogSinkOptions options)
+        public GelfConverter(string hostName, GraylogSinkOptions options, IDictionary<BuilderType, IMessageBuilder> messageBuilders)
         {
-            //string message = logEvent.MessageTemplate.ToString();
-            string message = logEvent.RenderMessage();
-            if (logEvent.Exception != null)
-            {
-                string exceptionDetail;
-                string stackDetail;
-
-                GetExceptionMessages(logEvent.Exception, out exceptionDetail, out stackDetail);
-
-                logEvent.AddOrUpdateProperty(new LogEventProperty("ExceptionSource", new ScalarValue("logEventInfo.Exception.Source")));
-                logEvent.AddOrUpdateProperty(new LogEventProperty("ExceptionMessage", new ScalarValue(exceptionDetail)));
-                logEvent.AddOrUpdateProperty(new LogEventProperty("StackTrace", new ScalarValue(stackDetail)));
-            }
-            string shortMessage = message;
-            if (shortMessage.Length > options.ShortMessageMaxLength)
-            {
-                shortMessage = shortMessage.Substring(0, options.ShortMessageMaxLength);
-            }
-
-            var gelfMessage = new GelfMessage
-            {
-                Version = GelfVersion,
-                Host = Dns.GetHostName(),
-                ShortMessage = shortMessage,
-                FullMessage = message,
-                Timestamp = logEvent.Timestamp.DateTime,
-                Level = (int)logEvent.Level,
-                StringLevel = logEvent.Level.ToString(),
-                //Spec says: facility must be set by the client to "GELF" if empty
-                Facility = (string.IsNullOrEmpty(options.Facility) ? "GELF" : options.Facility),
-            };
-
-            JObject jsonObject = JObject.FromObject(gelfMessage);
-            foreach (KeyValuePair<string, LogEventPropertyValue> property in logEvent.Properties)
-            {
-                AddAdditionalField(jsonObject, property);
-            }
-
-            return jsonObject;
+            _hostName = hostName;
+            _options = options;
+            _messageBuilders = messageBuilders;
         }
 
-        private void AddAdditionalField(IDictionary<string, JToken> jObject, KeyValuePair<string, LogEventPropertyValue> property)
+        public JObject GetGelfJson(LogEvent logEvent)
         {
-            if (property.Value is ScalarValue)
-            {
-                string key = property.Key;
-                if (key == null) return;
+            IMessageBuilder builder = logEvent.Exception != null
+                ? _messageBuilders[BuilderType.Exception]
+                : _messageBuilders[BuilderType.Message];
 
-                if (key.Equals("id", StringComparison.OrdinalIgnoreCase))
-                    key = "id_";
-                if (!key.StartsWith("_", StringComparison.OrdinalIgnoreCase))
-                    key = "_" + key;
-
-                JToken value = null;
-                if (property.Value != null)
-                {
-                    LogEventPropertyValue logEventProperty = property.Value;
-                    string stringValue = logEventProperty.ToString();
-
-                    value = JToken.FromObject(stringValue);
-                }
-                jObject.Add(key, value);
-            }
-
-            var structureValue = property.Value as StructureValue;
-            if (structureValue != null)
-            {
-                var structuredValue = structureValue;
-                foreach (LogEventProperty logEventProperty in structuredValue.Properties)
-                {
-                    AddAdditionalField(jObject, new KeyValuePair<string, LogEventPropertyValue>(logEventProperty.Name, logEventProperty.Value));
-                }
-            }
-        }
-
-        /// <summary>
-        /// Get the message details from all nested exceptions, up to 10 in depth.
-        /// </summary>
-        /// <param name="ex">Exception to get details for</param>
-        /// <param name="exceptionDetail">Exception message</param>
-        /// <param name="stackDetail">Stacktrace with inner exceptions</param>
-        private static void GetExceptionMessages(Exception ex, out string exceptionDetail, out string stackDetail)
-        {
-            var exceptionSb = new StringBuilder();
-            var stackSb = new StringBuilder();
-            var nestedException = ex;
-            stackDetail = null;
-
-            int counter = 0;
-            do
-            {
-                exceptionSb.Append(nestedException.Message + " - ");
-                if (nestedException.StackTrace != null)
-                    stackSb.Append(nestedException.StackTrace + "--- Inner exception stack trace ---");
-                nestedException = nestedException.InnerException;
-                counter++;
-            }
-            while (nestedException != null && counter < 11);
-
-            exceptionDetail = exceptionSb.ToString().Substring(0, exceptionSb.Length - 3);
-            if (stackSb.Length > 0)
-                stackDetail = stackSb.ToString().Substring(0, stackSb.Length - 35);
+            return builder.Build(logEvent);
         }
     }
 }
