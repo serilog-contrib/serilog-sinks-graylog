@@ -7,6 +7,7 @@ using Serilog.Sinks.Graylog.Helpers;
 
 namespace Serilog.Sinks.Graylog.Tests
 {
+    [Trait("Category", "Integration")]
     public class IntegrateSinkTest
     {
         [Fact]
@@ -58,7 +59,7 @@ namespace Serilog.Sinks.Graylog.Tests
             var logger = loggerConfig.CreateLogger();
 
 
-            logger.Information("Some message {TestPropertyOne} {TestPropertyTwo} {TestPropertyThree}", test.TestPropertyOne, test.TestPropertyTwo, test.TestPropertyThree);
+            logger.Information($"Some message {test.TestPropertyOne} {test.TestPropertyTwo} {test.TestPropertyThree}");
         }
 
 
