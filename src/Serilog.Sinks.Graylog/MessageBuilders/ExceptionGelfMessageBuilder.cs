@@ -5,7 +5,7 @@ using Serilog.Events;
 
 namespace Serilog.Sinks.Graylog.MessageBuilder
 {
-    public class ExceptionMessageBuilder : MessageBuilder
+    public class ExceptionGelfMessageBuilder : MessageBuilders.GelfMessageBuilder
     {
         public override JObject Build(LogEvent logEvent)
         {
@@ -49,7 +49,7 @@ namespace Serilog.Sinks.Graylog.MessageBuilder
             return new Tuple<string, string>(exceptionDetail, stackDetail);
         }
 
-        public ExceptionMessageBuilder(string hostName, GraylogSinkOptions options) : base(hostName, options)
+        public ExceptionGelfMessageBuilder(string hostName, GraylogSinkOptions options) : base(hostName, options)
         {
         }
     }

@@ -10,7 +10,7 @@ namespace Serilog.Sinks.Graylog.Tests
     [Trait("Category", "Integration")]
     public class IntegrateSinkTest
     {
-        [Fact]
+        [Fact(Skip = "XD")]
         public void TestComplex()
         {
             var loggerConfig = new LoggerConfiguration();
@@ -35,6 +35,7 @@ namespace Serilog.Sinks.Graylog.Tests
             logger.Information("SomeComplexTestEntry {@test}", test2);
         }
 
+        //[Fact(Skip = "XD")]
         [Fact]
         public void TestSimple()
         {
@@ -58,8 +59,7 @@ namespace Serilog.Sinks.Graylog.Tests
 
             var logger = loggerConfig.CreateLogger();
 
-
-            logger.Information($"Some message {test.TestPropertyOne} {test.TestPropertyTwo} {test.TestPropertyThree}");
+            logger.Information("Some message {TestPropertyOne}{TestPropertyTwo}{TestPropertyThree}", test.TestPropertyOne, test.TestPropertyTwo, test.TestPropertyThree);
         }
 
 

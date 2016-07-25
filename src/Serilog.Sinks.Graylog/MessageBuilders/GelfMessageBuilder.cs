@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using Serilog.Events;
 using Serilog.Sinks.Graylog.Extensions;
+using Serilog.Sinks.Graylog.MessageBuilder;
 
-namespace Serilog.Sinks.Graylog.MessageBuilder
+namespace Serilog.Sinks.Graylog.MessageBuilders
 {
-    public class MessageBuilder : IMessageBuilder
+    public class GelfMessageBuilder : IMessageBuilder
     {
         private readonly string _hostName;
         private readonly GraylogSinkOptions _options;
@@ -14,7 +15,7 @@ namespace Serilog.Sinks.Graylog.MessageBuilder
         protected GraylogSinkOptions Options => _options;
 
 
-        public MessageBuilder(string hostName, GraylogSinkOptions options)
+        public GelfMessageBuilder(string hostName, GraylogSinkOptions options)
         {
             _hostName = hostName;
             _options = options;
