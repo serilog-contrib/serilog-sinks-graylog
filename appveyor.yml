@@ -1,8 +1,20 @@
 version: 1.0.{build}
-before_build:
-- cmd: nuget restore ./src
+skip_tags: true
+assembly_info:
+  patch: true
+  file: AssemblyInfo.*
+  assembly_version: "{version}"
+  assembly_file_version: "{version}"
+  assembly_informational_version: "{version}"
+install:
+  -nuget restore
+
+Configuration: Release
+
 build:
+  project: ./src/serilog-sinks-graylog.sln
   verbosity: minimal
+
 test:
   categories:
     except:
