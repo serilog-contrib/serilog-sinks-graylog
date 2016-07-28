@@ -9,7 +9,7 @@ assembly_info:
 install:
   -nuget restore
 
-Configuration: Release
+configuration: Release
 
 build:
   project: ./src/serilog-sinks-graylog.sln
