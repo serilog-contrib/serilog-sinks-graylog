@@ -1,0 +1,9 @@
+version: 1.0.{build}
+before_build:
+- cmd: nuget restore ./src
+build:
+  verbosity: minimal
+test:
+  categories:
+    except:
+    - Integration
