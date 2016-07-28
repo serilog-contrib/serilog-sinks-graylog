@@ -6,7 +6,7 @@ namespace Serilog.Sinks.Graylog.Transport
     /// The Transport client interface
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface ITransportClient<T>
+    public interface ITransportClient<in T>
     {
         /// <summary>
         /// Sends the specified payload.

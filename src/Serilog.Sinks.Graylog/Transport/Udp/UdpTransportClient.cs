@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.Sockets;
+using System;
 
 namespace Serilog.Sinks.Graylog.Transport.Udp
 {

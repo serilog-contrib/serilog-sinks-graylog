@@ -10,7 +10,7 @@ namespace Serilog.Sinks.Graylog.Tests
     [Trait("Category", "Integration")]
     public class IntegrateSinkTest
     {
-        [Fact(Skip = "XD")]
+        [Fact]
         public void TestComplex()
         {
             var loggerConfig = new LoggerConfiguration();
