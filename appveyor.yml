@@ -11,7 +11,7 @@ configuration: Release
 
 before_build:
   - nuget restore ./src/serilog-sinks-graylog.sln
-  - nuget install OpenCover -ExcludeVersion
+  - nuget install OpenCover -ExcludeVersion .\packages
 
 build:
   project: ./src/serilog-sinks-graylog.sln
