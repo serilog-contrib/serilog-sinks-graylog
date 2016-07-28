@@ -10,7 +10,7 @@ assembly_info:
 configuration: Release
 
 before_build:
-  - nuget restore
+  - nuget restore ./src/serilog-sinks-graylog.sln
 
 build:
   project: ./src/serilog-sinks-graylog.sln
