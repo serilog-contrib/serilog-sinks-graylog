@@ -50,7 +50,6 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
             if (property.Value is ScalarValue)
             {
                 string key = property.Key;
-                if (key == null) return;
 
                 if (key.Equals("id", StringComparison.OrdinalIgnoreCase))
                     key = "id_";
@@ -60,14 +59,11 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
 
                 key = recursionLevel > 0 ? $"{typeTag}{key}" : key;
 
-                JToken value = null;
-                if (property.Value != null)
-                {
-                    LogEventPropertyValue logEventProperty = property.Value;
-                    string stringValue = logEventProperty.ToString();
 
-                    value = JToken.FromObject(stringValue);
-                }
+                LogEventPropertyValue logEventProperty = property.Value;
+                string stringValue = logEventProperty.ToString();
+
+                var value = JToken.FromObject(stringValue);
 
                 jObject.Add(key, value);
             }

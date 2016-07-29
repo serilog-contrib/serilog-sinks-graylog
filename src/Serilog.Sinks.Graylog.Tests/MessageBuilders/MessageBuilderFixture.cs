@@ -55,5 +55,33 @@ namespace Serilog.Sinks.Graylog.Tests.MessageBuilders
         }
 
 
+        [Fact]
+        public static void WhenTryCreateLogEventWithNullKeyOrValue_ThenThrow()
+        {
+            //If in future this test fail then should add check for null in GelfMessageBuilder
+
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var logEvent = new LogEvent(DateTimeOffset.Now, LogEventLevel.Information, null,
+                    new MessageTemplate("abcdef{TestProp}", new List<MessageTemplateToken>
+                    {
+                        new TextToken("abcdef", 0),
+                        new PropertyToken("TestProp", "zxc", alignment: new Alignment(AlignmentDirection.Left, 3))
+
+                    }), new List<LogEventProperty>
+                    {
+                        new LogEventProperty("TestProp", new ScalarValue("zxc")),
+                        new LogEventProperty("id", new ScalarValue("asd")),
+                        new LogEventProperty("Oo", null),
+                        new LogEventProperty(null, null),
+                        new LogEventProperty("StructuredProperty",
+                            new StructureValue(new List<LogEventProperty>
+                            {
+                                new LogEventProperty("id", new ScalarValue(1)),
+                                new LogEventProperty("_TestProp", new ScalarValue(3)),
+                            }, "TypeTag"))
+                    });
+            });
+        }
     }
 }
