@@ -18,5 +18,16 @@ namespace Serilog.Sinks.Graylog.Tests.Extensions
             byte[] actual = giwen.Compress();
             actual.ShouldAllBeEquivalentTo(expected);
         }
+
+        [Theory]
+        [InlineData("SomeTestString", "Some", 4)]
+        [InlineData("SomeTestString", "SomeTest", 8)]
+        [InlineData("SomeTestString", "SomeTestString", 200)]
+        public void WhenShortMessage_ThenResultShouldBeExpected(string given, string expected, int length)
+        {
+            var actual = given.ShortMessage(length);
+
+            actual.ShouldBeEquivalentTo(expected);
+        }
     }
 }

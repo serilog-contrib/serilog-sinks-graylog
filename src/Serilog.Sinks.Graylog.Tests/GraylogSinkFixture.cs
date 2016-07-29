@@ -27,10 +27,6 @@ namespace Serilog.Sinks.Graylog.Tests
 
             GraylogSink target = new GraylogSink(options);
 
-            //var fixture = new Fixture();
-
-            //var logEvent = fixture.Create<LogEvent>();
-
             var logevent = new LogEvent(DateTimeOffset.Now, LogEventLevel.Fatal, null,
                 new MessageTemplate("O_o", new List<MessageTemplateToken>()), new List<LogEventProperty>());
 
