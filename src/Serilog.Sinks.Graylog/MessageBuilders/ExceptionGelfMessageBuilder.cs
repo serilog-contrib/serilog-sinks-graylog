@@ -7,6 +7,10 @@ namespace Serilog.Sinks.Graylog.MessageBuilder
 {
     public class ExceptionGelfMessageBuilder : MessageBuilders.GelfMessageBuilder
     {
+        public ExceptionGelfMessageBuilder(string hostName, GraylogSinkOptions options) : base(hostName, options)
+        {
+        }
+
         public override JObject Build(LogEvent logEvent)
         {
             Tuple<string, string> excMessageTuple = GetExceptionMessages(logEvent.Exception);
@@ -49,8 +53,5 @@ namespace Serilog.Sinks.Graylog.MessageBuilder
             return new Tuple<string, string>(exceptionDetail, stackDetail);
         }
 
-        public ExceptionGelfMessageBuilder(string hostName, GraylogSinkOptions options) : base(hostName, options)
-        {
-        }
     }
 }

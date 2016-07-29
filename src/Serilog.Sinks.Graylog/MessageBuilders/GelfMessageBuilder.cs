@@ -10,21 +10,20 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
     public class GelfMessageBuilder : IMessageBuilder
     {
         private readonly string _hostName;
-        private readonly GraylogSinkOptions _options;
         private const string GelfVersion = "1.1";
-        protected GraylogSinkOptions Options => _options;
+        protected GraylogSinkOptions Options { get; }
 
 
         public GelfMessageBuilder(string hostName, GraylogSinkOptions options)
         {
             _hostName = hostName;
-            _options = options;
+            Options = options;
         }
 
         public virtual JObject Build(LogEvent logEvent)
         {
             string message = logEvent.RenderMessage();
-            string shortMessage = message.ShortMessage(_options.ShortMessageMaxLength);
+            string shortMessage = message.ShortMessage(Options.ShortMessageMaxLength);
 
             var gelfMessage = new GelfMessage
             {
@@ -35,7 +34,7 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
                 Timestamp = logEvent.Timestamp.DateTime,
                 Level = (int)logEvent.Level,
                 StringLevel = logEvent.Level.ToString(),
-                Facility = _options.Facility
+                Facility = Options.Facility
             };
 
             JObject jsonObject = JObject.FromObject(gelfMessage);
@@ -46,7 +45,7 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
             return jsonObject;
         }
 
-        private void AddAdditionalField(IDictionary<string, JToken> jObject, KeyValuePair<string, LogEventPropertyValue> property)
+        private void AddAdditionalField(IDictionary<string, JToken> jObject, KeyValuePair<string, LogEventPropertyValue> property, int recursionLevel = 0, string typeTag = null)
         {
             if (property.Value is ScalarValue)
             {
@@ -58,6 +57,9 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
                 if (!key.StartsWith("_", StringComparison.OrdinalIgnoreCase))
                     key = "_" + key;
 
+
+                key = recursionLevel > 0 ? $"{typeTag}{key}" : key;
+
                 JToken value = null;
                 if (property.Value != null)
                 {
@@ -66,6 +68,7 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
 
                     value = JToken.FromObject(stringValue);
                 }
+
                 jObject.Add(key, value);
             }
 
@@ -77,7 +80,7 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
             StructureValue structuredValue = structureValue;
             foreach (LogEventProperty logEventProperty in structuredValue.Properties)
             {
-                AddAdditionalField(jObject, new KeyValuePair<string, LogEventPropertyValue>(logEventProperty.Name, logEventProperty.Value));
+                AddAdditionalField(jObject, new KeyValuePair<string, LogEventPropertyValue>(logEventProperty.Name, logEventProperty.Value), ++recursionLevel, structureValue.TypeTag);
             }
         }
 

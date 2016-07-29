@@ -10,7 +10,8 @@ namespace Serilog.Sinks.Graylog.Tests
     [Trait("Category", "Integration")]
     public class IntegrateSinkTest
     {
-        [Fact(Skip = "XD")]
+        [Fact]
+        [Trait("Category", "Integration")]
         //[Fact]
         public void TestComplex()
         {
@@ -18,6 +19,7 @@ namespace Serilog.Sinks.Graylog.Tests
 
             loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
             {
+                ShortMessageMaxLength = 50,
                 MinimumLogEventLevel = LogEventLevel.Information,
                 Facility = "VolkovTestFacility",
                 HostnameOrAdress = "logs.aeroclub.int",
@@ -26,18 +28,24 @@ namespace Serilog.Sinks.Graylog.Tests
 
             var logger = loggerConfig.CreateLogger();
 
-            var test2 = new TestClass
+            var test = new TestClass
             {
-                TestPropertyOne = "3",
-                TestPropertyThree = "4",
-                TestPropertyTwo = "5"
+                Id = 1,
+                Bar = new Bar
+                {
+                    Id = 2,
+                    Prop = "123"
+                },
+                TestPropertyOne = "1",
+                TestPropertyThree = "3",
+                TestPropertyTwo = "2"
             };
 
-            logger.Information("SomeComplexTestEntry {@test}", test2);
+            logger.Information("SomeComplexTestEntry {@test}", test);
         }
 
-        [Fact(Skip = "XD")]
-        //[Fact]
+        [Fact]
+        [Trait("Category", "Integration")]
         public void TestSimple()
         {
             var loggerConfig = new LoggerConfiguration();
@@ -53,6 +61,11 @@ namespace Serilog.Sinks.Graylog.Tests
 
             var test = new TestClass
             {
+                Id = 1,
+                Bar = new Bar
+                {
+                    Id = 2
+                },
                 TestPropertyOne = "1",
                 TestPropertyThree = "3",
                 TestPropertyTwo = "2"
@@ -67,11 +80,19 @@ namespace Serilog.Sinks.Graylog.Tests
     }
 
 
-
+    public class Bar
+    {
+        public int Id { get; set; }
+        public string Prop { get; set; }
+    }
 
     public class TestClass
     {
+        public int Id { get; set; }
+
         public string TestPropertyOne { get; set; }
+
+        public Bar Bar { get; set; }
 
         public string TestPropertyTwo { get; set; }
 
