@@ -15,7 +15,7 @@ namespace Serilog.Sinks.Graylog.Tests
             {
                 MinimumLogEventLevel = LogEventLevel.Information,
                 Facility = "VolkovTestFacility",
-                HostnameOrAdress = "logs.aeroclub.int",
+                HostnameOrAdress = "localhost",
                 Port = 12201
             });
 
