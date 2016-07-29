@@ -23,7 +23,7 @@ test:
     - Integration
 
 after_test:
-  - .\packages\OpenCover\tools\OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:"C:\projects\serilog-sinks-graylog\src\Serilog.Sinks.Graylog.Tests\bin\Release\Serilog.Sinks.Graylog.Tests.dll -noshadow -appveyor" -excludebyattribute:*.ExcludeFromCodeCoverage* -hideskipped:All -output:.\coverage.xml
+  - .\packages\OpenCover\tools\OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:"C:\projects\serilog-sinks-graylog\src\Serilog.Sinks.Graylog.Tests\bin\Release\Serilog.Sinks.Graylog.Tests.dll -noshadow -appveyor" -filter:"+[Serilog.Sinks.Graylog*]* -[*]*Test*" -hideskipped:All -output:.\coverage.xml
   - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
   - pip install codecov
   - codecov -f "coverage.xml"
