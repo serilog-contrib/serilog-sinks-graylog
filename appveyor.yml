@@ -16,6 +16,8 @@ before_build:
 build:
   project: ./src/serilog-sinks-graylog.sln
   verbosity: minimal
+  publish_nuget: true
+  publish_nuget_symbols: true
 
 test:
   categories:
