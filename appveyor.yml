@@ -29,3 +29,10 @@ after_test:
   - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
   - pip install codecov
   - codecov -f "coverage.xml"
+
+deploy:
+  provider: NuGet
+  api_key:
+    secure: IHVAasaX8yvwCHeCI/mBgWBRzLNlOpRn3yJnZFyslzTnJpELyxKDaKM5y/LN0zsl
+    skip_symbols: false
+    artifact: /.*\.nupkg/
