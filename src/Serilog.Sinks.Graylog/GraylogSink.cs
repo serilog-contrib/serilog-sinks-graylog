@@ -41,7 +41,7 @@ namespace Serilog.Sinks.Graylog
             string hostName = Dns.GetHostName();
             IDictionary<BuilderType, IMessageBuilder> builders = new Dictionary<BuilderType, IMessageBuilder>
             {
-                [BuilderType.Exception] = new ExceptionGelfMessageBuilder(hostName, options),
+                [BuilderType.Exception] = new ExceptionMessageBuilder(hostName, options),
                 [BuilderType.Message] = new MessageBuilders.GelfMessageBuilder(hostName, options)
             };
               

@@ -50,7 +50,7 @@
     <Compile Include="GraylogSinkOptions.cs" />
     <Compile Include="Helpers\MessageIdGenerator.cs" />
     <Compile Include="LoggerConfigurationGrayLogExtensions.cs" />
-    <Compile Include="MessageBuilders\ExceptionGelfMessageBuilder.cs" />
+    <Compile Include="MessageBuilders\ExceptionMessageBuilder.cs" />
     <Compile Include="MessageBuilders\IMessageBuilder.cs" />
     <Compile Include="MessageBuilders\GelfMessageBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -76,6 +76,52 @@ namespace Serilog.Sinks.Graylog.Tests
             logger.Information("Some message {TestPropertyOne}{TestPropertyTwo}{TestPropertyThree}", test.TestPropertyOne, test.TestPropertyTwo, test.TestPropertyThree);
         }
 
+        [Fact]
+        [Trait("Category", "Integration")]
+        public void TestException()
+        {
+            var loggerConfig = new LoggerConfiguration();
+
+            loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
+            {
+                MinimumLogEventLevel = LogEventLevel.Information,
+                MessageGeneratorType = MessageIdGeneratortype.Timestamp,
+                Facility = "VolkovTestFacility",
+                HostnameOrAdress = "logs.aeroclub.int",
+                Port = 12201
+            });
+
+            var test = new TestClass
+            {
+                Id = 1,
+                Bar = new Bar
+                {
+                    Id = 2
+                },
+                TestPropertyOne = "1",
+                TestPropertyThree = "3",
+                TestPropertyTwo = "2"
+            };
+
+
+            var logger = loggerConfig.CreateLogger();
+
+            try
+            {
+                try
+                {
+                    throw new InvalidOperationException("Level One exception");
+                }
+                catch (Exception exc)
+                {
+                    throw new NotImplementedException("Nested Exception", exc);
+                }
+            }
+            catch (Exception exc)
+            {
+                logger.Error(exc, "test exception with object {@test}", test);
+            }
+        }
 
     }
 

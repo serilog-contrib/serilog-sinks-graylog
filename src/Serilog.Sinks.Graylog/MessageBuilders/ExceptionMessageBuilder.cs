@@ -5,9 +5,12 @@ using Serilog.Events;
 
 namespace Serilog.Sinks.Graylog.MessageBuilder
 {
-    public class ExceptionGelfMessageBuilder : MessageBuilders.GelfMessageBuilder
+    public class ExceptionMessageBuilder : MessageBuilders.GelfMessageBuilder
     {
-        public ExceptionGelfMessageBuilder(string hostName, GraylogSinkOptions options) : base(hostName, options)
+        private const string ExceptionDelimiter = " - ";
+        private const string StackTraceDelimiter = "--- Inner exception stack trace ---";
+
+        public ExceptionMessageBuilder(string hostName, GraylogSinkOptions options) : base(hostName, options)
         {
         }
 
@@ -15,11 +18,11 @@ namespace Serilog.Sinks.Graylog.MessageBuilder
         {
             Tuple<string, string> excMessageTuple = GetExceptionMessages(logEvent.Exception);
             string exceptionDetail = excMessageTuple.Item1;
-            string stackDetail = excMessageTuple.Item2;
+            string stackTrace = excMessageTuple.Item2;
 
             logEvent.AddOrUpdateProperty(new LogEventProperty("ExceptionSource", new ScalarValue(logEvent.Exception.Source)));
             logEvent.AddOrUpdateProperty(new LogEventProperty("ExceptionMessage", new ScalarValue(exceptionDetail)));
-            logEvent.AddOrUpdateProperty(new LogEventProperty("StackTrace", new ScalarValue(stackDetail)));
+            logEvent.AddOrUpdateProperty(new LogEventProperty("StackTrace", new ScalarValue(stackTrace)));
 
             return base.Build(logEvent);
         }
@@ -38,17 +41,20 @@ namespace Serilog.Sinks.Graylog.MessageBuilder
             var counter = 0;
             do
             {
-                exceptionSb.Append(nestedException.Message + " - ");
+                exceptionSb.Append(nestedException.Message).Append(ExceptionDelimiter);
                 if (nestedException.StackTrace != null)
-                    stackSb.Append(nestedException.StackTrace + "--- Inner exception stack trace ---");
+                {
+                    stackSb.AppendLine(nestedException.StackTrace).AppendLine(StackTraceDelimiter);
+                }
                 nestedException = nestedException.InnerException;
                 counter++;
             }
             while (nestedException != null && counter < Options.StackTraceDepth);
 
-            string exceptionDetail = exceptionSb.ToString().Substring(0, exceptionSb.Length - 3);
+            string exceptionDetail = exceptionSb.ToString().Substring(0, exceptionSb.Length - ExceptionDelimiter.Length).Trim();
+
             if (stackSb.Length > 0)
-                stackDetail = stackSb.ToString().Substring(0, stackSb.Length - 35);
+                stackDetail = stackSb.ToString().Substring(0, stackSb.Length - StackTraceDelimiter.Length - 2).Trim();
 
             return new Tuple<string, string>(exceptionDetail, stackDetail);
         }
