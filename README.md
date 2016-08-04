@@ -15,7 +15,7 @@ Register the sink in code.
 var loggerConfig = new LoggerConfiguration()
     .WriteTo.Graylog(new GraylogSinkOptions
       {
-          HostnameOrAdress = "logs.aeroclub.int",
+          HostnameOrAdress = "localhost",
           Port = 12201
       });
 ```
