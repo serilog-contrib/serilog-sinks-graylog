@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>serilog.sinks.graylog</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <licenseUrl>https://github.com/whir1/serilog-sinks-graylog/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/whir1/serilog-sinks-graylog</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <releaseNotes>see usage at https://github.com/whir1/serilog-sinks-graylog</releaseNotes>
+    <copyright>Copyright whirlwind 2016</copyright>
+  </metadata>
+</package>
