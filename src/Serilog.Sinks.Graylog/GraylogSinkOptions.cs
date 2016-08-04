@@ -1,5 +1,4 @@
-﻿using System;
-using Serilog.Events;
+﻿using Serilog.Events;
 using Serilog.Sinks.Graylog.Helpers;
 using Serilog.Sinks.Graylog.Transport;
 
@@ -92,6 +91,12 @@ namespace Serilog.Sinks.Graylog
         /// </remarks>
         public MessageIdGeneratortype MessageGeneratorType { get; set; }
 
+        /// <summary>
+        /// Gets or sets the stack trace depth.
+        /// </summary>
+        /// <value>
+        /// The stack trace depth.
+        /// </value>
         public int StackTraceDepth { get; set; }
     }
 }

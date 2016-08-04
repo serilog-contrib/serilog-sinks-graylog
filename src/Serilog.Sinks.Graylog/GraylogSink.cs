@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 using Serilog.Core;
 using Serilog.Events;
 using Serilog.Sinks.Graylog.Helpers;
-using Serilog.Sinks.Graylog.MessageBuilder;
+using Serilog.Sinks.Graylog.MessageBuilders;
 using Serilog.Sinks.Graylog.Transport;
 using Serilog.Sinks.Graylog.Transport.Udp;
 
@@ -16,14 +16,11 @@ namespace Serilog.Sinks.Graylog
 {
     public class GraylogSink : ILogEventSink
     {
-        private readonly GraylogSinkOptions _options;
         private readonly IGelfConverter _converter;
         private readonly ITransport _transport;
 
         public GraylogSink(GraylogSinkOptions options)
         {
-            _options = options;
-
             IDnsInfoProvider dns = new DnsWrapper();
             IPAddress ipAdress = dns.GetHostAddresses(options.HostnameOrAdress)
                                      .FirstOrDefault(c => c.AddressFamily == AddressFamily.InterNetwork);
@@ -36,16 +33,16 @@ namespace Serilog.Sinks.Graylog
             }, new MessageIdGeneratorResolver());
 
             var client = new UdpTransportClient(ipEndpoint);
-            _transport = _options.Transport ?? new UdpTransport(client, chunkConverter);
+            _transport = options.Transport ?? new UdpTransport(client, chunkConverter);
 
             string hostName = Dns.GetHostName();
             IDictionary<BuilderType, IMessageBuilder> builders = new Dictionary<BuilderType, IMessageBuilder>
             {
                 [BuilderType.Exception] = new ExceptionMessageBuilder(hostName, options),
-                [BuilderType.Message] = new MessageBuilders.GelfMessageBuilder(hostName, options)
+                [BuilderType.Message] = new GelfMessageBuilder(hostName, options)
             };
               
-            _converter = _options.GelfConverter ?? new GelfConverter(hostName, options, builders);
+            _converter = options.GelfConverter ?? new GelfConverter(builders);
         }
 
         public void Emit(LogEvent logEvent)

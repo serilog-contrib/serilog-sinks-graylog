@@ -2,7 +2,7 @@
 using FluentAssertions;
 using Newtonsoft.Json.Linq;
 using Serilog.Events;
-using Serilog.Sinks.Graylog.MessageBuilder;
+using Serilog.Sinks.Graylog.MessageBuilders;
 using Xunit;
 
 namespace Serilog.Sinks.Graylog.Tests.MessageBuilders

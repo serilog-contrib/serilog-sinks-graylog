@@ -1,15 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Net;
-using System.Net.Sockets;
-using System.Security.Cryptography;
-using System.Text;
+﻿using System.Collections.Generic;
 using Serilog.Sinks.Graylog.Extensions;
-using Serilog.Sinks.Graylog.Helpers;
 
 namespace Serilog.Sinks.Graylog.Transport.Udp
 {

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using Serilog.Events;
 using Serilog.Sinks.Graylog.Extensions;
-using Serilog.Sinks.Graylog.MessageBuilder;
 
 namespace Serilog.Sinks.Graylog.MessageBuilders
 {

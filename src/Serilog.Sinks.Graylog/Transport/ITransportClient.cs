@@ -1,6 +1,4 @@
-﻿using System.Net;
-
-namespace Serilog.Sinks.Graylog.Transport
+﻿namespace Serilog.Sinks.Graylog.Transport
 {
     /// <summary>
     /// The Transport client interface

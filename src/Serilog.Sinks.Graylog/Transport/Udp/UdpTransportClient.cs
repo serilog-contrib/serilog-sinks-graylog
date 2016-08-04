@@ -1,13 +1,12 @@
 ﻿using System.Net;
 using System.Net.Sockets;
-using System;
 
 namespace Serilog.Sinks.Graylog.Transport.Udp
 {
     /// <summary>
     /// Udp transport client
     /// </summary>
-    /// <seealso cref="Serilog.Sinks.Graylog.Transport.ITransportClient{System.Byte[]}" />
+    /// <seealso cref="byte" />
     public sealed class UdpTransportClient : ITransportClient<byte[]>
     {
         private readonly IPEndPoint _target;

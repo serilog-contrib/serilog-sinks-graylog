@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Net;
-using System.Text;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using Serilog.Events;
-using Serilog.Sinks.Graylog.Extensions;
-using Serilog.Sinks.Graylog.MessageBuilder;
+using Serilog.Sinks.Graylog.MessageBuilders;
 
 namespace Serilog.Sinks.Graylog
 {
@@ -18,14 +12,10 @@ namespace Serilog.Sinks.Graylog
 
     public class GelfConverter : IGelfConverter
     {
-        private readonly string _hostName;
-        private readonly GraylogSinkOptions _options;
         private readonly IDictionary<BuilderType, IMessageBuilder> _messageBuilders;
 
-        public GelfConverter(string hostName, GraylogSinkOptions options, IDictionary<BuilderType, IMessageBuilder> messageBuilders)
+        public GelfConverter(IDictionary<BuilderType, IMessageBuilder> messageBuilders)
         {
-            _hostName = hostName;
-            _options = options;
             _messageBuilders = messageBuilders;
         }
 

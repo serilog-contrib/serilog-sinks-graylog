@@ -3,7 +3,7 @@ using System.Text;
 using Newtonsoft.Json.Linq;
 using Serilog.Events;
 
-namespace Serilog.Sinks.Graylog.MessageBuilder
+namespace Serilog.Sinks.Graylog.MessageBuilders
 {
     public class ExceptionMessageBuilder : MessageBuilders.GelfMessageBuilder
     {

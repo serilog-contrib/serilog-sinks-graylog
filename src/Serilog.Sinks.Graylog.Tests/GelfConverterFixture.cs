@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Moq;
-using Serilog.Sinks.Graylog.MessageBuilder;
+using Serilog.Sinks.Graylog.MessageBuilders;
 using Xunit;
 
 namespace Serilog.Sinks.Graylog.Tests
@@ -20,7 +20,7 @@ namespace Serilog.Sinks.Graylog.Tests
                 [BuilderType.Message] = messageBuilder.Object
             };
 
-            GelfConverter target = new GelfConverter("anyHost", new GraylogSinkOptions(), messageBuilders);
+            GelfConverter target = new GelfConverter(messageBuilders);
 
             var simpleEvent = LogEventSource.GetSimpleLogEvent(DateTimeOffset.Now);
 
@@ -42,7 +42,7 @@ namespace Serilog.Sinks.Graylog.Tests
                 [BuilderType.Message] = messageBuilder.Object
             };
 
-            GelfConverter target = new GelfConverter("anyHost", new GraylogSinkOptions(), messageBuilders);
+            GelfConverter target = new GelfConverter(messageBuilders);
 
             var simpleEvent = LogEventSource.GetErrorEvent(DateTimeOffset.Now);
 

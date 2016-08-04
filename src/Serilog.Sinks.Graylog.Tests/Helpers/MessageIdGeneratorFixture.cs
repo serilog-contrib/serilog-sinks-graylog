@@ -10,7 +10,7 @@ namespace Serilog.Sinks.Graylog.Tests.Helpers
 {
     public class MessageIdGeneratorFixture
     {
-        private Fixture _fixture;
+        private readonly Fixture _fixture;
 
         public MessageIdGeneratorFixture()
         {

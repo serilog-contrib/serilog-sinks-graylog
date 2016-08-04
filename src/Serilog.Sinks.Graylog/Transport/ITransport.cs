@@ -1,6 +1,4 @@
-﻿using System.Net;
-
-namespace Serilog.Sinks.Graylog.Transport
+﻿namespace Serilog.Sinks.Graylog.Transport
 {
     /// <summary>
     /// The Transport interface
@@ -10,7 +8,6 @@ namespace Serilog.Sinks.Graylog.Transport
         /// <summary>
         /// Sends the specified target.
         /// </summary>
-        /// <param name="target">The target.</param>
         /// <param name="message">The message.</param>
         void Send(string message);
     }
