@@ -1,8 +1,8 @@
 language: csharp
 solution: ./src/serilog-sinks-graylog.sln
 install:
-   - curl -L -o nuget.exe https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
-   - mono nuget.exe restore ./src/serilog-sinks-graylog.sln -Verbosity detailed
+  - curl -L -o nuget.exe https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
+  - mono nuget.exe restore ./src/serilog-sinks-graylog.sln -Verbosity detailed
   - nuget install xunit.runners -OutputDirectory testrunner -ExcludeVersion
 script:
   - xbuild /p:Configuration=Release ./src/serilog-sinks-graylog.sln
