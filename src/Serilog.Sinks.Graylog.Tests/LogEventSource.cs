@@ -52,5 +52,12 @@ namespace Serilog.Sinks.Graylog.Tests
                 });
             return logEvent;
         }
+
+        public static LogEvent GetExceptionLogEvent(DateTimeOffset date, Exception testExc)
+        {
+            var logevent = new LogEvent(date, LogEventLevel.Error, testExc, new MessageTemplate("", new List<MessageTemplateToken>()),
+                new List<LogEventProperty>(new List<LogEventProperty>()));
+            return logevent;
+        }
     }
 }
