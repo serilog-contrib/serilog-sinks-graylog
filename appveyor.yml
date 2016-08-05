@@ -30,9 +30,9 @@ after_test:
   - pip install codecov
   - codecov -f "coverage.xml"
 
-deploy:
-  provider: NuGet
-  api_key:
-    secure: IHVAasaX8yvwCHeCI/mBgWBRzLNlOpRn3yJnZFyslzTnJpELyxKDaKM5y/LN0zsl
-    skip_symbols: false
-    artifact: /.*\.nupkg/
+#deploy:
+#  provider: NuGet
+#  api_key:
+#    secure: IHVAasaX8yvwCHeCI/mBgWBRzLNlOpRn3yJnZFyslzTnJpELyxKDaKM5y/LN0zsl
+#    skip_symbols: false
+#    artifact: /.*\.nupkg/
