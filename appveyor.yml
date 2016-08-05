@@ -34,17 +34,17 @@ after_test:
 branches:
   except:
     - release
-  init:
-    - cmd: "set branch=%APPVEYOR_REPO_BRANCH%"
-    - cmd: "echo branch:%branch%"
-    - cmd: "set newVersion=1.0.%APPVEYOR_BUILD_NUMBER%-%branch%"
-    - cmd: "echo newVersion:%newVersion%"
-    - cmd: appveyor UpdateBuild -Version "%newVersion%"
+    init:
+      - cmd: "set branch=%APPVEYOR_REPO_BRANCH%"
+      - cmd: "echo branch:%branch%"
+      - cmd: "set newVersion=1.0.%APPVEYOR_BUILD_NUMBER%-%branch%"
+      - cmd: "echo newVersion:%newVersion%"
+      - cmd: appveyor UpdateBuild -Version "%newVersion%"
   only:
     -release
-  deploy:
-    provider: NuGet
-    api_key:
-      secure: IHVAasaX8yvwCHeCI/mBgWBRzLNlOpRn3yJnZFyslzTnJpELyxKDaKM5y/LN0zsl
-      skip_symbols: false
-      artifact: /.*\.nupkg/
+    deploy:
+      provider: NuGet
+      api_key:
+        secure: IHVAasaX8yvwCHeCI/mBgWBRzLNlOpRn3yJnZFyslzTnJpELyxKDaKM5y/LN0zsl
+        skip_symbols: false
+        artifact: /.*\.nupkg/
