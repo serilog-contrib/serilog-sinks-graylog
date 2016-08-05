@@ -2,7 +2,7 @@ branches:
   except:
     - release
 
-version: 1.0.{build}-{APPVEYOR_REPO_BRANCH}
+version: 1.0.{build}-%APPVEYOR_REPO_BRANCH%
 skip_tags: true
 assembly_info:
   patch: true
