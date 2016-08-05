@@ -1,6 +1,6 @@
 init:
   on:
-    branch: /^((?!release).)*$/
+    branch: master
   - cmd: "set branch=%APPVEYOR_REPO_BRANCH%"
   - cmd: "echo branch:%branch%"
   - cmd: "set newVersion=1.0.%APPVEYOR_BUILD_NUMBER%-%branch%"
