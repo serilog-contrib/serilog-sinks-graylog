@@ -10,6 +10,7 @@ init:
   - cmd: appveyor UpdateBuild -Version "%newVersion%"
 
 skip_tags: true
+
 assembly_info:
   patch: true
   file: AssemblyInfo.*
