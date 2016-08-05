@@ -2,7 +2,13 @@ branches:
   except:
     - release
 
-version: 1.0.{build}-%APPVEYOR_REPO_BRANCH%
+init:
+  - cmd: "set branch=%APPVEYOR_REPO_BRANCH%"
+  - cmd: "echo branch:%branch%"
+  - cmd: "set newVersion=1.0.%APPVEYOR_BUILD_NUMBER%-%branch%"
+  - cmd: "echo newVersion:%newVersion%"
+  - cmd: appveyor UpdateBuild -Version "%newVersion%"
+
 skip_tags: true
 assembly_info:
   patch: true
