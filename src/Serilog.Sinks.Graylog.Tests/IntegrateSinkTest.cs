@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Text;
+using Ploeh.AutoFixture;
 using Serilog.Events;
 using Xunit;
 using Serilog.Sinks;
 using Serilog.Sinks.Graylog.Helpers;
+using Serilog.Sinks.Graylog.Tests.ComplexIntegrationTest;
 
 namespace Serilog.Sinks.Graylog.Tests
 {
@@ -48,6 +50,11 @@ namespace Serilog.Sinks.Graylog.Tests
         [Trait("Category", "Integration")]
         public void TestSimple()
         {
+            var fixture = new Fixture();
+            fixture.Behaviors.Clear();
+            fixture.Behaviors.Add(new OmitOnRecursionBehavior(1));
+            var profile = fixture.Create<Profile>();
+
             var loggerConfig = new LoggerConfiguration();
 
             loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
@@ -59,21 +66,9 @@ namespace Serilog.Sinks.Graylog.Tests
                 Port = 12201
             });
 
-            var test = new TestClass
-            {
-                Id = 1,
-                Bar = new Bar
-                {
-                    Id = 2
-                },
-                TestPropertyOne = "1",
-                TestPropertyThree = "3",
-                TestPropertyTwo = "2"
-            };
-
             var logger = loggerConfig.CreateLogger();
 
-            logger.Information("Some message {TestPropertyOne}{TestPropertyTwo}{TestPropertyThree}", test.TestPropertyOne, test.TestPropertyTwo, test.TestPropertyThree);
+            logger.Information("battle profile:  {@BattleProfile}", profile);
         }
 
         [Fact]

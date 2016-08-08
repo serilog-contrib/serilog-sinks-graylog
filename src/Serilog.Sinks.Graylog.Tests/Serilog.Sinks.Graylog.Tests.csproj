@@ -81,6 +81,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ComplexIntegrationTest\Profile.cs" />
     <Compile Include="Extensions\StringExtensionsFixture.cs" />
     <Compile Include="GelfConverterFixture.cs" />
     <Compile Include="GraylogSinkFixture.cs" />

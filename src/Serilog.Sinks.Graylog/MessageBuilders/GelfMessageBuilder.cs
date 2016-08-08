@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.CompilerServices;
 using Newtonsoft.Json.Linq;
 using Serilog.Events;
 using Serilog.Sinks.Graylog.Extensions;
@@ -41,41 +43,53 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
             {
                 AddAdditionalField(jsonObject, property);
             }
+
             return jsonObject;
         }
 
-        private void AddAdditionalField(IDictionary<string, JToken> jObject, KeyValuePair<string, LogEventPropertyValue> property, int recursionLevel = 0, string typeTag = null)
+        private void AddAdditionalField(IDictionary<string, JToken> jObject, KeyValuePair<string, LogEventPropertyValue> property, int recursionLevel = 0, string memberPath = "")
         {
+            string key = string.IsNullOrEmpty(memberPath)
+                ? property.Key
+                : $"{memberPath}.{property.Key}";
+
             if (property.Value is ScalarValue)
             {
-                string key = property.Key;
 
                 if (key.Equals("id", StringComparison.OrdinalIgnoreCase))
                     key = "id_";
                 if (!key.StartsWith("_", StringComparison.OrdinalIgnoreCase))
                     key = "_" + key;
 
-
-                key = recursionLevel > 0 ? $"{typeTag}{key}" : key;
-
-
                 LogEventPropertyValue logEventProperty = property.Value;
                 string stringValue = logEventProperty.ToString();
 
-                var value = JToken.FromObject(stringValue);
+                JToken value = JToken.FromObject(stringValue);
 
                 jObject.Add(key, value);
             }
 
-            var structureValue = property.Value as StructureValue;
-            if (structureValue == null)
+            SequenceValue sequenceValue = property.Value as SequenceValue;
+            if (sequenceValue != null)
             {
-                return;
+                using (TextWriter tw = new StringWriter())
+                {
+                    sequenceValue.Render(tw);
+                    var json = tw.ToString();
+                    jObject.Add(key, json);
+                }
             }
-            StructureValue structuredValue = structureValue;
-            foreach (LogEventProperty logEventProperty in structuredValue.Properties)
+
+
+            StructureValue structureValue = property.Value as StructureValue;
+            if (structureValue != null)
             {
-                AddAdditionalField(jObject, new KeyValuePair<string, LogEventPropertyValue>(logEventProperty.Name, logEventProperty.Value), ++recursionLevel, structureValue.TypeTag);
+                foreach (LogEventProperty logEventProperty in structureValue.Properties)
+                {
+                    AddAdditionalField(jObject,
+                        new KeyValuePair<string, LogEventPropertyValue>(logEventProperty.Name, logEventProperty.Value),
+                        ++recursionLevel, key);
+                }
             }
         }
 
