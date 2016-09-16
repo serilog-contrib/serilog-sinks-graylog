@@ -47,7 +47,7 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
             return jsonObject;
         }
 
-        private void AddAdditionalField(IDictionary<string, JToken> jObject, KeyValuePair<string, LogEventPropertyValue> property, int recursionLevel = 0, string memberPath = "")
+        private void AddAdditionalField(IDictionary<string, JToken> jObject, KeyValuePair<string, LogEventPropertyValue> property, string memberPath = "")
         {
             string key = string.IsNullOrEmpty(memberPath)
                 ? property.Key
@@ -62,34 +62,40 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
                     key = "_" + key;
 
                 LogEventPropertyValue logEventProperty = property.Value;
-                string stringValue = logEventProperty.ToString();
 
+                string stringValue = RenderPropertyValue(logEventProperty);
                 JToken value = JToken.FromObject(stringValue);
 
                 jObject.Add(key, value);
             }
 
-            SequenceValue sequenceValue = property.Value as SequenceValue;
+            var sequenceValue = property.Value as SequenceValue;
             if (sequenceValue != null)
             {
-                using (TextWriter tw = new StringWriter())
-                {
-                    sequenceValue.Render(tw);
-                    var json = tw.ToString();
-                    jObject.Add(key, json);
-                }
+                var sequenceValuestring = RenderPropertyValue(sequenceValue);
+                jObject.Add(key, sequenceValuestring);
             }
 
 
-            StructureValue structureValue = property.Value as StructureValue;
+            var structureValue = property.Value as StructureValue;
             if (structureValue != null)
             {
                 foreach (LogEventProperty logEventProperty in structureValue.Properties)
                 {
                     AddAdditionalField(jObject,
-                        new KeyValuePair<string, LogEventPropertyValue>(logEventProperty.Name, logEventProperty.Value),
-                        ++recursionLevel, key);
+                        new KeyValuePair<string, LogEventPropertyValue>(logEventProperty.Name, logEventProperty.Value), key);
                 }
+            }
+        }
+
+        private string RenderPropertyValue(LogEventPropertyValue propertyValue)
+        {
+            using (TextWriter tw = new StringWriter())
+            {
+                propertyValue.Render(tw);
+                string result = tw.ToString();
+                result = result.Trim('"');
+                return result;
             }
         }
 

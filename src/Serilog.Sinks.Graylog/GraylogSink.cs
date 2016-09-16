@@ -36,6 +36,7 @@ namespace Serilog.Sinks.Graylog
             _transport = options.Transport ?? new UdpTransport(client, chunkConverter);
 
             string hostName = Dns.GetHostName();
+
             IDictionary<BuilderType, IMessageBuilder> builders = new Dictionary<BuilderType, IMessageBuilder>
             {
                 [BuilderType.Exception] = new ExceptionMessageBuilder(hostName, options),
