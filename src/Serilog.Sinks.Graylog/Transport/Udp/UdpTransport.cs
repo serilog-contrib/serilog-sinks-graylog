@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Serilog.Sinks.Graylog.Extensions;
 
 namespace Serilog.Sinks.Graylog.Transport.Udp
