@@ -9,7 +9,8 @@
     "NETStandard.Library": "1.6.0",
     "Serilog.Sinks.Graylog": "1.0.0-*",
     "xunit": "2.1.0",
-    "xunit.runner.console": "2.1.0"
+    "xunit.runner.console": "2.1.0",
+    "xunit.runners": "2.0.0"
   },
   "testRunner": "xunit",
   "runtimes": {

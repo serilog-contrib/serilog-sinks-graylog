@@ -779,6 +779,9 @@
           "lib/net35/xunit.runner.utility.desktop.dll": {}
         }
       },
+      "xunit.runners/2.0.0": {
+        "type": "package"
+      },
       "Serilog.Sinks.Graylog/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.2",
@@ -795,7 +798,7 @@
         }
       }
     },
-    ".NETFramework,Version=v4.5.2/win": {
+    ".NETFramework,Version=v4.5.2/win7-x64": {
       "AutoFixture/3.50.2": {
         "type": "package",
         "compile": {
@@ -825,10 +828,10 @@
           "System.Threading.Tasks"
         ],
         "compile": {
-          "lib/net451/dotnet-test-xunit.exe": {}
+          "runtimes/win7-x64/lib/net451/dotnet-test-xunit.exe": {}
         },
         "runtime": {
-          "lib/net451/dotnet-test-xunit.exe": {}
+          "runtimes/win7-x64/lib/net451/dotnet-test-xunit.exe": {}
         }
       },
       "FluentAssertions/4.15.0": {
@@ -858,9 +861,7 @@
       "Microsoft.DiaSymReader.Native/1.3.3": {
         "type": "package",
         "native": {
-          "runtimes/win/native/Microsoft.DiaSymReader.Native.amd64.dll": {},
-          "runtimes/win/native/Microsoft.DiaSymReader.Native.arm.dll": {},
-          "runtimes/win/native/Microsoft.DiaSymReader.Native.x86.dll": {}
+          "runtimes/win-x64/native/Microsoft.DiaSymReader.Native.amd64.dll": {}
         }
       },
       "Microsoft.DotNet.InternalAbstractions/1.0.0-rc2-002702": {
@@ -1526,6 +1527,9 @@
         "runtime": {
           "lib/net35/xunit.runner.utility.desktop.dll": {}
         }
+      },
+      "xunit.runners/2.0.0": {
+        "type": "package"
       },
       "Serilog.Sinks.Graylog/1.0.0": {
         "type": "project",
@@ -4188,6 +4192,16 @@
         "xunit.runner.utility.nuspec"
       ]
     },
+    "xunit.runners/2.0.0": {
+      "sha512": "+dUmiiGf5IkoOreRr2MKqirWYPCa4MHQ4rEzUxSR7LiyQYko47DKz5x/fwFJCgfHTG5ClA+yuGDa6RYAvkDJjw==",
+      "type": "package",
+      "path": "xunit.runners/2.0.0",
+      "files": [
+        "readme.txt",
+        "xunit.runners.2.0.0.nupkg.sha512",
+        "xunit.runners.nuspec"
+      ]
+    },
     "Serilog.Sinks.Graylog/1.0.0": {
       "type": "project",
       "path": "../Serilog.Sinks.Graylog/project.json",
@@ -4203,7 +4217,8 @@
       "Serilog.Sinks.Graylog >= 1.0.0-*",
       "dotnet-test-xunit >= 1.0.0-rc2-build10025",
       "xunit >= 2.1.0",
-      "xunit.runner.console >= 2.1.0"
+      "xunit.runner.console >= 2.1.0",
+      "xunit.runners >= 2.0.0"
     ],
     ".NETFramework,Version=v4.5.2": []
   },
