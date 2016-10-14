@@ -6,3 +6,5 @@
 **/bin/**
 **/obj/**
 *.cache
+*.coverage
+*.dg
