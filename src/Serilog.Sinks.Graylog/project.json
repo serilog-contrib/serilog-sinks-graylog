@@ -1,0 +1,42 @@
+﻿{
+  "version": "1.0.0-*",
+  "authors": [ "Anton Volkov" ],
+  "dependencies": {
+    "NETStandard.Library": "1.6.0",
+    "Newtonsoft.Json": "9.0.1",
+    "Serilog": "2.3.0"
+  },
+  "buildOptions": {
+    "keyFile": "./sign.snk",
+    "publicSign": true,
+    "warningsAsErrors": true,
+    "optimize": true
+  },
+  "frameworks": {
+    "netstandard1.6": {
+      "imports": "dnxcore50",
+      "dependencies": {
+        "System.Net.NameResolution": "4.0.0"
+      }
+    },
+    "netstandard2.0": {
+      "imports": "dnxcore50",
+      "dependencies": {
+        "System.Net.NameResolution": "4.0.0"
+      }
+    },
+    "net45": {
+    },
+    "net452": {
+    },
+    "net46": {
+    },
+    "net461": {
+    }
+  },
+  "scripts": {
+    "postcompile": [
+      "dotnet pack --no-build --configuration %compile:Configuration%"
+    ]
+  }
+}

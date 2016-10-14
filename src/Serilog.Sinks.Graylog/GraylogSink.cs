@@ -1,8 +1,8 @@
-﻿using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Serilog.Core;
 using Serilog.Events;
@@ -22,8 +22,9 @@ namespace Serilog.Sinks.Graylog
         public GraylogSink(GraylogSinkOptions options)
         {
             IDnsInfoProvider dns = new DnsWrapper();
-            IPAddress ipAdress = dns.GetHostAddresses(options.HostnameOrAdress)
-                                     .FirstOrDefault(c => c.AddressFamily == AddressFamily.InterNetwork);
+            IPAddress[] ipAddreses = Task.Run(() => dns.GetHostAddresses(options.HostnameOrAdress)).Result;
+
+            IPAddress ipAdress = ipAddreses.FirstOrDefault(c => c.AddressFamily == AddressFamily.InterNetwork);
 
             var ipEndpoint = new IPEndPoint(ipAdress, options.Port);
 
