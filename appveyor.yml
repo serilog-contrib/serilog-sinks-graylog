@@ -7,6 +7,8 @@
     - cmd: "echo branch:%branch%"
     - cmd: "set newVersion=1.0.%APPVEYOR_BUILD_NUMBER%-%branch%"
     - cmd: "echo newVersion:%newVersion%"
+    - cmd: "set versonSuffix=%APPVEYOR_BUILD_NUMBER%-%branch%"    
+    - cmd: "echo versonSuffix:%versonSuffix%"
     - cmd: appveyor UpdateBuild -Version "%newVersion%"
 
   skip_tags: true
@@ -24,14 +26,14 @@
     - appveyor-retry dotnet restore -v Minimal
 
   build_script:
-    - cmd: dotnet build "./src/Serilog.Sinks.Graylog" -c %CONFIGURATION% --no-dependencies --version-suffix %newVersion%
+    - cmd: dotnet build "./src/Serilog.Sinks.Graylog" -c %CONFIGURATION% --no-dependencies --version-suffix %versonSuffix%"
   after_build:
-    - cmd: dotnet pack "./src/Serilog.Sinks.Graylog" -c %CONFIGURATION% --no-build --version-suffix %newVersion% -o artifacts
+    - cmd: dotnet pack "./src/Serilog.Sinks.Graylog" -c %CONFIGURATION% --no-build --version-suffix %versonSuffix%" -o artifacts
   test_script:
     - cmd: dotnet test "./src/Serilog.Sinks.Graylog.Tests" -c %CONFIGURATION% -notrait "Category=Integration"
   
   artifacts:
-    - path: "./src/Serilog.Sinks.Graylog/**/**/*.nupkg"
+    - path: "./artifacts/*.nupkg"
 
   deploy:
     provider: NuGet
