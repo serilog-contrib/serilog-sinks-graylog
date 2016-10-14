@@ -782,13 +782,15 @@
       "xunit.runners/2.0.0": {
         "type": "package"
       },
-      "Serilog.Sinks.Graylog/1.0.0": {
+      "Serilog.Sinks.Graylog/1.1.89": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.2",
         "dependencies": {
-          "NETStandard.Library": "1.6.0",
           "Newtonsoft.Json": "9.0.1",
-          "Serilog": "2.3.0"
+          "Serilog": "2.3.0",
+          "System.IO.Compression": "4.1.0",
+          "System.Runtime": "4.1.0",
+          "System.Runtime.InteropServices": "4.1.0"
         },
         "compile": {
           "net452/Serilog.Sinks.Graylog.dll": {}
@@ -1531,13 +1533,15 @@
       "xunit.runners/2.0.0": {
         "type": "package"
       },
-      "Serilog.Sinks.Graylog/1.0.0": {
+      "Serilog.Sinks.Graylog/1.1.89": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.2",
         "dependencies": {
-          "NETStandard.Library": "1.6.0",
           "Newtonsoft.Json": "9.0.1",
-          "Serilog": "2.3.0"
+          "Serilog": "2.3.0",
+          "System.IO.Compression": "4.1.0",
+          "System.Runtime": "4.1.0",
+          "System.Runtime.InteropServices": "4.1.0"
         },
         "compile": {
           "net452/Serilog.Sinks.Graylog.dll": {}
@@ -4202,7 +4206,7 @@
         "xunit.runners.nuspec"
       ]
     },
-    "Serilog.Sinks.Graylog/1.0.0": {
+    "Serilog.Sinks.Graylog/1.1.89": {
       "type": "project",
       "path": "../Serilog.Sinks.Graylog/project.json",
       "msbuildProject": "../Serilog.Sinks.Graylog/Serilog.Sinks.Graylog.xproj"
