@@ -24,11 +24,11 @@
     - appveyor-retry dotnet restore -v Minimal
 
   build_script:
-    - dotnet build "./src/Serilog.Sinks.Graylog" -c %CONFIGURATION% --no-dependencies --version-suffix %newVersion%
+    - cmd: dotnet build "./src/Serilog.Sinks.Graylog" -c %CONFIGURATION% --no-dependencies --version-suffix %newVersion%
   after_build:
-    - dotnet pack "./src/Serilog.Sinks.Graylog" -c %CONFIGURATION% --no-build --version-suffix %newVersion% -o artifacts
+    - cmd: dotnet pack "./src/Serilog.Sinks.Graylog" -c %CONFIGURATION% --no-build --version-suffix %newVersion% -o artifacts
   test_script:
-    - dotnet test "./src/Serilog.Sinks.Graylog.Tests" -c %CONFIGURATION% -notrait "Category=Integration"
+    - cmd: dotnet test "./src/Serilog.Sinks.Graylog.Tests" -c %CONFIGURATION% -notrait "Category=Integration"
   
   artifacts:
     - path: "./src/Serilog.Sinks.Graylog/**/**/*.nupkg"
