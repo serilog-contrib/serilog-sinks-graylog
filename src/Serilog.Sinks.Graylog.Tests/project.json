@@ -1,4 +1,4 @@
-﻿{
+{
   "version": "1.0.0-*",
 
   "dependencies": {
@@ -8,7 +8,8 @@
     "Moq": "4.5.23",
     "NETStandard.Library": "1.6.0",
     "Serilog.Sinks.Graylog": "1.0.0-*",
-    "xunit": "2.1.0"
+    "xunit": "2.1.0",
+    "xunit.runner.console": "2.1.0"
   },
   "testRunner": "xunit",
   "runtimes": {
