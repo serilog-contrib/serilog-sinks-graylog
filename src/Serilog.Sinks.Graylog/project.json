@@ -3,7 +3,9 @@
   "authors": [ "Anton Volkov" ],
   "dependencies": {
     "Newtonsoft.Json": "9.0.1",
-    "Serilog": "2.3.0"
+    "Serilog": "2.3.0",
+    "System.Runtime": "4.1.0",
+    "System.Runtime.InteropServices": "4.1.0"
   },
   "buildOptions": {
     "keyFile": "./sign.snk",
@@ -15,22 +17,46 @@
     "netstandard1.6": {
       "imports": "dnxcore50",
       "dependencies": {
-        "System.Net.NameResolution": "4.0.0"
+        "System.IO.Compression.ZipFile": "4.0.1",
+        "System.Net.NameResolution": "4.0.0",
+        "System.Net.Sockets": "4.1.0",
+        "System.Security.Cryptography.Algorithms": "4.2.0"
       }
     },
     "netstandard2.0": {
       "imports": "dnxcore50",
       "dependencies": {
-        "System.Net.NameResolution": "4.0.0"
+        "System.IO.Compression.ZipFile": "4.0.1",
+        "System.Net.NameResolution": "4.0.0",
+        "System.Net.Sockets": "4.1.0",
+        "System.Security.Cryptography.Algorithms": "4.2.0"
       }
     },
     "net45": {
+      "dependencies": {
+        "System.IO.Compression": "4.1.0"
+      }
     },
     "net452": {
+      "dependencies": {
+        "System.IO.Compression": "4.1.0"
+      }
     },
     "net46": {
+      "dependencies": {
+        "System.IO.Compression": "4.1.0",
+        "System.IO.Compression.ZipFile": "4.0.1",
+        "System.Net.Sockets": "4.1.0",
+        "System.Security.Cryptography.Algorithms": "4.2.0"
+      }
     },
     "net461": {
+      "dependencies": {
+        "System.IO.Compression": "4.1.0",
+        "System.IO.Compression.ZipFile": "4.0.1",
+        "System.Net.Sockets": "4.1.0",
+        "System.Security.Cryptography.Algorithms": "4.2.0"
+      }
     }
   },
   "runtimes": {
