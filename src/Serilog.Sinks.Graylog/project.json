@@ -2,7 +2,6 @@
   "version": "1.1.89-*",
   "authors": [ "Anton Volkov" ],
   "dependencies": {
-    "NETStandard.Library": "1.6.0",
     "Newtonsoft.Json": "9.0.1",
     "Serilog": "2.3.0"
   },

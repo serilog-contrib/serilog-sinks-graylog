@@ -25,8 +25,6 @@
 
   build_script:
     - dotnet build "./src/Serilog.Sinks.Graylog" -c %CONFIGURATION% --no-dependencies --version-suffix %newVersion%
-#    - nuget install xunit.runner.console
-#    - nuget install OpenCover -ExcludeVersion -OutputDirectory "packages"
   after_build:
     - dotnet pack "./src/Serilog.Sinks.Graylog" -c %CONFIGURATION% --no-build --version-suffix %newVersion% -o artifacts
   test_script:
@@ -35,22 +33,12 @@
   artifacts:
     - path: "./src/Serilog.Sinks.Graylog/**/**/*.nupkg"
 
-#  build:
-#    project: ./src/serilog-sinks-graylogXproj.sln
-#    verbosity: minimal
-#    publish_nuget: true
-#    publish_nuget_symbols: true
-
-#  test:
-#    categories:
-#      except:
-#      - Integration
-
-#  after_test:
-#    - .\packages\OpenCover\tools\OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:"C:\projects\serilog-sinks-graylog\src\Serilog.Sinks.Graylog.Tests\bin\Release\Serilog.Sinks.Graylog.Tests.dll -noshadow -appveyor" -filter:"+[Serilog.Sinks.Graylog*]* -[*]*Test*" -hideskipped:All -output:.\coverage.xml
-#    - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
-#    - pip install codecov
-#    - codecov -f "coverage.xml"
+  deploy:
+    provider: NuGet
+    api_key:
+      secure: IHVAasaX8yvwCHeCI/mBgWBRzLNlOpRn3yJnZFyslzTnJpELyxKDaKM5y/LN0zsl
+      skip_symbols: false
+      artifact: /.*\.nupkg/
 -
   branches:
     only:
