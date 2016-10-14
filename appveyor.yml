@@ -30,7 +30,7 @@
   after_build:
     - dotnet pack "./src/Serilog.Sinks.Graylog" -c %CONFIGURATION% --no-build --version-suffix %newVersion% -o artifacts
   test_script:
-    - dotnet test "./src/Serilog.Sinks.Graylog.Tests" -c %CONFIGURATION%    
+    - dotnet test "./src/Serilog.Sinks.Graylog.Tests" -c %CONFIGURATION% -notrait "Category=Integration"
 #  build:
 #    project: ./src/serilog-sinks-graylogXproj.sln
 #    verbosity: minimal
