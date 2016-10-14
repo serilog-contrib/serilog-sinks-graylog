@@ -787,10 +787,7 @@
         "framework": ".NETFramework,Version=v4.5.2",
         "dependencies": {
           "Newtonsoft.Json": "9.0.1",
-          "Serilog": "2.3.0",
-          "System.IO.Compression": "4.1.0",
-          "System.Runtime": "4.1.0",
-          "System.Runtime.InteropServices": "4.1.0"
+          "Serilog": "2.3.0"
         },
         "compile": {
           "net452/Serilog.Sinks.Graylog.dll": {}
@@ -1538,10 +1535,7 @@
         "framework": ".NETFramework,Version=v4.5.2",
         "dependencies": {
           "Newtonsoft.Json": "9.0.1",
-          "Serilog": "2.3.0",
-          "System.IO.Compression": "4.1.0",
-          "System.Runtime": "4.1.0",
-          "System.Runtime.InteropServices": "4.1.0"
+          "Serilog": "2.3.0"
         },
         "compile": {
           "net452/Serilog.Sinks.Graylog.dll": {}

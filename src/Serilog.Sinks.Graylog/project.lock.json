@@ -20,45 +20,6 @@
         "runtime": {
           "lib/net45/Serilog.dll": {}
         }
-      },
-      "System.IO.Compression/4.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System.IO.Compression"
-        ],
-        "compile": {
-          "ref/net45/_._": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
-        }
-      },
-      "System.Runtime/4.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System",
-          "System.ComponentModel.Composition",
-          "System.Core"
-        ],
-        "compile": {
-          "ref/net45/_._": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
-        }
-      },
-      "System.Runtime.InteropServices/4.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "ref/net45/_._": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
-        }
       }
     },
     ".NETFramework,Version=v4.5/win": {
@@ -79,44 +40,45 @@
         "runtime": {
           "lib/net45/Serilog.dll": {}
         }
-      },
-      "System.IO.Compression/4.1.0": {
+      }
+    },
+    ".NETFramework,Version=v4.5.1": {
+      "Newtonsoft.Json/9.0.1": {
         "type": "package",
-        "frameworkAssemblies": [
-          "System.IO.Compression"
-        ],
         "compile": {
-          "ref/net45/_._": {}
+          "lib/net45/Newtonsoft.Json.dll": {}
         },
         "runtime": {
-          "lib/net45/_._": {}
+          "lib/net45/Newtonsoft.Json.dll": {}
         }
       },
-      "System.Runtime/4.1.0": {
+      "Serilog/2.3.0": {
         "type": "package",
-        "frameworkAssemblies": [
-          "System",
-          "System.ComponentModel.Composition",
-          "System.Core"
-        ],
         "compile": {
-          "ref/net45/_._": {}
+          "lib/net45/Serilog.dll": {}
         },
         "runtime": {
-          "lib/net45/_._": {}
+          "lib/net45/Serilog.dll": {}
+        }
+      }
+    },
+    ".NETFramework,Version=v4.5.1/win": {
+      "Newtonsoft.Json/9.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Newtonsoft.Json.dll": {}
         }
       },
-      "System.Runtime.InteropServices/4.1.0": {
+      "Serilog/2.3.0": {
         "type": "package",
-        "frameworkAssemblies": [
-          "System",
-          "System.Core"
-        ],
         "compile": {
-          "ref/net45/_._": {}
+          "lib/net45/Serilog.dll": {}
         },
         "runtime": {
-          "lib/net45/_._": {}
+          "lib/net45/Serilog.dll": {}
         }
       }
     },
@@ -138,45 +100,6 @@
         "runtime": {
           "lib/net45/Serilog.dll": {}
         }
-      },
-      "System.IO.Compression/4.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System.IO.Compression"
-        ],
-        "compile": {
-          "ref/net45/_._": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
-        }
-      },
-      "System.Runtime/4.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System",
-          "System.ComponentModel.Composition",
-          "System.Core"
-        ],
-        "compile": {
-          "ref/net45/_._": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
-        }
-      },
-      "System.Runtime.InteropServices/4.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "ref/net45/_._": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
-        }
       }
     },
     ".NETFramework,Version=v4.5.2/win": {
@@ -196,45 +119,6 @@
         },
         "runtime": {
           "lib/net45/Serilog.dll": {}
-        }
-      },
-      "System.IO.Compression/4.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System.IO.Compression"
-        ],
-        "compile": {
-          "ref/net45/_._": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
-        }
-      },
-      "System.Runtime/4.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System",
-          "System.ComponentModel.Composition",
-          "System.Core"
-        ],
-        "compile": {
-          "ref/net45/_._": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
-        }
-      },
-      "System.Runtime.InteropServices/4.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "ref/net45/_._": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       }
     },
@@ -256,116 +140,6 @@
         "runtime": {
           "lib/net46/Serilog.dll": {}
         }
-      },
-      "System.IO.Compression/4.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System",
-          "mscorlib"
-        ],
-        "compile": {
-          "ref/net46/System.IO.Compression.dll": {}
-        },
-        "runtime": {
-          "lib/net46/System.IO.Compression.dll": {}
-        },
-        "runtimeTargets": {
-          "runtimes/unix/lib/netstandard1.3/System.IO.Compression.dll": {
-            "assetType": "runtime",
-            "rid": "unix"
-          },
-          "runtimes/win/lib/net46/System.IO.Compression.dll": {
-            "assetType": "runtime",
-            "rid": "win"
-          }
-        }
-      },
-      "System.IO.Compression.ZipFile/4.0.1": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System.IO.Compression.FileSystem",
-          "mscorlib"
-        ],
-        "compile": {
-          "ref/net46/System.IO.Compression.ZipFile.dll": {}
-        },
-        "runtime": {
-          "lib/net46/System.IO.Compression.ZipFile.dll": {}
-        }
-      },
-      "System.Net.Sockets/4.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System",
-          "mscorlib"
-        ],
-        "compile": {
-          "ref/net46/System.Net.Sockets.dll": {}
-        },
-        "runtime": {
-          "lib/net46/System.Net.Sockets.dll": {}
-        }
-      },
-      "System.Runtime/4.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System",
-          "System.ComponentModel.Composition",
-          "System.Core"
-        ],
-        "compile": {
-          "ref/net45/_._": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
-        }
-      },
-      "System.Runtime.InteropServices/4.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "ref/net45/_._": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
-        }
-      },
-      "System.Security.Cryptography.Algorithms/4.2.0": {
-        "type": "package",
-        "dependencies": {
-          "System.Security.Cryptography.Primitives": "4.0.0"
-        },
-        "frameworkAssemblies": [
-          "System.Core",
-          "mscorlib"
-        ],
-        "compile": {
-          "ref/net46/System.Security.Cryptography.Algorithms.dll": {}
-        },
-        "runtime": {
-          "lib/net46/System.Security.Cryptography.Algorithms.dll": {}
-        },
-        "runtimeTargets": {
-          "runtimes/win/lib/net46/System.Security.Cryptography.Algorithms.dll": {
-            "assetType": "runtime",
-            "rid": "win"
-          }
-        }
-      },
-      "System.Security.Cryptography.Primitives/4.0.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "mscorlib"
-        ],
-        "compile": {
-          "ref/net46/System.Security.Cryptography.Primitives.dll": {}
-        },
-        "runtime": {
-          "lib/net46/System.Security.Cryptography.Primitives.dll": {}
-        }
       }
     },
     ".NETFramework,Version=v4.6/win": {
@@ -385,100 +159,6 @@
         },
         "runtime": {
           "lib/net46/Serilog.dll": {}
-        }
-      },
-      "System.IO.Compression/4.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System",
-          "mscorlib"
-        ],
-        "compile": {
-          "ref/net46/System.IO.Compression.dll": {}
-        },
-        "runtime": {
-          "runtimes/win/lib/net46/System.IO.Compression.dll": {}
-        }
-      },
-      "System.IO.Compression.ZipFile/4.0.1": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System.IO.Compression.FileSystem",
-          "mscorlib"
-        ],
-        "compile": {
-          "ref/net46/System.IO.Compression.ZipFile.dll": {}
-        },
-        "runtime": {
-          "lib/net46/System.IO.Compression.ZipFile.dll": {}
-        }
-      },
-      "System.Net.Sockets/4.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System",
-          "mscorlib"
-        ],
-        "compile": {
-          "ref/net46/System.Net.Sockets.dll": {}
-        },
-        "runtime": {
-          "lib/net46/System.Net.Sockets.dll": {}
-        }
-      },
-      "System.Runtime/4.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System",
-          "System.ComponentModel.Composition",
-          "System.Core"
-        ],
-        "compile": {
-          "ref/net45/_._": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
-        }
-      },
-      "System.Runtime.InteropServices/4.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "ref/net45/_._": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
-        }
-      },
-      "System.Security.Cryptography.Algorithms/4.2.0": {
-        "type": "package",
-        "dependencies": {
-          "System.Security.Cryptography.Primitives": "4.0.0"
-        },
-        "frameworkAssemblies": [
-          "System.Core",
-          "mscorlib"
-        ],
-        "compile": {
-          "ref/net46/System.Security.Cryptography.Algorithms.dll": {}
-        },
-        "runtime": {
-          "runtimes/win/lib/net46/System.Security.Cryptography.Algorithms.dll": {}
-        }
-      },
-      "System.Security.Cryptography.Primitives/4.0.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "mscorlib"
-        ],
-        "compile": {
-          "ref/net46/System.Security.Cryptography.Primitives.dll": {}
-        },
-        "runtime": {
-          "lib/net46/System.Security.Cryptography.Primitives.dll": {}
         }
       }
     },
@@ -500,116 +180,6 @@
         "runtime": {
           "lib/net46/Serilog.dll": {}
         }
-      },
-      "System.IO.Compression/4.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System",
-          "mscorlib"
-        ],
-        "compile": {
-          "ref/net46/System.IO.Compression.dll": {}
-        },
-        "runtime": {
-          "lib/net46/System.IO.Compression.dll": {}
-        },
-        "runtimeTargets": {
-          "runtimes/unix/lib/netstandard1.3/System.IO.Compression.dll": {
-            "assetType": "runtime",
-            "rid": "unix"
-          },
-          "runtimes/win/lib/net46/System.IO.Compression.dll": {
-            "assetType": "runtime",
-            "rid": "win"
-          }
-        }
-      },
-      "System.IO.Compression.ZipFile/4.0.1": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System.IO.Compression.FileSystem",
-          "mscorlib"
-        ],
-        "compile": {
-          "ref/net46/System.IO.Compression.ZipFile.dll": {}
-        },
-        "runtime": {
-          "lib/net46/System.IO.Compression.ZipFile.dll": {}
-        }
-      },
-      "System.Net.Sockets/4.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System",
-          "mscorlib"
-        ],
-        "compile": {
-          "ref/net46/System.Net.Sockets.dll": {}
-        },
-        "runtime": {
-          "lib/net46/System.Net.Sockets.dll": {}
-        }
-      },
-      "System.Runtime/4.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System",
-          "System.ComponentModel.Composition",
-          "System.Core"
-        ],
-        "compile": {
-          "ref/net45/_._": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
-        }
-      },
-      "System.Runtime.InteropServices/4.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "ref/net45/_._": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
-        }
-      },
-      "System.Security.Cryptography.Algorithms/4.2.0": {
-        "type": "package",
-        "dependencies": {
-          "System.Security.Cryptography.Primitives": "4.0.0"
-        },
-        "frameworkAssemblies": [
-          "System.Core",
-          "mscorlib"
-        ],
-        "compile": {
-          "ref/net461/System.Security.Cryptography.Algorithms.dll": {}
-        },
-        "runtime": {
-          "lib/net461/System.Security.Cryptography.Algorithms.dll": {}
-        },
-        "runtimeTargets": {
-          "runtimes/win/lib/net461/System.Security.Cryptography.Algorithms.dll": {
-            "assetType": "runtime",
-            "rid": "win"
-          }
-        }
-      },
-      "System.Security.Cryptography.Primitives/4.0.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "mscorlib"
-        ],
-        "compile": {
-          "ref/net46/System.Security.Cryptography.Primitives.dll": {}
-        },
-        "runtime": {
-          "lib/net46/System.Security.Cryptography.Primitives.dll": {}
-        }
       }
     },
     ".NETFramework,Version=v4.6.1/win": {
@@ -629,100 +199,6 @@
         },
         "runtime": {
           "lib/net46/Serilog.dll": {}
-        }
-      },
-      "System.IO.Compression/4.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System",
-          "mscorlib"
-        ],
-        "compile": {
-          "ref/net46/System.IO.Compression.dll": {}
-        },
-        "runtime": {
-          "runtimes/win/lib/net46/System.IO.Compression.dll": {}
-        }
-      },
-      "System.IO.Compression.ZipFile/4.0.1": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System.IO.Compression.FileSystem",
-          "mscorlib"
-        ],
-        "compile": {
-          "ref/net46/System.IO.Compression.ZipFile.dll": {}
-        },
-        "runtime": {
-          "lib/net46/System.IO.Compression.ZipFile.dll": {}
-        }
-      },
-      "System.Net.Sockets/4.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System",
-          "mscorlib"
-        ],
-        "compile": {
-          "ref/net46/System.Net.Sockets.dll": {}
-        },
-        "runtime": {
-          "lib/net46/System.Net.Sockets.dll": {}
-        }
-      },
-      "System.Runtime/4.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System",
-          "System.ComponentModel.Composition",
-          "System.Core"
-        ],
-        "compile": {
-          "ref/net45/_._": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
-        }
-      },
-      "System.Runtime.InteropServices/4.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "ref/net45/_._": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
-        }
-      },
-      "System.Security.Cryptography.Algorithms/4.2.0": {
-        "type": "package",
-        "dependencies": {
-          "System.Security.Cryptography.Primitives": "4.0.0"
-        },
-        "frameworkAssemblies": [
-          "System.Core",
-          "mscorlib"
-        ],
-        "compile": {
-          "ref/net461/System.Security.Cryptography.Algorithms.dll": {}
-        },
-        "runtime": {
-          "runtimes/win/lib/net461/System.Security.Cryptography.Algorithms.dll": {}
-        }
-      },
-      "System.Security.Cryptography.Primitives/4.0.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "mscorlib"
-        ],
-        "compile": {
-          "ref/net46/System.Security.Cryptography.Primitives.dll": {}
-        },
-        "runtime": {
-          "lib/net46/System.Security.Cryptography.Primitives.dll": {}
         }
       }
     },
@@ -8324,38 +7800,27 @@
   "projectFileDependencyGroups": {
     "": [
       "Newtonsoft.Json >= 9.0.1",
-      "Serilog >= 2.3.0",
-      "System.Runtime >= 4.1.0",
-      "System.Runtime.InteropServices >= 4.1.0"
+      "Serilog >= 2.3.0"
     ],
-    ".NETFramework,Version=v4.5": [
-      "System.IO.Compression >= 4.1.0"
-    ],
-    ".NETFramework,Version=v4.5.2": [
-      "System.IO.Compression >= 4.1.0"
-    ],
-    ".NETFramework,Version=v4.6": [
-      "System.IO.Compression >= 4.1.0",
-      "System.IO.Compression.ZipFile >= 4.0.1",
-      "System.Net.Sockets >= 4.1.0",
-      "System.Security.Cryptography.Algorithms >= 4.2.0"
-    ],
-    ".NETFramework,Version=v4.6.1": [
-      "System.IO.Compression >= 4.1.0",
-      "System.IO.Compression.ZipFile >= 4.0.1",
-      "System.Net.Sockets >= 4.1.0",
-      "System.Security.Cryptography.Algorithms >= 4.2.0"
-    ],
+    ".NETFramework,Version=v4.5": [],
+    ".NETFramework,Version=v4.5.1": [],
+    ".NETFramework,Version=v4.5.2": [],
+    ".NETFramework,Version=v4.6": [],
+    ".NETFramework,Version=v4.6.1": [],
     ".NETStandard,Version=v1.6": [
       "System.IO.Compression.ZipFile >= 4.0.1",
       "System.Net.NameResolution >= 4.0.0",
       "System.Net.Sockets >= 4.1.0",
+      "System.Runtime >= 4.1.0",
+      "System.Runtime.InteropServices >= 4.1.0",
       "System.Security.Cryptography.Algorithms >= 4.2.0"
     ],
     ".NETStandard,Version=v2.0": [
       "System.IO.Compression.ZipFile >= 4.0.1",
       "System.Net.NameResolution >= 4.0.0",
       "System.Net.Sockets >= 4.1.0",
+      "System.Runtime >= 4.1.0",
+      "System.Runtime.InteropServices >= 4.1.0",
       "System.Security.Cryptography.Algorithms >= 4.2.0"
     ]
   },
