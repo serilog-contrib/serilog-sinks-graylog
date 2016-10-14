@@ -21,6 +21,7 @@
 
   before_build:
     - nuget restore ./src/serilog-sinks-graylogXproj.sln
+    - nuget install xunit.runner.console
 #    - nuget install OpenCover -ExcludeVersion -OutputDirectory "packages"
 
   build:
