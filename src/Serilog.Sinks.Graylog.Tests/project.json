@@ -11,7 +11,9 @@
     "xunit": "2.1.0"
   },
   "testRunner": "xunit",
-
+  "runtimes": {
+    "win": {} 
+  },
   "frameworks": {
     "net461": {
     }
