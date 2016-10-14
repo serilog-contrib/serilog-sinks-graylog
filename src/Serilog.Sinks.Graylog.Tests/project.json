@@ -13,7 +13,7 @@
   },
   "testRunner": "xunit",
   "runtimes": {
-    "win": {} 
+    "win7-x64": {}
   },
   "frameworks": {
     "net452": {
