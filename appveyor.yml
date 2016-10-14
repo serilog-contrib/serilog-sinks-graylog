@@ -21,7 +21,7 @@
 
   before_build:
     - nuget restore ./src/serilog-sinks-graylogXproj.sln
-    - nuget install OpenCover -ExcludeVersion -OutputDirectory "packages"
+#    - nuget install OpenCover -ExcludeVersion -OutputDirectory "packages"
 
   build:
     project: ./src/serilog-sinks-graylogXproj.sln
@@ -53,30 +53,30 @@
 
   configuration: Release
 
-  before_build:
-    - nuget restore ./src/serilog-sinks-graylog.sln
-    - nuget install OpenCover -ExcludeVersion -OutputDirectory "packages"
+#  before_build:
+#    - nuget restore ./src/serilog-sinks-graylog.sln
+#    - nuget install OpenCover -ExcludeVersion -OutputDirectory "packages"
 
-  build:
-    project: ./src/serilog-sinks-graylog.sln
-    verbosity: minimal
-    publish_nuget: true
-    publish_nuget_symbols: true
+#  build:
+#    project: ./src/serilog-sinks-graylog.sln
+#    verbosity: minimal
+#    publish_nuget: true
+#    publish_nuget_symbols: true
 
-  test:
-    categories:
-      except:
-      - Integration
+#  test:
+#    categories:
+#      except:
+#      - Integration
 
-  after_test:
-    - .\packages\OpenCover\tools\OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:"C:\projects\serilog-sinks-graylog\src\Serilog.Sinks.Graylog.Tests\bin\Release\Serilog.Sinks.Graylog.Tests.dll -noshadow -appveyor" -filter:"+[Serilog.Sinks.Graylog*]* -[*]*Test*" -hideskipped:All -output:.\coverage.xml
-    - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
-    - pip install codecov
-    - codecov -f "coverage.xml"
+#  after_test:
+#    - .\packages\OpenCover\tools\OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:"C:\projects\serilog-sinks-graylog\src\Serilog.Sinks.Graylog.Tests\bin\Release\Serilog.Sinks.Graylog.Tests.dll -noshadow -appveyor" -filter:"+[Serilog.Sinks.Graylog*]* -[*]*Test*" -hideskipped:All -output:.\coverage.xml
+#    - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
+#    - pip install codecov
+#    - codecov -f "coverage.xml"
 
-  deploy:
-    provider: NuGet
-    api_key:
-      secure: IHVAasaX8yvwCHeCI/mBgWBRzLNlOpRn3yJnZFyslzTnJpELyxKDaKM5y/LN0zsl
-      skip_symbols: false
-      artifact: /.*\.nupkg/
+#  deploy:
+#    provider: NuGet
+#    api_key:
+#      secure: IHVAasaX8yvwCHeCI/mBgWBRzLNlOpRn3yJnZFyslzTnJpELyxKDaKM5y/LN0zsl
+#      skip_symbols: false
+#      artifact: /.*\.nupkg/
