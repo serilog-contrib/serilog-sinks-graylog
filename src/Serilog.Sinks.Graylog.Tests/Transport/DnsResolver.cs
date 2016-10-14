@@ -7,11 +7,11 @@ namespace Serilog.Sinks.Graylog.Tests.Transport
     public class DnsWrapperFixture
     {
         [Fact]
-        public void Test()
+        public async void Test()
         {
             var traget = new DnsWrapper();
 
-            IPAddress[] actual = traget.GetHostAddresses("github.com");
+            IPAddress[] actual = await traget.GetHostAddresses("github.com");
 
             Assert.NotEmpty(actual);
         }

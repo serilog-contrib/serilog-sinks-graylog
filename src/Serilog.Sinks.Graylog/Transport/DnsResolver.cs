@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace Serilog.Sinks.Graylog.Transport
 {
@@ -13,7 +14,7 @@ namespace Serilog.Sinks.Graylog.Transport
         /// </summary>
         /// <param name="hostNameOrAddress">The host name or address.</param>
         /// <returns></returns>
-        IPAddress[] GetHostAddresses(string hostNameOrAddress);
+        Task<IPAddress[]> GetHostAddresses(string hostNameOrAddress);
     }
 
     public class DnsWrapper : IDnsInfoProvider
@@ -24,9 +25,9 @@ namespace Serilog.Sinks.Graylog.Transport
         /// <param name="hostNameOrAddress">The host name or address.</param>
         /// <returns></returns>
         /// <exception cref="SocketException">When resolve <paramref name="hostNameOrAddress" /> trows exception.</exception>
-        public IPAddress[] GetHostAddresses(string hostNameOrAddress)
+        public async Task<IPAddress[]> GetHostAddresses(string hostNameOrAddress)
         {
-            return Dns.GetHostAddresses(hostNameOrAddress);
+            return await Dns.GetHostAddressesAsync(hostNameOrAddress);
         }
     }
 }

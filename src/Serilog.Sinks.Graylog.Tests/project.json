@@ -1,0 +1,21 @@
+﻿{
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "AutoFixture": "3.50.2",
+    "dotnet-test-xunit": "1.0.0-rc2-build10025",
+    "FluentAssertions": "4.15.0",
+    "Moq": "4.5.23",
+    "NETStandard.Library": "1.6.0",
+    "Serilog.Sinks.Graylog": "1.0.0-*",
+    "xunit": "2.1.0"
+  },
+  "testRunner": "xunit",
+  "runtimes": {
+    "win": {} 
+  },
+  "frameworks": {
+    "net461": {
+    }
+  }
+}
