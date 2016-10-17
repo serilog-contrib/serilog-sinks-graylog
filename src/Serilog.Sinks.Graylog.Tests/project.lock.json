@@ -782,7 +782,7 @@
       "xunit.runners/2.0.0": {
         "type": "package"
       },
-      "Serilog.Sinks.Graylog/1.1.90": {
+      "Serilog.Sinks.Graylog/1.0.99": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.2",
         "dependencies": {
@@ -1530,7 +1530,7 @@
       "xunit.runners/2.0.0": {
         "type": "package"
       },
-      "Serilog.Sinks.Graylog/1.1.90": {
+      "Serilog.Sinks.Graylog/1.0.99": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.2",
         "dependencies": {
@@ -4200,7 +4200,7 @@
         "xunit.runners.nuspec"
       ]
     },
-    "Serilog.Sinks.Graylog/1.1.90": {
+    "Serilog.Sinks.Graylog/1.0.99": {
       "type": "project",
       "path": "../Serilog.Sinks.Graylog/project.json",
       "msbuildProject": "../Serilog.Sinks.Graylog/Serilog.Sinks.Graylog.xproj"
