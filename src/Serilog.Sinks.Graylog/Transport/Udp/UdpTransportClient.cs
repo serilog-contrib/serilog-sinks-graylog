@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace Serilog.Sinks.Graylog.Transport.Udp
 {
@@ -23,10 +24,15 @@ namespace Serilog.Sinks.Graylog.Transport.Udp
         /// <exception cref="SocketException">Произошла ошибка при получении доступа к сокету.Дополнительные сведения см. в разделе "Примечания".</exception>
         public void Send(byte[] payload)
         {
-            using (var udpClient = new UdpClient())
+            
+            Task resultTask = Task.Run(() =>
             {
-                udpClient.Send(payload, payload.Length, _target);
-            }
+                using (var udpClient = new UdpClient())
+                {
+                    udpClient.SendAsync(payload, payload.Length, _target);
+                }
+            });
+            resultTask.Wait();
         }
     }
 }

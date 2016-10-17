@@ -7,7 +7,10 @@
     - cmd: "echo branch:%branch%"
     - cmd: "set newVersion=1.0.%APPVEYOR_BUILD_NUMBER%-%branch%"
     - cmd: "echo newVersion:%newVersion%"
+    - cmd: "set versonSuffix=%APPVEYOR_BUILD_NUMBER%-%branch%"    
+    - cmd: "echo versonSuffix:%versonSuffix%"
     - cmd: appveyor UpdateBuild -Version "%newVersion%"
+
   skip_tags: true
 
   assembly_info:
@@ -20,25 +23,17 @@
   configuration: Release
 
   before_build:
-    - nuget restore ./src/serilog-sinks-graylog.sln
-    - nuget install OpenCover -ExcludeVersion -OutputDirectory "packages"
+    - appveyor-retry dotnet restore -v Minimal
 
-  build:
-    project: ./src/serilog-sinks-graylog.sln
-    verbosity: minimal
-    publish_nuget: true
-    publish_nuget_symbols: true
-
-  test:
-    categories:
-      except:
-      - Integration
-
-  after_test:
-    - .\packages\OpenCover\tools\OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:"C:\projects\serilog-sinks-graylog\src\Serilog.Sinks.Graylog.Tests\bin\Release\Serilog.Sinks.Graylog.Tests.dll -noshadow -appveyor" -filter:"+[Serilog.Sinks.Graylog*]* -[*]*Test*" -hideskipped:All -output:.\coverage.xml
-    - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
-    - pip install codecov
-    - codecov -f "coverage.xml"
+  build_script:
+    - cmd: dotnet build "./src/Serilog.Sinks.Graylog" -c %CONFIGURATION% --no-dependencies --version-suffix %APPVEYOR_BUILD_NUMBER%
+  after_build:
+    - cmd: dotnet pack "./src/Serilog.Sinks.Graylog" -c %CONFIGURATION% --no-build --version-suffix %APPVEYOR_BUILD_NUMBER% -o artifacts
+  test_script:
+    - cmd: dotnet test "./src/Serilog.Sinks.Graylog.Tests" -c %CONFIGURATION% -notrait "Category=Integration"
+  
+  artifacts:
+    - path: "./artifacts/*.nupkg"
 -
   branches:
     only:
@@ -54,25 +49,17 @@
   configuration: Release
 
   before_build:
-    - nuget restore ./src/serilog-sinks-graylog.sln
-    - nuget install OpenCover -ExcludeVersion -OutputDirectory "packages"
+    - appveyor-retry dotnet restore -v Minimal
 
-  build:
-    project: ./src/serilog-sinks-graylog.sln
-    verbosity: minimal
-    publish_nuget: true
-    publish_nuget_symbols: true
-
-  test:
-    categories:
-      except:
-      - Integration
-
-  after_test:
-    - .\packages\OpenCover\tools\OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:"C:\projects\serilog-sinks-graylog\src\Serilog.Sinks.Graylog.Tests\bin\Release\Serilog.Sinks.Graylog.Tests.dll -noshadow -appveyor" -filter:"+[Serilog.Sinks.Graylog*]* -[*]*Test*" -hideskipped:All -output:.\coverage.xml
-    - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
-    - pip install codecov
-    - codecov -f "coverage.xml"
+  build_script:
+    - cmd: dotnet build "./src/Serilog.Sinks.Graylog" -c %CONFIGURATION% --no-dependencies
+  after_build:
+    - cmd: dotnet pack "./src/Serilog.Sinks.Graylog" -c %CONFIGURATION% --no-build -o artifacts
+  test_script:
+    - cmd: dotnet test "./src/Serilog.Sinks.Graylog.Tests" -c %CONFIGURATION% -notrait "Category=Integration"
+  
+  artifacts:
+    - path: "./artifacts/*.nupkg"
 
   deploy:
     provider: NuGet
