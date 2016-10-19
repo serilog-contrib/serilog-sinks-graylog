@@ -4,4 +4,6 @@ install:
   - curl -L -o nuget.exe https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
   - mono nuget.exe restore ./src/serilog-sinks-graylog.sln -Verbosity detailed
 script:
-  - xbuild /p:Configuration=Release ./src/serilog-sinks-graylog.sln
+  - dotnet restore
+  - dotnet build ./src/Serilog.Sinks.Graylog -c Release --no-dependencies --version-suffix %revision%
+  #- xbuild /p:Configuration=Release ./src/serilog-sinks-graylog.sln
