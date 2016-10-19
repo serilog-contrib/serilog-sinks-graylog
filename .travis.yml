@@ -1,4 +1,6 @@
 language: csharp
-mono: none
-dotnet: 1.0.0-preview2-003131
+mono: 
+  - latest
+dotnet: 
+  - 1.0.0-preview2-003131
 solution: ./src/serilog-sinks-graylog.sln
