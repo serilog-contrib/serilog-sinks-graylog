@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using Newtonsoft.Json.Linq;
 using Serilog.Events;
 using Serilog.Sinks.Graylog.Extensions;
+using Serilog.Sinks.Graylog.Helpers;
 
 namespace Serilog.Sinks.Graylog.MessageBuilders
 {
@@ -13,7 +14,6 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
         private readonly string _hostName;
         private const string GelfVersion = "1.1";
         protected GraylogSinkOptions Options { get; }
-
 
         public GelfMessageBuilder(string hostName, GraylogSinkOptions options)
         {
@@ -33,7 +33,7 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
                 ShortMessage = shortMessage,
                 FullMessage = message,
                 Timestamp = logEvent.Timestamp.DateTime,
-                Level = (int)logEvent.Level,
+                Level = LogLevelMapper.GetMappedLevel(logEvent.Level),
                 StringLevel = logEvent.Level.ToString(),
                 Facility = Options.Facility
             };
