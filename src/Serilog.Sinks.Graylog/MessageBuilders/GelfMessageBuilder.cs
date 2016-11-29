@@ -53,7 +53,9 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
                 ? property.Key
                 : $"{memberPath}.{property.Key}";
 
-            if (property.Value is ScalarValue)
+
+            var scalarValue = property.Value as ScalarValue;
+            if (scalarValue != null)
             {
 
                 if (key.Equals("id", StringComparison.OrdinalIgnoreCase))
@@ -61,12 +63,15 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
                 if (!key.StartsWith("_", StringComparison.OrdinalIgnoreCase))
                     key = "_" + key;
 
-                LogEventPropertyValue logEventProperty = property.Value;
+                if (scalarValue.Value == null)
+                {
+                    jObject.Add(key, null);
+                    return;
+                }
 
-                string stringValue = RenderPropertyValue(logEventProperty);
-                JToken value = JToken.FromObject(stringValue);
-
+                JToken value = JToken.FromObject(scalarValue.Value);
                 jObject.Add(key, value);
+                return;
             }
 
             var sequenceValue = property.Value as SequenceValue;
@@ -74,6 +79,7 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
             {
                 var sequenceValuestring = RenderPropertyValue(sequenceValue);
                 jObject.Add(key, sequenceValuestring);
+                return;
             }
 
 
