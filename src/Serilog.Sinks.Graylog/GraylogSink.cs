@@ -9,8 +9,8 @@ using Serilog.Events;
 using Serilog.Sinks.Graylog.Helpers;
 using Serilog.Sinks.Graylog.MessageBuilders;
 using Serilog.Sinks.Graylog.Transport;
+using Serilog.Sinks.Graylog.Transport.Http;
 using Serilog.Sinks.Graylog.Transport.Udp;
-
 
 namespace Serilog.Sinks.Graylog
 {
@@ -21,20 +21,33 @@ namespace Serilog.Sinks.Graylog
 
         public GraylogSink(GraylogSinkOptions options)
         {
-            IDnsInfoProvider dns = new DnsWrapper();
-            IPAddress[] ipAddreses = Task.Run(() => dns.GetHostAddresses(options.HostnameOrAdress)).Result;
+            _transport = options.Transport;
 
-            IPAddress ipAdress = ipAddreses.FirstOrDefault(c => c.AddressFamily == AddressFamily.InterNetwork);
-
-            var ipEndpoint = new IPEndPoint(ipAdress, options.Port);
-
-            IDataToChunkConverter chunkConverter = new DataToChunkConverter(new ChunkSettings
+            if (_transport == null)
             {
-                MessageIdGeneratorType = options.MessageGeneratorType
-            }, new MessageIdGeneratorResolver());
+                if (options.UseHttpTransport)
+                {
+                    _converter = new HttpGelfConverter(options.Facility, options.ShortMessageMaxLength);
+                    _transport = new HttpTransport(options.HostnameOrAdress);   // should be in the form http://HostNameOrIp:Port//Gelf
+                }
+                else
+                {
+                    IDnsInfoProvider dns = new DnsWrapper();
+                    IPAddress[] ipAddreses = Task.Run(() => dns.GetHostAddresses(options.HostnameOrAdress)).Result;
 
-            var client = new UdpTransportClient(ipEndpoint);
-            _transport = options.Transport ?? new UdpTransport(client, chunkConverter);
+                    IPAddress ipAdress = ipAddreses.FirstOrDefault(c => c.AddressFamily == AddressFamily.InterNetwork);
+
+                    var ipEndpoint = new IPEndPoint(ipAdress, options.Port);
+
+                    IDataToChunkConverter chunkConverter = new DataToChunkConverter(new ChunkSettings
+                    {
+                        MessageIdGeneratorType = options.MessageGeneratorType
+                    }, new MessageIdGeneratorResolver());
+
+                    var client = new UdpTransportClient(ipEndpoint);
+                    _transport = new UdpTransport(client, chunkConverter);
+                }
+            }
 
             string hostName = Dns.GetHostName();
 

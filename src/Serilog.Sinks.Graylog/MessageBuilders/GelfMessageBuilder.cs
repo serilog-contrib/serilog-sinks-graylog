@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.CompilerServices;
 using Newtonsoft.Json.Linq;
 using Serilog.Events;
 using Serilog.Sinks.Graylog.Extensions;
