@@ -17,6 +17,7 @@ namespace Serilog.Sinks.Graylog
             //Spec says: facility must be set by the client to "GELF" if empty
             Facility = "GELF";
             StackTraceDepth = 10;
+            UseHttpTransport = false;
         }
 
         /// <summary>
@@ -98,5 +99,10 @@ namespace Serilog.Sinks.Graylog
         /// The stack trace depth.
         /// </value>
         public int StackTraceDepth { get; set; }
+
+        /// <summary>
+        /// Gets or sets if Sink should use Http transport
+        /// </summary>
+        public bool UseHttpTransport { get; set; }
     }
 }

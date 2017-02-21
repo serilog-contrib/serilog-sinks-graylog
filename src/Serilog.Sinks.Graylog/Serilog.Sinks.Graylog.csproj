@@ -47,6 +47,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\StringExtensions.cs" />
@@ -54,6 +55,7 @@
     <Compile Include="GelfMessage.cs" />
     <Compile Include="GraylogSink.cs" />
     <Compile Include="GraylogSinkOptions.cs" />
+    <Compile Include="Helpers\LogLevelMapper.cs" />
     <Compile Include="Helpers\MessageIdGenerator.cs" />
     <Compile Include="LoggerConfigurationGrayLogExtensions.cs" />
     <Compile Include="MessageBuilders\ExceptionMessageBuilder.cs" />
@@ -61,6 +63,8 @@
     <Compile Include="MessageBuilders\GelfMessageBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Transport\DnsResolver.cs" />
+    <Compile Include="Transport\Http\HttpGelfConverter.cs" />
+    <Compile Include="Transport\Http\HttpTransport.cs" />
     <Compile Include="Transport\ITransport.cs" />
     <Compile Include="Transport\ITransportClient.cs" />
     <Compile Include="Transport\Udp\ChunkSettings.cs" />
