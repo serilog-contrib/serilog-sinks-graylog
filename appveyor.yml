@@ -22,16 +22,12 @@
 
   configuration: Release
 
-  before_build:
-    - appveyor-retry dotnet restore -v Minimal
-    - nuget install OpenCover -ExcludeVersion -OutputDirectory "packages"    
+  image: Visual Studio 2017 RC
 
-  build_script:
-    - cmd: dotnet build "./src/Serilog.Sinks.Graylog" -c %CONFIGURATION% --no-dependencies --version-suffix %APPVEYOR_BUILD_NUMBER%
-  after_build:
-    - cmd: dotnet pack "./src/Serilog.Sinks.Graylog" -c %CONFIGURATION% --no-build --version-suffix %APPVEYOR_BUILD_NUMBER% -o artifacts
-  test_script:
-    - cmd: dotnet test "./src/Serilog.Sinks.Graylog.Tests" -c %CONFIGURATION% -notrait "Category=Integration"
+  build:
+      parallel: true
+      publish_nuget: true
+  verbosity: minimal
 
   after_test:
     - .\packages\OpenCover\tools\OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:"C:\projects\serilog-sinks-graylog\src\Serilog.Sinks.Graylog.Tests\bin\Release\net452\win7-x64\Serilog.Sinks.Graylog.Tests.dll -noshadow -appveyor" -filter:"+[Serilog.Sinks.Graylog*]* -[*]*Test*" -hideskipped:All -output:.\coverage.xml
