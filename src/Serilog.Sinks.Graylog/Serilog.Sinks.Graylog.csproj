@@ -20,7 +20,6 @@
     <OutputType>library</OutputType>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="**\*.cs" />
     <EmbeddedResource Include="**\*.resx" />
     <None Include="sign.snk" />
   </ItemGroup>
@@ -35,8 +34,5 @@
   <ItemGroup Condition="'$(TargetFramework)'=='net45|net46|net461'">
     <Reference Include="System" />
   </ItemGroup>
-  <!--<Target Name="PackNugets" AfterTargets="Build" DependsOnTargets="Pack" />-->
-  <Target Name="PackNugets" AfterTargets="Build">
-    <Exec Command="dotnet pack &quot;$(MSBuildProjectDirectory)\$(PackageId).csproj&quot; --no-build --include-symbols -o bin -c $(Configuration)" />
-  </Target>
+  <Target Name="PackNugets" AfterTargets="Build" DependsOnTargets="Pack" />
 </Project>
