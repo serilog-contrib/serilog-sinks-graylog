@@ -26,9 +26,13 @@
 
   build_script:
     - cmd: dir
+    - cmd: msbuild /t:restore /v:Minimal ./src/serilog-sinks-graylogvs2017.sln
+    - cmd: msbuild /t:build /p:Configuration=Debug /v:Minimal ./src/serilog-sinks-graylogvs2017.sln
 
-    - cmd: msbuild /t:restore ./src/serilog-sinks-graylogvs2017.sln
-    - cmd: msbuild /t:build /p:Configuration=Debug ./src/serilog-sinks-graylogvs2017.sln
+  test:
+    categories:
+      except:
+        - Integration
 
   after_test:
     - .\packages\OpenCover\tools\OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:"C:\projects\serilog-sinks-graylog\src\Serilog.Sinks.Graylog.Tests\bin\Release\net452\win7-x64\Serilog.Sinks.Graylog.Tests.dll -noshadow -appveyor" -filter:"+[Serilog.Sinks.Graylog*]* -[*]*Test*" -hideskipped:All -output:.\coverage.xml
