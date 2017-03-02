@@ -28,6 +28,7 @@
     - cmd: dir
     - cmd: msbuild /t:restore /v:Minimal ./src/serilog-sinks-graylogvs2017.sln
     - cmd: msbuild /t:build /p:Configuration=Debug /v:Minimal ./src/serilog-sinks-graylogvs2017.sln
+    - cmd: msbuild /t:pack /v:minimal /p:IncludeSymbols=true /p:PackageOutputPath=../../artifacts /p:PackageVersion={version} ./src/Serilog.Sinks.Graylog/Serilog.Sinks.Graylog.csproj
 
   test:
     categories:
@@ -39,7 +40,6 @@
     - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
     - pip install codecov
     - codecov -f "coverage.xml"
-    - cmd msbuild /t:pack /v:minimal /p:IncludeSymbols=true /p:PackageOutputPath=../../artifacts /p:PackageVersion={version} ./src/Serilog.Sinks.Graylog/Serilog.Sinks.Graylog.csproj
   
   artifacts:
     - path: "./artifacts/*.nupkg"
