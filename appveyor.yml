@@ -24,10 +24,9 @@
 
   image: Visual Studio 2017 RC
 
-  build:
-      parallel: true
-      publish_nuget: true
-      verbosity: minimal
+  build_script:
+    - cmd: msbuild /t:restore
+    - cmd: msbuild /t:build /p:Configuration=Debug
 
   after_test:
     - .\packages\OpenCover\tools\OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:"C:\projects\serilog-sinks-graylog\src\Serilog.Sinks.Graylog.Tests\bin\Release\net452\win7-x64\Serilog.Sinks.Graylog.Tests.dll -noshadow -appveyor" -filter:"+[Serilog.Sinks.Graylog*]* -[*]*Test*" -hideskipped:All -output:.\coverage.xml
