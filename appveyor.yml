@@ -23,7 +23,7 @@
     assembly_file_version: "{version}"
     assembly_informational_version: "{version}"
 
-  configuration: Release
+  configuration: Debug
 
   image: Visual Studio 2017 RC
 
@@ -59,15 +59,20 @@
 
   configuration: Release
 
+  image: Visual Studio 2017 RC
+
   before_build:
     - appveyor-retry dotnet restore -v Minimal
 
   build_script:
-    - cmd: dotnet build "./src/Serilog.Sinks.Graylog" -c %CONFIGURATION% --no-dependencies
-  after_build:
-    - cmd: dotnet pack "./src/Serilog.Sinks.Graylog" -c %CONFIGURATION% --no-build -o artifacts
-  test_script:
-    - cmd: dotnet test "./src/Serilog.Sinks.Graylog.Tests" -c %CONFIGURATION% -notrait "Category=Integration"
+    - cmd: msbuild /t:restore /v:Minimal ./src/serilog-sinks-graylogvs2017.sln
+    - cmd: msbuild /t:build /p:Configuration=Debug /v:Minimal ./src/serilog-sinks-graylogvs2017.sln
+    - cmd: msbuild /t:pack /v:minimal /p:IncludeSymbols=true /p:PackageOutputPath=../../artifacts ./src/Serilog.Sinks.Graylog/Serilog.Sinks.Graylog.csproj
+  
+  test:
+    categories:
+      except:
+        - Integration
   
   artifacts:
     - path: "./artifacts/*.nupkg"
