@@ -13,6 +13,9 @@
 
   skip_tags: true
 
+  before_build:
+    - nuget install OpenCover -ExcludeVersion -OutputDirectory "packages"
+
   assembly_info:
     patch: true
     file: AssemblyInfo.*
