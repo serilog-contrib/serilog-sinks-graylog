@@ -39,7 +39,7 @@
     - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
     - pip install codecov
     - codecov -f "coverage.xml"
-    - cmd msbuild /t:pack /v:minimal /p:PackageOutputPath=../../artifacts /p:PackageVersion={version} ./src/Serilog.Sinks.Graylog/Serilog.Sinks.Graylog.csproj
+    - cmd msbuild /t:pack /v:minimal /p:IncludeSymbols=true /p:PackageOutputPath=../../artifacts /p:PackageVersion={version} ./src/Serilog.Sinks.Graylog/Serilog.Sinks.Graylog.csproj
   
   artifacts:
     - path: "./artifacts/*.nupkg"
