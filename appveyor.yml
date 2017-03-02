@@ -42,7 +42,7 @@
     - codecov -f "coverage.xml"
   
   artifacts:
-    - path: "C:/projects/serilog-sinks-graylog/artifacts/*.*"
+    - path: "C:\projects\serilog-sinks-graylog\artifacts\*.*"
 -
   branches:
     only:
