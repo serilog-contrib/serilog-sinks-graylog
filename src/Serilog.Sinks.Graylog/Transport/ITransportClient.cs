@@ -1,4 +1,6 @@
-﻿namespace Serilog.Sinks.Graylog.Transport
+﻿using System.Threading.Tasks;
+
+namespace Serilog.Sinks.Graylog.Transport
 {
     /// <summary>
     /// The Transport client interface
@@ -10,6 +12,6 @@
         /// Sends the specified payload.
         /// </summary>
         /// <param name="payload">The payload.</param>
-        void Send(T payload);
+        Task Send(T payload);
     }
 }

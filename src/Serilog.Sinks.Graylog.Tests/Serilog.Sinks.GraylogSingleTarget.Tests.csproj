@@ -3,11 +3,13 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <PropertyGroup>
-    <TargetFrameworks>net46</TargetFrameworks>
+    <TargetFramework>net46</TargetFramework>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>sign.snk</AssemblyOriginatorKeyFile>
     <OutputType>library</OutputType>
+    <AssemblyName>Serilog.Sinks.Graylog.Tests</AssemblyName>
+    <RootNamespace>Serilog.Sinks.Graylog.Tests</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="**\*.resx" />
@@ -20,5 +22,8 @@
     <PackageReference Include="AutoFixture" Version="3.50.*" />
     <PackageReference Include="FluentAssertions" Version="4.19.*" />
     <PackageReference Include="Moq" Version="4.7.*" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Serilog.Sinks.Graylog\Serilog.Sinks.GraylogSingleTarget.csproj" />
   </ItemGroup>
 </Project>
