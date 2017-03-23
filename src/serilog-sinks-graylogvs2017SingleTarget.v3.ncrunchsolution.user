@@ -2,5 +2,6 @@
   <Settings>
     <AutoEnable>True</AutoEnable>
     <CurrentEngineMode>Run impacted tests automatically, others manually [Global]</CurrentEngineMode>
+    <TestsWindowSplitterDistance>407</TestsWindowSplitterDistance>
   </Settings>
 </SolutionConfiguration>

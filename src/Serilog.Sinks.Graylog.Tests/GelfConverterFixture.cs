@@ -14,10 +14,10 @@ namespace Serilog.Sinks.Graylog.Tests
             var errorBuilder = new Mock<IMessageBuilder>();
             var messageBuilder = new Mock<IMessageBuilder>();
 
-            var messageBuilders = new Dictionary<BuilderType, IMessageBuilder>
+            var messageBuilders = new Dictionary<BuilderType, Lazy<IMessageBuilder>>
             {
-                [BuilderType.Exception] = errorBuilder.Object,
-                [BuilderType.Message] = messageBuilder.Object
+                [BuilderType.Exception] = new Lazy<IMessageBuilder>(() => errorBuilder.Object),
+                [BuilderType.Message] = new Lazy<IMessageBuilder>(() => messageBuilder.Object)
             };
 
             GelfConverter target = new GelfConverter(messageBuilders);
@@ -36,10 +36,10 @@ namespace Serilog.Sinks.Graylog.Tests
             var errorBuilder = new Mock<IMessageBuilder>();
             var messageBuilder = new Mock<IMessageBuilder>();
 
-            var messageBuilders = new Dictionary<BuilderType, IMessageBuilder>
+            var messageBuilders = new Dictionary<BuilderType, Lazy<IMessageBuilder>>
             {
-                [BuilderType.Exception] = errorBuilder.Object,
-                [BuilderType.Message] = messageBuilder.Object
+                [BuilderType.Exception] = new Lazy<IMessageBuilder>(() => errorBuilder.Object),
+                [BuilderType.Message] = new Lazy<IMessageBuilder>(() => messageBuilder.Object)
             };
 
             GelfConverter target = new GelfConverter(messageBuilders);

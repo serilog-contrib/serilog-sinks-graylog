@@ -33,10 +33,10 @@ namespace Serilog.Sinks.Graylog
 
             string hostName = Dns.GetHostName();
 
-            IDictionary<BuilderType, IMessageBuilder> builders = new Dictionary<BuilderType, IMessageBuilder>
+            IDictionary<BuilderType, Lazy<IMessageBuilder>> builders = new Dictionary<BuilderType, Lazy<IMessageBuilder>>
             {
-                [BuilderType.Exception] = new ExceptionMessageBuilder(hostName, options),
-                [BuilderType.Message] = new GelfMessageBuilder(hostName, options)
+                [BuilderType.Exception] = new Lazy<IMessageBuilder>(() => new ExceptionMessageBuilder(hostName, options)),
+                [BuilderType.Message] = new Lazy<IMessageBuilder>(() => new GelfMessageBuilder(hostName, options))
             };
               
             _converter = options.GelfConverter ?? new GelfConverter(builders);
@@ -65,8 +65,7 @@ namespace Serilog.Sinks.Graylog
         {
             JObject json = _converter.GetGelfJson(logEvent);
 
-            var t = Task.Factory.StartNew(() => _transport.Send(json.ToString(Newtonsoft.Json.Formatting.None)).ConfigureAwait(false));
-            var result = t.Result;
+            Task.Factory.StartNew(() => _transport.Send(json.ToString(Newtonsoft.Json.Formatting.None))).GetAwaiter().GetResult();
         }
     }
 }
