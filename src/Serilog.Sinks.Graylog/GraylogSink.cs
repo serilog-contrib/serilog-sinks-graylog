@@ -10,6 +10,7 @@ using Serilog.Events;
 using Serilog.Sinks.Graylog.Helpers;
 using Serilog.Sinks.Graylog.MessageBuilders;
 using Serilog.Sinks.Graylog.Transport;
+using Serilog.Sinks.Graylog.Transport.Http;
 using Serilog.Sinks.Graylog.Transport.Udp;
 using SerilogTransportType = Serilog.Sinks.Graylog.Transport.TransportType;
 
@@ -23,13 +24,7 @@ namespace Serilog.Sinks.Graylog
 
         public GraylogSink(GraylogSinkOptions options)
         {
-            IDnsInfoProvider dns = new DnsWrapper();
-            IPAddress[] ipAddreses = Task.Run(() => dns.GetHostAddresses(options.HostnameOrAdress)).Result;
-            IPAddress ipAdress = ipAddreses.FirstOrDefault(c => c.AddressFamily == AddressFamily.InterNetwork);
-            var ipEndpoint = new IPEndPoint(ipAdress, options.Port);
-
-            _transport = MakeTransport(options, ipEndpoint);
-            
+            _transport = MakeTransport(options);
 
             string hostName = Dns.GetHostName();
 
@@ -42,19 +37,29 @@ namespace Serilog.Sinks.Graylog
             _converter = options.GelfConverter ?? new GelfConverter(builders);
         }
 
-        private ITransport MakeTransport(GraylogSinkOptions options, IPEndPoint ipEndpoint)
+        private ITransport MakeTransport(GraylogSinkOptions options)
         {
             switch (options.TransportType)
             {
                 case SerilogTransportType.Udp:
+
+                    IDnsInfoProvider dns = new DnsWrapper();
+                    IPAddress[] ipAddreses = Task.Run(() => dns.GetHostAddresses(options.HostnameOrAdress)).Result;
+                    IPAddress ipAdress = ipAddreses.FirstOrDefault(c => c.AddressFamily == AddressFamily.InterNetwork);
+                    var ipEndpoint = new IPEndPoint(ipAdress, options.Port);
+
                     IDataToChunkConverter chunkConverter = new DataToChunkConverter(new ChunkSettings
                     {
                         MessageIdGeneratorType = options.MessageGeneratorType
                     }, new MessageIdGeneratorResolver());
 
-                    var client = new UdpTransportClient(ipEndpoint);
-                    var transport = new UdpTransport(client, chunkConverter);
-                    return transport;
+                    var udpClient = new UdpTransportClient(ipEndpoint);
+                    var udpTransport = new UdpTransport(udpClient, chunkConverter);
+                    return udpTransport;
+                case SerilogTransportType.Http:
+                    var httpClient = new HttpTransportClient($"{options.HostnameOrAdress}:{options.Port}/gelf");
+                    var httpTransport = new HttpTransport(httpClient);
+                    return httpTransport;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(options), options.TransportType, null);
             }
