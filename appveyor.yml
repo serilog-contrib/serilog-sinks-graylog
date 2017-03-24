@@ -13,6 +13,9 @@
 
   skip_tags: true
 
+  before_build:
+    - nuget install OpenCover -ExcludeVersion -OutputDirectory "packages"
+
   assembly_info:
     patch: true
     file: AssemblyInfo.*
@@ -20,27 +23,28 @@
     assembly_file_version: "{version}"
     assembly_informational_version: "{version}"
 
-  configuration: Release
+  configuration: Debug
 
-  before_build:
-    - appveyor-retry dotnet restore -v Minimal
-    - nuget install OpenCover -ExcludeVersion -OutputDirectory "packages"    
+  image: Visual Studio 2017 RC
 
   build_script:
-    - cmd: dotnet build "./src/Serilog.Sinks.Graylog" -c %CONFIGURATION% --no-dependencies --version-suffix %APPVEYOR_BUILD_NUMBER%
-  after_build:
-    - cmd: dotnet pack "./src/Serilog.Sinks.Graylog" -c %CONFIGURATION% --no-build --version-suffix %APPVEYOR_BUILD_NUMBER% -o artifacts
-  test_script:
-    - cmd: dotnet test "./src/Serilog.Sinks.Graylog.Tests" -c %CONFIGURATION% -notrait "Category=Integration"
+    - cmd: msbuild /t:restore /v:Minimal ./src/serilog-sinks-graylogvs2017.sln
+    - cmd: msbuild /t:build /p:Configuration=Debug /v:Minimal ./src/serilog-sinks-graylogvs2017.sln
+    - cmd: msbuild /t:pack /v:minimal /p:IncludeSymbols=true /p:PackageOutputPath=../../artifacts /p:PackageVersion=%newVersion% ./src/Serilog.Sinks.Graylog/Serilog.Sinks.Graylog.csproj
+
+  test:
+    categories:
+      except:
+        - Integration
 
   after_test:
-    - .\packages\OpenCover\tools\OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:"C:\projects\serilog-sinks-graylog\src\Serilog.Sinks.Graylog.Tests\bin\Release\net452\win7-x64\Serilog.Sinks.Graylog.Tests.dll -noshadow -appveyor" -filter:"+[Serilog.Sinks.Graylog*]* -[*]*Test*" -hideskipped:All -output:.\coverage.xml
+    - .\packages\OpenCover\tools\OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:"C:\projects\serilog-sinks-graylog\src\Serilog.Sinks.Graylog.Tests\bin\Debug\net46\Serilog.Sinks.Graylog.Tests.dll -noshadow -appveyor" -filter:"+[Serilog.Sinks.Graylog*]* -[*]*Test*" -hideskipped:All -output:.\coverage.xml
     - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
     - pip install codecov
-    - codecov -f "coverage.xml"
+    - codecov -f "coverage.xml" -X gcov
   
   artifacts:
-    - path: "./artifacts/*.nupkg"
+    - path: "./artifacts/*.*"
 -
   branches:
     only:
@@ -55,15 +59,20 @@
 
   configuration: Release
 
+  image: Visual Studio 2017 RC
+
   before_build:
     - appveyor-retry dotnet restore -v Minimal
 
   build_script:
-    - cmd: dotnet build "./src/Serilog.Sinks.Graylog" -c %CONFIGURATION% --no-dependencies
-  after_build:
-    - cmd: dotnet pack "./src/Serilog.Sinks.Graylog" -c %CONFIGURATION% --no-build -o artifacts
-  test_script:
-    - cmd: dotnet test "./src/Serilog.Sinks.Graylog.Tests" -c %CONFIGURATION% -notrait "Category=Integration"
+    - cmd: msbuild /t:restore /v:Minimal ./src/serilog-sinks-graylogvs2017.sln
+    - cmd: msbuild /t:build /p:Configuration=Debug /v:Minimal ./src/serilog-sinks-graylogvs2017.sln
+    - cmd: msbuild /t:pack /v:minimal /p:IncludeSymbols=true /p:PackageOutputPath=../../artifacts ./src/Serilog.Sinks.Graylog/Serilog.Sinks.Graylog.csproj
+  
+  test:
+    categories:
+      except:
+        - Integration
   
   artifacts:
     - path: "./artifacts/*.nupkg"

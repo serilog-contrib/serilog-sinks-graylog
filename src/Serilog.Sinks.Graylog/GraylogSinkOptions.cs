@@ -60,7 +60,7 @@ namespace Serilog.Sinks.Graylog
         /// <remarks>
         /// You can implement another one or use default udp transport
         /// </remarks>
-        public ITransport Transport { get; set; }
+        public TransportType TransportType { get; set; }
         /// <summary>
         /// Gets or sets the gelf converter.
         /// </summary>
