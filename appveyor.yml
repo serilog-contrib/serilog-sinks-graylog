@@ -65,9 +65,11 @@
     - appveyor-retry dotnet restore -v Minimal
 
   build_script:
-    - cmd: msbuild /t:restore /v:Minimal ./src/serilog-sinks-graylogvs2017.sln
+    - cmd: dir
+    - cmd: dir src
+    - cmd: msbuild /t:restore ./src/serilog-sinks-graylogvs2017.sln
     - cmd: msbuild /t:build /p:Configuration=Debug /v:Minimal ./src/serilog-sinks-graylogvs2017.sln
-    - cmd: msbuild /t:pack /v:minimal /p:IncludeSymbols=true /p:PackageOutputPath=../../artifacts ./src/Serilog.Sinks.Graylog/Serilog.Sinks.Graylog.csproj
+    - cmd: msbuild /t:pack /p:IncludeSymbols=true /p:PackageOutputPath=../../artifacts ./src/Serilog.Sinks.Graylog/Serilog.Sinks.Graylog.csproj
   
   test:
     categories:
@@ -77,9 +79,9 @@
   artifacts:
     - path: "./artifacts/*.nupkg"
 
-  deploy:
-    provider: NuGet
-    api_key:
-      secure: IHVAasaX8yvwCHeCI/mBgWBRzLNlOpRn3yJnZFyslzTnJpELyxKDaKM5y/LN0zsl
-      skip_symbols: false
-      artifact: /.*\.nupkg/
+#  deploy:
+#    provider: NuGet
+#    api_key:
+#      secure: IHVAasaX8yvwCHeCI/mBgWBRzLNlOpRn3yJnZFyslzTnJpELyxKDaKM5y/LN0zsl
+#      skip_symbols: false
+#      artifact: /.*\.nupkg/
