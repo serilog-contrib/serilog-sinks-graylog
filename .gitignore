@@ -8,3 +8,5 @@
 *.cache
 *.coverage
 *.dg
+*/_ReSharper.Caches
+*.nupkg

@@ -3,25 +3,27 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <PropertyGroup>
-    <TargetFrameworks>net46</TargetFrameworks>
+    <TargetFramework>net46</TargetFramework>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>sign.snk</AssemblyOriginatorKeyFile>
     <OutputType>library</OutputType>
+    <AssemblyName>Serilog.Sinks.Graylog.Tests</AssemblyName>
+    <RootNamespace>Serilog.Sinks.Graylog.Tests</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="**\*.resx" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="xunit" Version="2.2.*" />
-    <PackageReference Include="xunit.abstractions" Version="2.0.1" />
+    <PackageReference Include="xunit.abstractions" Version="2.0.*" />
     <PackageReference Include="xunit.extensibility.execution" Version="2.2.*" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.2.*" />
-    <PackageReference Include="AutoFixture" Version="3.50.2" />
-    <PackageReference Include="FluentAssertions" Version="4.19.2" />
-    <PackageReference Include="Moq" Version="4.7.1" />
+    <PackageReference Include="AutoFixture" Version="3.50.*" />
+    <PackageReference Include="FluentAssertions" Version="4.19.*" />
+    <PackageReference Include="Moq" Version="4.7.*" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Serilog.Sinks.Graylog\Serilog.Sinks.Graylog.csproj" />
+    <ProjectReference Include="..\Serilog.Sinks.Graylog\Serilog.Sinks.GraylogSingleTarget.csproj" />
   </ItemGroup>
 </Project>

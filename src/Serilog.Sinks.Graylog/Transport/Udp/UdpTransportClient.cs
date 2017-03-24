@@ -12,6 +12,10 @@ namespace Serilog.Sinks.Graylog.Transport.Udp
     {
         private readonly IPEndPoint _target;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UdpTransportClient"/> class.
+        /// </summary>
+        /// <param name="target">The target.</param>
         public UdpTransportClient(IPEndPoint target)
         {
             _target = target;
@@ -21,18 +25,12 @@ namespace Serilog.Sinks.Graylog.Transport.Udp
         /// Sends the specified payload.
         /// </summary>
         /// <param name="payload">The payload.</param>
-        /// <exception cref="SocketException">Произошла ошибка при получении доступа к сокету.Дополнительные сведения см. в разделе "Примечания".</exception>
-        public void Send(byte[] payload)
+        public Task Send(byte[] payload)
         {
-            
-            Task resultTask = Task.Run(() =>
+            using (var udpClient = new UdpClient())
             {
-                using (var udpClient = new UdpClient())
-                {
-                    udpClient.SendAsync(payload, payload.Length, _target);
-                }
-            });
-            resultTask.Wait();
+                return udpClient.SendAsync(payload, payload.Length, _target);
+            }
         }
     }
 }
