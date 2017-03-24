@@ -20,6 +20,17 @@ var loggerConfig = new LoggerConfiguration()
       });
 ```
 
+by default udp protocol is using, if you want to use htpp define sink options like 
+
+```csharp
+new GraylogSinkOptions
+      {
+          HostnameOrAdress = "localhost",
+          Port = 12201,
+          TransportType = TransportType.Http,
+      }
+```
+
 All options you can see at https://github.com/whir1/serilog-sinks-graylog/blob/master/src/Serilog.Sinks.Graylog/GraylogSinkOptions.cs
 
 You can create your own implementation of transports or converter and set it to options. But maybe i'll delete this feature in the future
