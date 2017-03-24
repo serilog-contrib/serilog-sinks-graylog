@@ -61,12 +61,7 @@
 
   image: Visual Studio 2017 RC
 
-  before_build:
-    - appveyor-retry dotnet restore -v Minimal
-
   build_script:
-    - cmd: dir
-    - cmd: dir src
     - cmd: msbuild /t:restore ./src/serilog-sinks-graylogvs2017.sln
     - cmd: msbuild /t:build /p:Configuration=Debug /v:Minimal ./src/serilog-sinks-graylogvs2017.sln
     - cmd: msbuild /t:pack /p:IncludeSymbols=true /p:PackageOutputPath=../../artifacts ./src/Serilog.Sinks.Graylog/Serilog.Sinks.Graylog.csproj
@@ -79,9 +74,9 @@
   artifacts:
     - path: "./artifacts/*.nupkg"
 
-#  deploy:
-#    provider: NuGet
-#    api_key:
-#      secure: IHVAasaX8yvwCHeCI/mBgWBRzLNlOpRn3yJnZFyslzTnJpELyxKDaKM5y/LN0zsl
-#      skip_symbols: false
-#      artifact: /.*\.nupkg/
+  deploy:
+    provider: NuGet
+    api_key:
+      secure: IHVAasaX8yvwCHeCI/mBgWBRzLNlOpRn3yJnZFyslzTnJpELyxKDaKM5y/LN0zsl
+      skip_symbols: false
+      artifact: /.*\.nupkg/
