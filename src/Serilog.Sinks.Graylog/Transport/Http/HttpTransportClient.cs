@@ -19,24 +19,16 @@ namespace Serilog.Sinks.Graylog.Transport.Http
             _httpClient.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
         }
 
-        public Task Send(string message)
+        public async Task Send(string message)
         {
             var content = new StringContent(message, System.Text.Encoding.UTF8, "application/json");
             var url = new Uri(_graylogUrl);
 
-            try
+            HttpResponseMessage result = await _httpClient.PostAsync(url, content);
+            if (!result.IsSuccessStatusCode)
             {
-                var result = _httpClient.PostAsync(url, content).Result;
-                if (!result.IsSuccessStatusCode)
-                {
-                    throw new LoggingFailedException("Unable send log message to graylog via httptransporrt");
-                }
+                throw new LoggingFailedException("Unable send log message to graylog via HTTP transport");
             }
-            catch (Exception e)
-            {
-                throw new LoggingFailedException("Unable send log message to graylog via httptransporrt");
-            }
-            return Task.CompletedTask;
         }
     }
 }
