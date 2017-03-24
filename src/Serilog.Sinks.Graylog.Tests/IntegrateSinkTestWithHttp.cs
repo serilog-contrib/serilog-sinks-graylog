@@ -15,7 +15,6 @@ namespace Serilog.Sinks.Graylog.Tests
     {
         [Fact]
         [Trait("Category", "Integration")]
-        //[Fact]
         public void TestComplex()
         {
             var loggerConfig = new LoggerConfiguration();
