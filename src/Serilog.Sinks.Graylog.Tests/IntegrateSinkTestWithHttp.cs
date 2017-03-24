@@ -6,11 +6,12 @@ using Xunit;
 using Serilog.Sinks;
 using Serilog.Sinks.Graylog.Helpers;
 using Serilog.Sinks.Graylog.Tests.ComplexIntegrationTest;
+using Serilog.Sinks.Graylog.Transport;
 
 namespace Serilog.Sinks.Graylog.Tests
 {
     [Trait("Category", "Integration")]
-    public class IntegrateSinkTest
+    public class IntegrateSinkTestWithHttp
     {
         [Fact]
         [Trait("Category", "Integration")]
@@ -23,8 +24,9 @@ namespace Serilog.Sinks.Graylog.Tests
             {
                 ShortMessageMaxLength = 50,
                 MinimumLogEventLevel = LogEventLevel.Information,
+                TransportType = TransportType.Http,
                 Facility = "VolkovTestFacility",
-                HostnameOrAdress = "logs.aeroclub.int",
+                HostnameOrAdress = "http://logs.aeroclub.int",
                 Port = 12201
             });
 
@@ -61,8 +63,9 @@ namespace Serilog.Sinks.Graylog.Tests
             {
                 MinimumLogEventLevel = LogEventLevel.Information,
                 MessageGeneratorType = MessageIdGeneratortype.Timestamp,
+                TransportType = TransportType.Http,
                 Facility = "VolkovTestFacility",
-                HostnameOrAdress = "logs.aeroclub.int",
+                HostnameOrAdress = "http://logs.aeroclub.int",
                 Port = 12201
             });
 
@@ -81,8 +84,9 @@ namespace Serilog.Sinks.Graylog.Tests
             {
                 MinimumLogEventLevel = LogEventLevel.Information,
                 MessageGeneratorType = MessageIdGeneratortype.Timestamp,
+                TransportType = TransportType.Http,
                 Facility = "VolkovTestFacility",
-                HostnameOrAdress = "logs.aeroclub.int",
+                HostnameOrAdress = "http://logs.aeroclub.int",
                 Port = 12201
             });
 
@@ -118,25 +122,5 @@ namespace Serilog.Sinks.Graylog.Tests
             }
         }
 
-    }
-
-
-    public class Bar
-    {
-        public int Id { get; set; }
-        public string Prop { get; set; }
-    }
-
-    public class TestClass
-    {
-        public int Id { get; set; }
-
-        public string TestPropertyOne { get; set; }
-
-        public Bar Bar { get; set; }
-
-        public string TestPropertyTwo { get; set; }
-
-        public string TestPropertyThree { get; set; }
     }
 }

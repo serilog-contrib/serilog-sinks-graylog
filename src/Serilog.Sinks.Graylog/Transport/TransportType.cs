@@ -2,6 +2,7 @@
 {
     public enum TransportType
     {
-        Udp
+        Udp,
+        Http
     }
 }

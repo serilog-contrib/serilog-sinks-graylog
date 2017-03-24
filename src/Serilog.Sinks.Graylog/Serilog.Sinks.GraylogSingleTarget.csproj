@@ -15,4 +15,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="9.0.*" />
     <PackageReference Include="Serilog" Version="2.4.*" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
 </Project>
