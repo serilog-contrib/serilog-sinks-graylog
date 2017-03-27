@@ -25,7 +25,7 @@
 
   configuration: Debug
 
-  image: Visual Studio 2017 RC
+  image: Visual Studio 2017
 
   build_script:
     - cmd: msbuild /t:restore /v:Minimal ./src/serilog-sinks-graylogvs2017.sln
@@ -59,7 +59,7 @@
 
   configuration: Release
 
-  image: Visual Studio 2017 RC
+  image: Visual Studio 2017
 
   before_build:
     - appveyor-retry dotnet restore -v Minimal
