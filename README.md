@@ -20,12 +20,12 @@ var loggerConfig = new LoggerConfiguration()
       });
 ```
 
-by default udp protocol is using, if you want to use htpp define sink options like 
+by default udp protocol is using, if you want to use http define sink options like 
 
 ```csharp
 new GraylogSinkOptions
       {
-          HostnameOrAdress = "localhost",
+          HostnameOrAdress = "http://localhost",
           Port = 12201,
           TransportType = TransportType.Http,
       }
