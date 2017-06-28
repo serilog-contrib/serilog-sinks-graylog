@@ -9,6 +9,11 @@ namespace Serilog.Sinks.Graylog
     /// </summary>
     public class GraylogSinkOptions
     {
+        internal const string DefaultFacility = "GELF";
+        internal const int DefaultShortMessageMaxLength = 500;
+        internal const int DefaultStackTraceDepth = 10;
+        internal const MessageIdGeneratortype DefaultMessageGeneratorType = MessageIdGeneratortype.Timestamp;
+
         public GraylogSinkOptions()
         {
             MessageGeneratorType = MessageIdGeneratortype.Timestamp;

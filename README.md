@@ -19,6 +19,26 @@ var loggerConfig = new LoggerConfiguration()
           Port = 12201
       });
 ```
+...or alternatively configure the sink in appsettings.json configuration like so:
+
+```json
+{
+  "Serilog": {
+    "Using": ["Serilog.Sinks.Graylog"],
+    "MinimumLevel": "Debug",
+    "WriteTo": [
+        "Name": "Graylog",
+        "Args": {
+            "hostNameOrAddress": "localhost",
+            "port": "12201",
+            "transportType": "Udp"
+        }
+    ]
+  }
+}
+```
+
+Note that because of the limitations of the Serilog.Settings.Configuration package, you cannot configure IGelfConverter using json. 
 
 by default udp protocol is using, if you want to use http define sink options like 
 
