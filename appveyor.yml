@@ -39,7 +39,7 @@
 #  OpenCover not working correct with .NetCore projects (can't find pdb object)
   after_test:
     - cmd: "dir C:\\projects\\serilog-sinks-graylog\\src\\Serilog.Sinks.Graylog.Tests\\bin\\Debug\\net46"
-    - .\packages\OpenCover\tools\OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:"C:\projects\serilog-sinks-graylog\src\Serilog.Sinks.Graylog.Tests\bin\Debug\net46\Serilog.Sinks.Graylog.Tests.dll -notrait \"category=Integration\" " -filter:"+[Serilog.Sinks.Graylog*]* -[*]*Test*" -output:.\coverage.xml
+    - .\packages\OpenCover\tools\OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:"C:\projects\serilog-sinks-graylog\src\Serilog.Sinks.Graylog.Tests\bin\Debug\net46\Serilog.Sinks.Graylog.Tests.dll -notrait \"category=Integration\" " -filter:"+[Serilog.Sinks.Graylog*]* -[*]*Test*" -output:.\coverage.xml -OldStyle
     - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
     - pip install codecov
     - ps: Get-Content coverage.xml | foreach {Write-Output $_}
