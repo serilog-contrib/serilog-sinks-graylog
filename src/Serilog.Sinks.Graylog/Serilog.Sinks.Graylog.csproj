@@ -5,6 +5,7 @@
   <PropertyGroup>
     <TargetFrameworks>net46;netstandard1.6;net45;net461</TargetFrameworks>
     <RestorePackages>true</RestorePackages>
+    <DebugType>full</DebugType>
   </PropertyGroup>
   <PropertyGroup>
     <PackageId>Serilog.Sinks.Graylog</PackageId>
