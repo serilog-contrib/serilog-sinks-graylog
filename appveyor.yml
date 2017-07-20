@@ -36,14 +36,14 @@
     categories:
       except:
         - Integration
-
-  after_test:
-    - cmd: "dir C:\\projects\\serilog-sinks-graylog\\src\\Serilog.Sinks.Graylog.Tests\\bin\\Debug\\net46"
-    - .\packages\OpenCover\tools\OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:"C:\projects\serilog-sinks-graylog\src\Serilog.Sinks.Graylog.Tests\bin\Debug\net46\Serilog.Sinks.Graylog.Tests.dll -notrait \"category=Integration\" " -filter:"+[Serilog.Sinks.Graylog*]* -[*]*Test*" -output:.\coverage.xml
-    - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
-    - pip install codecov
-    - ps: Get-Content coverage.xml | foreach {Write-Output $_}
-    - codecov -f "coverage.xml" -t cd3f1ab1-60c6-4848-824b-466b93321d96
+#  OpenCover not working correct with .NetCore projects (can't find pdb objects)
+#  after_test:
+#    - cmd: "dir C:\\projects\\serilog-sinks-graylog\\src\\Serilog.Sinks.Graylog.Tests\\bin\\Debug\\net46"
+#    - .\packages\OpenCover\tools\OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:"C:\projects\serilog-sinks-graylog\src\Serilog.Sinks.Graylog.Tests\bin\Debug\net46\Serilog.Sinks.Graylog.Tests.dll -notrait \"category=Integration\" " -filter:"+[Serilog.Sinks.Graylog*]* -[*]*Test*" -output:.\coverage.xml
+#    - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
+#    - pip install codecov
+#    - ps: Get-Content coverage.xml | foreach {Write-Output $_}
+#    - codecov -f "coverage.xml" -t cd3f1ab1-60c6-4848-824b-466b93321d96
   
   artifacts:
     - path: "./artifacts/*.*"
@@ -75,14 +75,6 @@
     categories:
       except:
         - Integration
-
-  after_test:
-    - cmd: "dir C:\\projects\\serilog-sinks-graylog\\src\\Serilog.Sinks.Graylog.Tests\\bin\\Debug\\net46"
-    - .\packages\OpenCover\tools\OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -searchdirs:"C:\projects\serilog-sinks-graylog\src\Serilog.Sinks.Graylog.Tests\bin\Debug\net46" -targetdir:"C:\projects\serilog-sinks-graylog\src\Serilog.Sinks.Graylog.Tests\bin\Debug\net46" -targetargs:"Serilog.Sinks.Graylog.Tests.dll -notrait \"category=Integration\" " -filter:"+[Serilog.Sinks.Graylog*]* -[*]*Test*" -output:.\coverage.xml
-    - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
-    - pip install codecov
-    - ps: Get-Content coverage.xml | foreach {$_.length}
-    - codecov -f "coverage.xml" -t cd3f1ab1-60c6-4848-824b-466b93321d96
   
   artifacts:
     - path: "./artifacts/*.nupkg"
