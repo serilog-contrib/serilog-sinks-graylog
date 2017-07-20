@@ -39,7 +39,7 @@
 
   after_test:
     - cmd: "dir C:\\projects\\serilog-sinks-graylog\\src\\Serilog.Sinks.Graylog.Tests\\bin\\Debug\\net46"
-    - .\packages\OpenCover\tools\OpenCover.Console.exe -register:user -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test ..\src\Serilog.Sinks.Graylog.Tests\Serilog.Sinks.Graylog.Tests.csproj -f net46 " -filter:"+[Serilog.Sinks.Graylog*]* -[*]*Test*" -output:.\coverage.xml -oldStyle
+    - .\packages\OpenCover\tools\OpenCover.Console.exe -register:user -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test C:\projects\serilog-sinks-graylog\src\Serilog.Sinks.Graylog.Tests\bin\Debug\net46\Serilog.Sinks.Graylog.Tests.dll -f net46 " -filter:"+[Serilog.Sinks.Graylog*]* -[*]*Test*" -output:.\coverage.xml -oldStyle
     - "SET PATH=C:\\Python34;C:\\Python34\\Scripts;%PATH%"
     - pip install codecov
     - ps: Get-Content coverage.xml | foreach {Write-Output $_}
