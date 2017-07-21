@@ -4,6 +4,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <TargetFrameworks>net46</TargetFrameworks>
+    <DebugType>full</DebugType>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>sign.snk</AssemblyOriginatorKeyFile>

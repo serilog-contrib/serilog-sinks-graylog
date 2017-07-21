@@ -9,14 +9,20 @@ namespace Serilog.Sinks.Graylog
     /// </summary>
     public class GraylogSinkOptions
     {
+        internal const string DefaultFacility = "GELF";
+        internal const int DefaultShortMessageMaxLength = 500;
+        internal const LogEventLevel DefaultMinimumLogEventLevel = LevelAlias.Minimum;
+        internal const int DefaultStackTraceDepth = 10;
+        internal const MessageIdGeneratortype DefaultMessageGeneratorType = MessageIdGeneratortype.Timestamp;
+
         public GraylogSinkOptions()
         {
             MessageGeneratorType = MessageIdGeneratortype.Timestamp;
-            ShortMessageMaxLength = 500;
-            MinimumLogEventLevel = LevelAlias.Minimum;
+            ShortMessageMaxLength = DefaultShortMessageMaxLength;
+            MinimumLogEventLevel = DefaultMinimumLogEventLevel;
             //Spec says: facility must be set by the client to "GELF" if empty
-            Facility = "GELF";
-            StackTraceDepth = 10;
+            Facility = DefaultFacility;
+            StackTraceDepth = DefaultStackTraceDepth;
         }
 
         /// <summary>
