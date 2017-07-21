@@ -63,13 +63,10 @@
 
   image: Visual Studio 2017
 
-  before_build:
-    - appveyor-retry dotnet restore -v Minimal
-
   build_script:
-    - cmd: msbuild /t:restore /v:Minimal ./src/serilog-sinks-graylogvs2017.sln
-    - cmd: msbuild /t:build /p:Configuration=Debug /v:Minimal ./src/serilog-sinks-graylogvs2017.sln
-    - cmd: msbuild /t:pack /v:minimal /p:IncludeSymbols=true /p:PackageOutputPath=../../artifacts ./src/Serilog.Sinks.Graylog/Serilog.Sinks.Graylog.csproj
+    - cmd: msbuild /t:restore ./src/serilog-sinks-graylogvs2017.sln
+    - cmd: msbuild /t:build /p:Configuration=Release /v:Minimal ./src/serilog-sinks-graylogvs2017.sln
+    - cmd: msbuild /t:pack /p:IncludeSymbols=true /p:Configuration=Release /p:PackageOutputPath=../../artifacts ./src/Serilog.Sinks.Graylog/Serilog.Sinks.Graylog.csproj
   
   test:
     categories:
