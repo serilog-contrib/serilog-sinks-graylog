@@ -10,3 +10,4 @@
 *.dg
 */_ReSharper.Caches
 *.nupkg
+*ncrunch*
