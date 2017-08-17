@@ -11,6 +11,7 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
 {
     public class GelfMessageBuilder : IMessageBuilder
     {
+        private static readonly DateTime Epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         private readonly string _hostName;
         private const string GelfVersion = "1.1";
         protected GraylogSinkOptions Options { get; }
@@ -32,7 +33,7 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
                 Host = _hostName,
                 ShortMessage = shortMessage,
                 FullMessage = message,
-                Timestamp = logEvent.Timestamp.DateTime,
+                Timestamp = ConvertToEpoch(logEvent.Timestamp.DateTime),
                 Level = LogLevelMapper.GetMappedLevel(logEvent.Level),
                 StringLevel = logEvent.Level.ToString(),
                 Facility = Options.Facility
@@ -45,6 +46,12 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
             }
 
             return jsonObject;
+        }
+
+        private static double ConvertToEpoch(DateTime dateTime)
+        {
+            var duration = dateTime.ToUniversalTime() - Epoch;
+            return Math.Round(duration.TotalSeconds, 3, MidpointRounding.AwayFromZero);
         }
 
         private void AddAdditionalField(IDictionary<string, JToken> jObject, KeyValuePair<string, LogEventPropertyValue> property, string memberPath = "")
