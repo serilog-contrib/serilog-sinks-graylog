@@ -10,7 +10,7 @@
   <PropertyGroup>
     <PackageId>Serilog.Sinks.Graylog</PackageId>
     <Title>Serilog.Sinks.Graylog</Title>
-    <PackageVersion>1.5.0</PackageVersion>
+    <PackageVersion>1.5.1</PackageVersion>
     <Authors>Anton Volkov</Authors>
     <Description>The Serilog Graylog Sink project is a sink (basically a writer) for the Serilog logging framework. Structured log events are written to sinks and each sink is responsible for writing it to its own backend, database, store etc. This sink delivers the data to Graylog2, a NoSQL search engine.</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
@@ -24,9 +24,9 @@
     <OutputType>library</OutputType>
     <NeutralLanguage>en</NeutralLanguage>
     <RepositoryType>git</RepositoryType>
-    <Version>1.5.0</Version>
-    <AssemblyVersion>1.5.0.0</AssemblyVersion>
-    <FileVersion>1.5.0.0</FileVersion>
+    <Version>1.5.1</Version>
+    <AssemblyVersion>1.5.1.0</AssemblyVersion>
+    <FileVersion>1.5.1.0</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="**\*.resx" />
