@@ -29,12 +29,14 @@ var loggerConfig = new LoggerConfiguration()
     "Using": ["Serilog.Sinks.Graylog"],
     "MinimumLevel": "Debug",
     "WriteTo": [
+    {
         "Name": "Graylog",
         "Args": {
-            "hostNameOrAddress": "localhost",
+            "hostnameOrAddress": "localhost",
             "port": "12201",
             "transportType": "Udp"
         }
+    }
     ]
   }
 }
