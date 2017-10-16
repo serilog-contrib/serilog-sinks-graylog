@@ -6,6 +6,9 @@
     <TargetFrameworks>net46;netstandard1.6;netstandard2.0;net45;net461</TargetFrameworks>
     <RestorePackages>true</RestorePackages>
     <DebugType>full</DebugType>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+
   </PropertyGroup>
   <PropertyGroup>
     <PackageId>Serilog.Sinks.Graylog</PackageId>
@@ -28,6 +31,7 @@
     <AssemblyVersion>1.5.1.0</AssemblyVersion>
     <FileVersion>1.5.1.0</FileVersion>
   </PropertyGroup>
+  
   <ItemGroup>
     <EmbeddedResource Include="**\*.resx" />
     <None Remove="*.ncrunchproject" />
