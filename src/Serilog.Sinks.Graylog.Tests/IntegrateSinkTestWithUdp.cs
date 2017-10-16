@@ -37,8 +37,11 @@ namespace Serilog.Sinks.Graylog.Tests
                 Bar = new Bar
                 {
                     Id = 2,
-                    Prop = "123"
+                    Prop = "123",
+                    TestBarBooleanProperty = false
+                    
                 },
+                TestClassBooleanProperty = true,
                 TestPropertyOne = "1",
                 TestPropertyThree = "3",
                 TestPropertyTwo = "2"
@@ -127,11 +130,15 @@ namespace Serilog.Sinks.Graylog.Tests
     {
         public int Id { get; set; }
         public string Prop { get; set; }
+
+        public bool TestBarBooleanProperty { get; set; }
     }
 
     public class TestClass
     {
         public int Id { get; set; }
+
+        public bool TestClassBooleanProperty { get; set; }
 
         public string TestPropertyOne { get; set; }
 
