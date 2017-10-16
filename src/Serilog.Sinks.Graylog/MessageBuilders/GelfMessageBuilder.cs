@@ -76,7 +76,9 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
                     return;
                 }
 
-                JToken value = JToken.FromObject(scalarValue.Value);
+                bool isNumeric = scalarValue.Value.GetType().IsNumericType();
+                JToken value = JToken.FromObject(isNumeric ? scalarValue.Value : scalarValue.Value.ToString());
+                
                 jObject.Add(key, value);
                 return;
             }
