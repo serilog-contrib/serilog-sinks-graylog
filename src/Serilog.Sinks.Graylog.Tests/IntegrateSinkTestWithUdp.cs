@@ -34,6 +34,7 @@ namespace Serilog.Sinks.Graylog.Tests
             var test = new TestClass
             {
                 Id = 1,
+                SomeTestDateTime = DateTime.UtcNow,
                 Bar = new Bar
                 {
                     Id = 2,
@@ -94,6 +95,7 @@ namespace Serilog.Sinks.Graylog.Tests
             var test = new TestClass
             {
                 Id = 1,
+                SomeTestDateTime = DateTime.UtcNow,
                 Bar = new Bar
                 {
                     Id = 2
@@ -123,8 +125,42 @@ namespace Serilog.Sinks.Graylog.Tests
             }
         }
 
+        [Fact]
+        [Trait("Category", "Integration")]
+        public void SerializeEvent()
+        {
+            var loggerConfig = new LoggerConfiguration();
+
+            loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
+            {
+                MinimumLogEventLevel = LogEventLevel.Information,
+                MessageGeneratorType = MessageIdGeneratortype.Timestamp,
+                TransportType = TransportType.Udp,
+                Facility = "VolkovTestFacility",
+                HostnameOrAdress = "logs.aeroclub.int",
+                Port = 12201
+            });
+
+            var payload = new Event("123");
+
+            var logger = loggerConfig.CreateLogger();
+
+            logger.Information("test event {@payload}", payload);
+        }
     }
 
+    public class Event
+    {
+        public Event(string eventId)
+        {
+            EventId = eventId;
+            Timestamp = DateTime.UtcNow;
+        }
+
+        public DateTime Timestamp { get; set; }
+
+        public string EventId { get; set; }
+    }
 
     public class Bar
     {
@@ -147,5 +183,6 @@ namespace Serilog.Sinks.Graylog.Tests
         public string TestPropertyTwo { get; set; }
 
         public string TestPropertyThree { get; set; }
+        public DateTime SomeTestDateTime { get; set; }
     }
 }
