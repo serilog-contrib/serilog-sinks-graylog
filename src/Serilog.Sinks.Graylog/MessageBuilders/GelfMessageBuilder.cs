@@ -76,8 +76,9 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
                     return;
                 }
 
-                bool isNumeric = scalarValue.Value.GetType().IsNumericType();
-                JToken value = JToken.FromObject(isNumeric ? scalarValue.Value : scalarValue.Value.ToString());
+                var shouldCallToString = SholdCallToString(scalarValue.Value.GetType());
+                
+                JToken value = JToken.FromObject(shouldCallToString ? scalarValue.Value.ToString() : scalarValue.Value);
                 
                 jObject.Add(key, value);
                 return;
@@ -101,6 +102,16 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
                         new KeyValuePair<string, LogEventPropertyValue>(logEventProperty.Name, logEventProperty.Value), key);
                 }
             }
+        }
+
+        private bool SholdCallToString(Type type)
+        {
+            bool isNumeric = type.IsNumericType();
+            if (type == typeof(DateTime) || isNumeric)
+            {
+                return false;
+            }
+            return true;
         }
 
         private string RenderPropertyValue(LogEventPropertyValue propertyValue)
