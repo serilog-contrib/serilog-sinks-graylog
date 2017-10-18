@@ -92,6 +92,7 @@ namespace Serilog.Sinks.Graylog.Tests
             var test = new TestClass
             {
                 Id = 1,
+                SomeTestDateTime = DateTime.UtcNow,
                 Bar = new Bar
                 {
                     Id = 2
