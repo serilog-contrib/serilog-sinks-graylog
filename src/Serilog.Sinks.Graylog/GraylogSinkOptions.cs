@@ -1,4 +1,6 @@
-﻿using Serilog.Events;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using Serilog.Events;
 using Serilog.Sinks.Graylog.Helpers;
 using Serilog.Sinks.Graylog.Transport;
 
@@ -14,6 +16,10 @@ namespace Serilog.Sinks.Graylog
         internal const LogEventLevel DefaultMinimumLogEventLevel = LevelAlias.Minimum;
         internal const int DefaultStackTraceDepth = 10;
         internal const MessageIdGeneratortype DefaultMessageGeneratorType = MessageIdGeneratortype.Timestamp;
+        internal static readonly JsonSerializer DefaultJsonSerializer = new JsonSerializer
+        {
+            ContractResolver = new CamelCasePropertyNamesContractResolver()
+        };
 
         public GraylogSinkOptions()
         {
@@ -23,6 +29,7 @@ namespace Serilog.Sinks.Graylog
             //Spec says: facility must be set by the client to "GELF" if empty
             Facility = DefaultFacility;
             StackTraceDepth = DefaultStackTraceDepth;
+            JsonSerializer = DefaultJsonSerializer;
         }
 
         /// <summary>
@@ -104,5 +111,13 @@ namespace Serilog.Sinks.Graylog
         /// The stack trace depth.
         /// </value>
         public int StackTraceDepth { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Json Serializer
+        /// </summary>
+        /// <value>
+        /// The  Json Serializer.
+        /// </value>
+        public JsonSerializer JsonSerializer { get; set; }
     }
 }

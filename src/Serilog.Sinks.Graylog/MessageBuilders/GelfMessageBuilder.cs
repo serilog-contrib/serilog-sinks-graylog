@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.CompilerServices;
 using Newtonsoft.Json.Linq;
 using Serilog.Events;
 using Serilog.Sinks.Graylog.Extensions;
@@ -39,7 +38,7 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
                 Facility = Options.Facility
             };
 
-            JObject jsonObject = JObject.FromObject(gelfMessage);
+            JObject jsonObject = JObject.FromObject(gelfMessage, Options.JsonSerializer);
             foreach (KeyValuePair<string, LogEventPropertyValue> property in logEvent.Properties)
             {
                 AddAdditionalField(jsonObject, property);
@@ -77,9 +76,9 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
                 }
 
                 var shouldCallToString = SholdCallToString(scalarValue.Value.GetType());
-                
+
                 JToken value = JToken.FromObject(shouldCallToString ? scalarValue.Value.ToString() : scalarValue.Value);
-                
+
                 jObject.Add(key, value);
                 return;
             }
