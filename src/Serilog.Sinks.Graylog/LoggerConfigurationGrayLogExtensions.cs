@@ -28,7 +28,7 @@ namespace Serilog.Sinks.Graylog
         {
             var options = new GraylogSinkOptions
             {
-                HostnameOrAdress = hostnameOrAddress,
+                HostnameOrAddress = hostnameOrAddress,
                 Port = port,
                 TransportType = transportType,
                 MinimumLogEventLevel = minimumLogEventLevel,

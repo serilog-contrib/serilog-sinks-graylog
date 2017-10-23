@@ -25,7 +25,7 @@ namespace Serilog.Sinks.Graylog.Tests
                 MinimumLogEventLevel = LogEventLevel.Information,
                 TransportType = TransportType.Http,
                 Facility = "VolkovTestFacility",
-                HostnameOrAdress = "http://logs.aeroclub.int",
+                HostnameOrAddress = "http://logs.aeroclub.int",
                 Port = 12201
             });
 
@@ -64,7 +64,7 @@ namespace Serilog.Sinks.Graylog.Tests
                 MessageGeneratorType = MessageIdGeneratortype.Timestamp,
                 TransportType = TransportType.Http,
                 Facility = "VolkovTestFacility",
-                HostnameOrAdress = "http://logs.aeroclub.int",
+                HostnameOrAddress = "http://logs.aeroclub.int",
                 Port = 12201
             });
 
@@ -85,7 +85,7 @@ namespace Serilog.Sinks.Graylog.Tests
                 MessageGeneratorType = MessageIdGeneratortype.Timestamp,
                 TransportType = TransportType.Http,
                 Facility = "VolkovTestFacility",
-                HostnameOrAdress = "http://logs.aeroclub.int",
+                HostnameOrAddress = "http://logs.aeroclub.int",
                 Port = 12201
             });
 
