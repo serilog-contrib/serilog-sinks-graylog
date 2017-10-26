@@ -17,7 +17,7 @@ Register the sink in code.
 var loggerConfig = new LoggerConfiguration()
     .WriteTo.Graylog(new GraylogSinkOptions
       {
-          HostnameOrAdress = "localhost",
+          HostnameOrAddress = "localhost",
           Port = 12201
       });
 ```
@@ -49,7 +49,7 @@ by default udp protocol is using, if you want to use http define sink options li
 ```csharp
 new GraylogSinkOptions
       {
-          HostnameOrAdress = "http://localhost",
+          HostnameOrAddress = "http://localhost",
           Port = 12201,
           TransportType = TransportType.Http,
       }

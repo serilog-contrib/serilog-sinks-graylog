@@ -44,9 +44,9 @@ namespace Serilog.Sinks.Graylog
                 case SerilogTransportType.Udp:
 
                     IDnsInfoProvider dns = new DnsWrapper();
-                    IPAddress[] ipAddreses = Task.Run(() => dns.GetHostAddresses(options.HostnameOrAdress)).Result;
-                    IPAddress ipAdress = ipAddreses.FirstOrDefault(c => c.AddressFamily == AddressFamily.InterNetwork);
-                    var ipEndpoint = new IPEndPoint(ipAdress, options.Port);
+                    IPAddress[] ipAddreses = Task.Run(() => dns.GetHostAddresses(options.HostnameOrAddress)).Result;
+                    IPAddress ipAddress = ipAddreses.FirstOrDefault(c => c.AddressFamily == AddressFamily.InterNetwork);
+                    var ipEndpoint = new IPEndPoint(ipAddress, options.Port);
 
                     IDataToChunkConverter chunkConverter = new DataToChunkConverter(new ChunkSettings
                     {
@@ -57,7 +57,7 @@ namespace Serilog.Sinks.Graylog
                     var udpTransport = new UdpTransport(udpClient, chunkConverter);
                     return udpTransport;
                 case SerilogTransportType.Http:
-                    var httpClient = new HttpTransportClient($"{options.HostnameOrAdress}:{options.Port}/gelf");
+                    var httpClient = new HttpTransportClient($"{options.HostnameOrAddress}:{options.Port}/gelf");
                     var httpTransport = new HttpTransport(httpClient);
                     return httpTransport;
                 default:

@@ -34,12 +34,12 @@ namespace Serilog.Sinks.Graylog
         public LogEventLevel MinimumLogEventLevel { get; set; }
 
         /// <summary>
-        /// Gets or sets the hostname or adress of graylog server.
+        /// Gets or sets the hostname or address of graylog server.
         /// </summary>
         /// <value>
-        /// The hostname or adress.
+        /// The hostname or address.
         /// </value>
-        public string HostnameOrAdress { get; set; }
+        public string HostnameOrAddress { get; set; }
 
         /// <summary>
         /// Gets or sets the facility name.
