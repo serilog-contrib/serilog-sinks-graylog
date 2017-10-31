@@ -1,7 +1,11 @@
 ﻿using System;
 using Serilog.Events;
 using Serilog.Sinks.Graylog.Helpers;
+<<<<<<< HEAD
+using Serilog.Sinks.Graylog.MessageBuilders;
 using Serilog.Sinks.Graylog.MessageBuilders.PropertyNaming;
+=======
+>>>>>>> origin/master
 using Serilog.Sinks.Graylog.Transport;
 
 namespace Serilog.Sinks.Graylog
@@ -16,7 +20,10 @@ namespace Serilog.Sinks.Graylog
         internal const LogEventLevel DefaultMinimumLogEventLevel = LevelAlias.Minimum;
         internal const int DefaultStackTraceDepth = 10;
         internal const MessageIdGeneratortype DefaultMessageGeneratorType = MessageIdGeneratortype.Timestamp;
+<<<<<<< HEAD
         internal static readonly IPropertyNamingStrategy DefaultPropertyNamingStrategy = new NoOpPropertyNamingStrategy();
+=======
+>>>>>>> origin/master
 
         public GraylogSinkOptions()
         {
@@ -120,13 +127,5 @@ namespace Serilog.Sinks.Graylog
         /// The stack trace depth.
         /// </value>
         public int StackTraceDepth { get; set; }
-
-        /// <summary>
-        /// Gets or sets the property naming strategy.
-        /// </summary>
-        /// <value>
-        /// The property naming strategy.
-        /// </value>
-        public IPropertyNamingStrategy PropertyNamingStrategy { get; set; }
     }
 }
