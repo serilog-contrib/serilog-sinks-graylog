@@ -26,6 +26,7 @@ namespace Serilog.Sinks.Graylog
             //Spec says: facility must be set by the client to "GELF" if empty
             Facility = DefaultFacility;
             StackTraceDepth = DefaultStackTraceDepth;
+            PropertyNamingStrategy = DefaultPropertyNamingStrategy;
         }
 
         /// <summary>

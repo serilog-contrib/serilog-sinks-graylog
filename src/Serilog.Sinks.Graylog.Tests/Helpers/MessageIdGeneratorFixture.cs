@@ -20,15 +20,16 @@ namespace Serilog.Sinks.Graylog.Tests.Helpers
         [Fact]
         public void WhenGenerateFromTimeStamp_ThenReturnsExpectedResult()
         {
-            DateTime time = DateTime.Now;
+            DateTime time = DateTime.UtcNow;
             byte[] given = _fixture.CreateMany<byte>(10).ToArray();
             var target = new TimestampMessageIdGenerator();
 
-            byte[] expected = BitConverter.GetBytes(time.Ticks);
-
             byte[] actual = target.GenerateMessageId(given);
 
-            actual.ShouldBeEquivalentTo(expected);
+            var actticks = BitConverter.ToInt64(actual, 0);
+            var actdate = DateTime.FromBinary(actticks);
+
+            actdate.Should().BeCloseTo(time, 200);
         }
 
         [Fact]
