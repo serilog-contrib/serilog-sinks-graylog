@@ -62,9 +62,9 @@ namespace Serilog.Sinks.Graylog.Tests.Transport.Udp
 
             var messageId = _fixture.CreateMany<byte>(8).ToArray();
 
-            idGenerator.Setup(c => c.GenerateMessageId()).Returns(messageId);
+            idGenerator.Setup(c => c.GenerateMessageId(giwenData)).Returns(messageId);
 
-            _resolver.Setup(c => c.Resolve(_settings.MessageIdGeneratorType, It.IsAny<byte[]>()))
+            _resolver.Setup(c => c.Resolve(_settings.MessageIdGeneratorType))
                 .Returns(idGenerator.Object);
 
             var target = new DataToChunkConverter(_settings, _resolver.Object);

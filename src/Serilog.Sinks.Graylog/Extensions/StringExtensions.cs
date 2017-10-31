@@ -17,7 +17,13 @@ namespace Serilog.Sinks.Graylog.Extensions
             return resultStream.ToArray();
         }
 
-        public static string ShortMessage(this string source, int maxLength)
+        /// <summary>
+        /// Truncates the specified maximum length.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <param name="maxLength">The maximum length.</param>
+        /// <returns></returns>
+        public static string Truncate(this string source, int maxLength)
         {
             return source.Length > maxLength 
                 ? source.Substring(0, maxLength) 

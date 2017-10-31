@@ -25,7 +25,7 @@ namespace Serilog.Sinks.Graylog.Tests
                 ShortMessageMaxLength = 50,
                 MinimumLogEventLevel = LogEventLevel.Information,
                 Facility = "VolkovTestFacility",
-                HostnameOrAdress = "logs.aeroclub.int",
+                HostnameOrAddress = "logs.aeroclub.int",
                 Port = 12201
             });
 
@@ -67,7 +67,7 @@ namespace Serilog.Sinks.Graylog.Tests
                 MinimumLogEventLevel = LogEventLevel.Information,
                 MessageGeneratorType = MessageIdGeneratortype.Timestamp,
                 Facility = "VolkovTestFacility",
-                HostnameOrAdress = "logs.aeroclub.int",
+                HostnameOrAddress = "logs.aeroclub.int",
                 Port = 12201
             });
 
@@ -88,7 +88,7 @@ namespace Serilog.Sinks.Graylog.Tests
                 MessageGeneratorType = MessageIdGeneratortype.Timestamp,
                 TransportType = TransportType.Udp,
                 Facility = "VolkovTestFacility",
-                HostnameOrAdress = "logs.aeroclub.int",
+                HostnameOrAddress = "logs.aeroclub.int",
                 Port = 12201
             });
 
@@ -137,7 +137,7 @@ namespace Serilog.Sinks.Graylog.Tests
                 MessageGeneratorType = MessageIdGeneratortype.Timestamp,
                 TransportType = TransportType.Udp,
                 Facility = "VolkovTestFacility",
-                HostnameOrAdress = "logs.aeroclub.int",
+                HostnameOrAddress = "logs.aeroclub.int",
                 Port = 12201
             });
 

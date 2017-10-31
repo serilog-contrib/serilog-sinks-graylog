@@ -13,7 +13,7 @@ namespace Serilog.Sinks.Graylog
 
     public class GelfConverter : IGelfConverter
     {
-        private IDictionary<BuilderType, Lazy<IMessageBuilder>> _messageBuilders;
+        private readonly IDictionary<BuilderType, Lazy<IMessageBuilder>> _messageBuilders;
 
         public GelfConverter(IDictionary<BuilderType, Lazy<IMessageBuilder>> messageBuilders)
         {

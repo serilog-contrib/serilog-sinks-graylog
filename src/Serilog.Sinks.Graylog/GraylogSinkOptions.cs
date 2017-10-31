@@ -1,5 +1,7 @@
-﻿using Serilog.Events;
+﻿using System;
+using Serilog.Events;
 using Serilog.Sinks.Graylog.Helpers;
+using Serilog.Sinks.Graylog.MessageBuilders.PropertyNaming;
 using Serilog.Sinks.Graylog.Transport;
 
 namespace Serilog.Sinks.Graylog
@@ -14,6 +16,7 @@ namespace Serilog.Sinks.Graylog
         internal const LogEventLevel DefaultMinimumLogEventLevel = LevelAlias.Minimum;
         internal const int DefaultStackTraceDepth = 10;
         internal const MessageIdGeneratortype DefaultMessageGeneratorType = MessageIdGeneratortype.Timestamp;
+        internal static readonly IPropertyNamingStrategy DefaultPropertyNamingStrategy = new NoOpPropertyNamingStrategy();
 
         public GraylogSinkOptions()
         {
@@ -23,6 +26,7 @@ namespace Serilog.Sinks.Graylog
             //Spec says: facility must be set by the client to "GELF" if empty
             Facility = DefaultFacility;
             StackTraceDepth = DefaultStackTraceDepth;
+            PropertyNamingStrategy = DefaultPropertyNamingStrategy;
         }
 
         /// <summary>
@@ -34,12 +38,25 @@ namespace Serilog.Sinks.Graylog
         public LogEventLevel MinimumLogEventLevel { get; set; }
 
         /// <summary>
-        /// Gets or sets the hostname or adress of graylog server.
+        /// Gets or sets the hostname or address of graylog server.
         /// </summary>
         /// <value>
-        /// The hostname or adress.
+        /// The hostname or address.
         /// </value>
-        public string HostnameOrAdress { get; set; }
+        public string HostnameOrAddress { get; set; }
+
+        /// <summary>
+        /// Gets or sets the hostname or address of graylog server.
+        /// </summary>
+        /// <value>
+        /// The hostname or address.
+        /// </value>
+        [Obsolete]
+        public string HostnameOrAdress
+        {
+            get => HostnameOrAddress;
+            set => HostnameOrAddress = value;
+        }
 
         /// <summary>
         /// Gets or sets the facility name.
@@ -104,5 +121,13 @@ namespace Serilog.Sinks.Graylog
         /// The stack trace depth.
         /// </value>
         public int StackTraceDepth { get; set; }
+
+        /// <summary>
+        /// Gets or sets the property naming strategy.
+        /// </summary>
+        /// <value>
+        /// The property naming strategy.
+        /// </value>
+        public IPropertyNamingStrategy PropertyNamingStrategy { get; set; }
     }
 }

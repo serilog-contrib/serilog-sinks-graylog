@@ -6,26 +6,43 @@ using Newtonsoft.Json.Linq;
 using Serilog.Events;
 using Serilog.Sinks.Graylog.Extensions;
 using Serilog.Sinks.Graylog.Helpers;
+using Serilog.Sinks.Graylog.MessageBuilders.PropertyNaming;
 
 namespace Serilog.Sinks.Graylog.MessageBuilders
 {
+    /// <summary>
+    /// Message builder
+    /// </summary>
+    /// <seealso cref="Serilog.Sinks.Graylog.MessageBuilders.IMessageBuilder" />
     public class GelfMessageBuilder : IMessageBuilder
     {
-        private static readonly DateTime Epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        
         private readonly string _hostName;
+        private readonly IPropertyNamingStrategy _propertyNamingStrategy;
         private const string GelfVersion = "1.1";
         protected GraylogSinkOptions Options { get; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GelfMessageBuilder"/> class.
+        /// </summary>
+        /// <param name="hostName">Name of the host.</param>
+        /// <param name="options">The options.</param>
         public GelfMessageBuilder(string hostName, GraylogSinkOptions options)
         {
             _hostName = hostName;
             Options = options;
+            _propertyNamingStrategy = options.PropertyNamingStrategy;
         }
 
+        /// <summary>
+        /// Builds the specified log event.
+        /// </summary>
+        /// <param name="logEvent">The log event.</param>
+        /// <returns></returns>
         public virtual JObject Build(LogEvent logEvent)
         {
             string message = logEvent.RenderMessage();
-            string shortMessage = message.ShortMessage(Options.ShortMessageMaxLength);
+            string shortMessage = message.Truncate(Options.ShortMessageMaxLength);
 
             var gelfMessage = new GelfMessage
             {
@@ -33,7 +50,7 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
                 Host = _hostName,
                 ShortMessage = shortMessage,
                 FullMessage = message,
-                Timestamp = ConvertToEpoch(logEvent.Timestamp.DateTime),
+                Timestamp = logEvent.Timestamp.DateTime.ConvertToNix(),
                 Level = LogLevelMapper.GetMappedLevel(logEvent.Level),
                 StringLevel = logEvent.Level.ToString(),
                 Facility = Options.Facility
@@ -48,59 +65,49 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
             return jsonObject;
         }
 
-        private static double ConvertToEpoch(DateTime dateTime)
-        {
-            var duration = dateTime.ToUniversalTime() - Epoch;
-            return Math.Round(duration.TotalSeconds, 3, MidpointRounding.AwayFromZero);
-        }
 
-        private void AddAdditionalField(IDictionary<string, JToken> jObject, KeyValuePair<string, LogEventPropertyValue> property, string memberPath = "")
+        private void AddAdditionalField(IDictionary<string, JToken> jObject,
+                                        KeyValuePair<string, LogEventPropertyValue> property,
+                                        string memberPath = "" )
         {
+            var propertyName = _propertyNamingStrategy.GetPropertyName(property.Key);
             string key = string.IsNullOrEmpty(memberPath)
                 ? property.Key
                 : $"{memberPath}.{property.Key}";
 
-
-            var scalarValue = property.Value as ScalarValue;
-            if (scalarValue != null)
+            switch (property.Value)
             {
+                case ScalarValue scalarValue:
+                    if (key.Equals("id", StringComparison.OrdinalIgnoreCase))
+                        key = "id_";
+                    if (!key.StartsWith("_", StringComparison.OrdinalIgnoreCase))
+                        key = "_" + key;
 
-                if (key.Equals("id", StringComparison.OrdinalIgnoreCase))
-                    key = "id_";
-                if (!key.StartsWith("_", StringComparison.OrdinalIgnoreCase))
-                    key = "_" + key;
+                    if (scalarValue.Value == null)
+                    {
+                        jObject.Add(key, null);
+                        return;
+                    }
 
-                if (scalarValue.Value == null)
-                {
-                    jObject.Add(key, null);
+                    var shouldCallToString = SholdCallToString(scalarValue.Value.GetType());
+                
+                    JToken value = JToken.FromObject(shouldCallToString ? scalarValue.Value.ToString() : scalarValue.Value);
+                
+                    jObject.Add(key, value);
                     return;
-                }
-
-                var shouldCallToString = SholdCallToString(scalarValue.Value.GetType());
-                
-                JToken value = JToken.FromObject(shouldCallToString ? scalarValue.Value.ToString() : scalarValue.Value);
-                
-                jObject.Add(key, value);
-                return;
-            }
-
-            var sequenceValue = property.Value as SequenceValue;
-            if (sequenceValue != null)
-            {
-                var sequenceValuestring = RenderPropertyValue(sequenceValue);
-                jObject.Add(key, sequenceValuestring);
-                return;
-            }
-
-
-            var structureValue = property.Value as StructureValue;
-            if (structureValue != null)
-            {
-                foreach (LogEventProperty logEventProperty in structureValue.Properties)
-                {
-                    AddAdditionalField(jObject,
-                        new KeyValuePair<string, LogEventPropertyValue>(logEventProperty.Name, logEventProperty.Value), key);
-                }
+                case SequenceValue sequenceValue:
+                    var sequenceValuestring = RenderPropertyValue(sequenceValue);
+                    jObject.Add(key, sequenceValuestring);
+                    return;
+                case StructureValue structureValue:
+                    foreach (LogEventProperty logEventProperty in structureValue.Properties)
+                    {
+                        AddAdditionalField(jObject,
+                                           new KeyValuePair<string, LogEventPropertyValue>(logEventProperty.Name, logEventProperty.Value), key);
+                    }
+                    return;
+                default:
+                    return;
             }
         }
 
@@ -124,6 +131,5 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
                 return result;
             }
         }
-
     }
 }

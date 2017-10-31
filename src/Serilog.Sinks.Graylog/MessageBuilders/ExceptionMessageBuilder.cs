@@ -5,11 +5,20 @@ using Serilog.Events;
 
 namespace Serilog.Sinks.Graylog.MessageBuilders
 {
-    public class ExceptionMessageBuilder : MessageBuilders.GelfMessageBuilder
+    /// <summary>
+    /// Exception builder
+    /// </summary>
+    /// <seealso cref="Serilog.Sinks.Graylog.MessageBuilders.GelfMessageBuilder" />
+    public class ExceptionMessageBuilder : GelfMessageBuilder
     {
         private const string ExceptionDelimiter = " - ";
         private const string StackTraceDelimiter = "--- Inner exception stack trace ---";
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExceptionMessageBuilder"/> class.
+        /// </summary>
+        /// <param name="hostName">Name of the host.</param>
+        /// <param name="options">The options.</param>
         public ExceptionMessageBuilder(string hostName, GraylogSinkOptions options) : base(hostName, options)
         {
         }
@@ -54,7 +63,9 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
             string exceptionDetail = exceptionSb.ToString().Substring(0, exceptionSb.Length - ExceptionDelimiter.Length).Trim();
 
             if (stackSb.Length > 0)
+            {
                 stackDetail = stackSb.ToString().Substring(0, stackSb.Length - StackTraceDelimiter.Length - 2).Trim();
+            }
 
             return new Tuple<string, string>(exceptionDetail, stackDetail);
         }

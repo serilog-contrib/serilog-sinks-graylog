@@ -20,15 +20,16 @@ namespace Serilog.Sinks.Graylog.Tests.Helpers
         [Fact]
         public void WhenGenerateFromTimeStamp_ThenReturnsExpectedResult()
         {
-            DateTime time = DateTime.Now;
+            DateTime time = DateTime.UtcNow;
+            byte[] given = _fixture.CreateMany<byte>(10).ToArray();
+            var target = new TimestampMessageIdGenerator();
 
-            var target = new TimestampMessageIdGenerator(time);
+            byte[] actual = target.GenerateMessageId(given);
 
-            byte[] expected = BitConverter.GetBytes(time.Ticks);
+            var actticks = BitConverter.ToInt64(actual, 0);
+            var actdate = DateTime.FromBinary(actticks);
 
-            byte[] actual = target.GenerateMessageId();
-
-            actual.ShouldBeEquivalentTo(expected);
+            actdate.Should().BeCloseTo(time, 200);
         }
 
         [Fact]
@@ -36,12 +37,12 @@ namespace Serilog.Sinks.Graylog.Tests.Helpers
         {
             byte[] given = _fixture.CreateMany<byte>(10).ToArray();
 
-            var target = new Md5MessageIdGenerator(given);
+            var target = new Md5MessageIdGenerator();
 
             MD5 md5 = MD5.Create();
             var expected = md5.ComputeHash(given).Take(8).ToArray();
 
-            var actual = target.GenerateMessageId();
+            var actual = target.GenerateMessageId(given);
 
             actual.ShouldBeEquivalentTo(expected);
         }
@@ -51,7 +52,7 @@ namespace Serilog.Sinks.Graylog.Tests.Helpers
         {
             var resolver = new MessageIdGeneratorResolver();
 
-            IMessageIdGenerator actual = resolver.Resolve(MessageIdGeneratortype.Md5, null);
+            IMessageIdGenerator actual = resolver.Resolve(MessageIdGeneratortype.Md5);
 
             Assert.IsType<Md5MessageIdGenerator>(actual);
         }
@@ -61,7 +62,7 @@ namespace Serilog.Sinks.Graylog.Tests.Helpers
         {
             var resolver = new MessageIdGeneratorResolver();
 
-            IMessageIdGenerator actual = resolver.Resolve(MessageIdGeneratortype.Timestamp, null);
+            IMessageIdGenerator actual = resolver.Resolve(MessageIdGeneratortype.Timestamp);
 
             Assert.IsType<TimestampMessageIdGenerator>(actual);
         }

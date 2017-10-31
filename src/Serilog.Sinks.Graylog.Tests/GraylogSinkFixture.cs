@@ -24,7 +24,7 @@ namespace Serilog.Sinks.Graylog.Tests
             {
                 GelfConverter = gelfConverter.Object,
                 TransportType = TransportType.Udp,
-                HostnameOrAdress = "localhost"
+                HostnameOrAddress = "localhost"
             };
 
             GraylogSink target = new GraylogSink(options);
