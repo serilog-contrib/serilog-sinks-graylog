@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
 using Newtonsoft.Json.Linq;
 using Serilog.Events;
 using Serilog.Sinks.Graylog.Extensions;
@@ -12,7 +13,6 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
     {
         private static readonly DateTime Epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         private readonly string _hostName;
-        private readonly IPropertyNamingStrategy propertyNamingStrategy;
         private const string GelfVersion = "1.1";
         protected GraylogSinkOptions Options { get; }
 
@@ -20,8 +20,6 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
         {
             _hostName = hostName;
             Options = options;
-            propertyNamingStrategy = options.PropertyNamingStrategy ??
-                throw new ArgumentException("Option's Property Naming Strategy is required");
         }
 
         public virtual JObject Build(LogEvent logEvent)
@@ -56,16 +54,11 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
             return Math.Round(duration.TotalSeconds, 3, MidpointRounding.AwayFromZero);
         }
 
-        private void AddAdditionalField(
-            IDictionary<string, JToken> jObject,
-            KeyValuePair<string, LogEventPropertyValue> property,
-            string memberPath = ""
-        )
+        private void AddAdditionalField(IDictionary<string, JToken> jObject, KeyValuePair<string, LogEventPropertyValue> property, string memberPath = "")
         {
-            var propertyName = propertyNamingStrategy.GetPropertyName(property.Key);
             string key = string.IsNullOrEmpty(memberPath)
-                ? propertyName
-                : $"{memberPath}.{propertyName}";
+                ? property.Key
+                : $"{memberPath}.{property.Key}";
 
 
             var scalarValue = property.Value as ScalarValue;
@@ -84,9 +77,9 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
                 }
 
                 var shouldCallToString = SholdCallToString(scalarValue.Value.GetType());
-
+                
                 JToken value = JToken.FromObject(shouldCallToString ? scalarValue.Value.ToString() : scalarValue.Value);
-
+                
                 jObject.Add(key, value);
                 return;
             }

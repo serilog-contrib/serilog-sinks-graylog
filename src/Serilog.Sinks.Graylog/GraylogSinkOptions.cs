@@ -1,6 +1,5 @@
 ﻿using Serilog.Events;
 using Serilog.Sinks.Graylog.Helpers;
-using Serilog.Sinks.Graylog.MessageBuilders;
 using Serilog.Sinks.Graylog.Transport;
 
 namespace Serilog.Sinks.Graylog
@@ -15,8 +14,6 @@ namespace Serilog.Sinks.Graylog
         internal const LogEventLevel DefaultMinimumLogEventLevel = LevelAlias.Minimum;
         internal const int DefaultStackTraceDepth = 10;
         internal const MessageIdGeneratortype DefaultMessageGeneratorType = MessageIdGeneratortype.Timestamp;
-        internal readonly static IPropertyNamingStrategy DefaultPropertyNamingStrategy =
-            new NoOpPropertyNamingStrategy();
 
         public GraylogSinkOptions()
         {
@@ -26,7 +23,6 @@ namespace Serilog.Sinks.Graylog
             //Spec says: facility must be set by the client to "GELF" if empty
             Facility = DefaultFacility;
             StackTraceDepth = DefaultStackTraceDepth;
-            PropertyNamingStrategy = DefaultPropertyNamingStrategy;
         }
 
         /// <summary>
@@ -71,7 +67,6 @@ namespace Serilog.Sinks.Graylog
         /// You can implement another one or use default udp transport
         /// </remarks>
         public TransportType TransportType { get; set; }
-
         /// <summary>
         /// Gets or sets the gelf converter.
         /// </summary>
@@ -82,17 +77,6 @@ namespace Serilog.Sinks.Graylog
         /// You can implement another one for customize fields or use default
         /// </remarks>
         public IGelfConverter GelfConverter { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Property Naming Strategy converter.
-        /// </summary>
-        /// <value>
-        /// The Property Naming Strategy.
-        /// </value>
-        /// <remarks>
-        /// You can implement another one for property name normalization
-        /// </remarks>
-        public IPropertyNamingStrategy PropertyNamingStrategy { get; set; }
 
         /// <summary>
         /// Gets or sets the maximal length of the ShortMessage
