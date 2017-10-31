@@ -6,7 +6,7 @@ namespace Serilog.Sinks.Graylog.Helpers
 {
     public static class LogLevelMapper
     {
-        private static Dictionary<LogEventLevel, int> _logLevelMap = new Dictionary<LogEventLevel, int>
+        private static readonly Dictionary<LogEventLevel, int> LogLevelMap = new Dictionary<LogEventLevel, int>
         {
             [LogEventLevel.Verbose] = 5,
             [LogEventLevel.Debug] = 7,
@@ -34,7 +34,7 @@ namespace Serilog.Sinks.Graylog.Helpers
         /// </remarks>
         internal static int GetMappedLevel(LogEventLevel logEventLevel)
         {
-            return _logLevelMap[logEventLevel];
+            return LogLevelMap[logEventLevel];
         }
     }
 }

@@ -25,7 +25,7 @@ namespace Serilog.Sinks.Graylog.Tests.Extensions
         [InlineData("SomeTestString", "SomeTestString", 200)]
         public void WhenShortMessage_ThenResultShouldBeExpected(string given, string expected, int length)
         {
-            var actual = given.ShortMessage(length);
+            var actual = given.Truncate(length);
 
             actual.ShouldBeEquivalentTo(expected);
         }

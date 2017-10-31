@@ -25,9 +25,9 @@ namespace Serilog.Sinks.Graylog.Transport
         /// <param name="hostNameOrAddress">The host name or address.</param>
         /// <returns></returns>
         /// <exception cref="SocketException">When resolve <paramref name="hostNameOrAddress" /> trows exception.</exception>
-        public async Task<IPAddress[]> GetHostAddresses(string hostNameOrAddress)
+        public Task<IPAddress[]> GetHostAddresses(string hostNameOrAddress)
         {
-            return await Dns.GetHostAddressesAsync(hostNameOrAddress);
+            return Dns.GetHostAddressesAsync(hostNameOrAddress);
         }
     }
 }

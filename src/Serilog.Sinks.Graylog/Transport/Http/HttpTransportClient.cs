@@ -24,7 +24,7 @@ namespace Serilog.Sinks.Graylog.Transport.Http
             var content = new StringContent(message, System.Text.Encoding.UTF8, "application/json");
             var url = new Uri(_graylogUrl);
 
-            HttpResponseMessage result = await _httpClient.PostAsync(url, content);
+            HttpResponseMessage result = await _httpClient.PostAsync(url, content).ConfigureAwait(false);
             if (!result.IsSuccessStatusCode)
             {
                 throw new LoggingFailedException("Unable send log message to graylog via HTTP transport");

@@ -70,7 +70,7 @@ namespace Serilog.Sinks.Graylog
         {
             JObject json = _converter.GetGelfJson(logEvent);
 
-            Task.Factory.StartNew(() => _transport.Send(json.ToString(Newtonsoft.Json.Formatting.None))).GetAwaiter().GetResult();
+            Task.Factory.StartNew(async () => await _transport.Send(json.ToString(Newtonsoft.Json.Formatting.None)).ConfigureAwait(false)).GetAwaiter().GetResult();
         }
     }
 }

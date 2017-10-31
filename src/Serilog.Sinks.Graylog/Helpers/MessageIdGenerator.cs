@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 
@@ -6,7 +7,11 @@ namespace Serilog.Sinks.Graylog.Helpers
 {
     public interface IMessageIdGenerator
     {
-        byte[] GenerateMessageId();
+        /// <summary>
+        /// Generates the message identifier.
+        /// </summary>
+        /// <returns></returns>
+        byte[] GenerateMessageId(byte[] message);
     }
 
     public enum MessageIdGeneratortype
@@ -21,16 +26,9 @@ namespace Serilog.Sinks.Graylog.Helpers
     /// <seealso cref="Serilog.Sinks.Graylog.Helpers.IMessageIdGenerator" />
     public sealed class TimestampMessageIdGenerator : IMessageIdGenerator
     {
-        private readonly DateTime _dateToGenerateId;
-
-        public TimestampMessageIdGenerator(DateTime dateToGenerateId)
+        public byte[] GenerateMessageId(byte[] message)
         {
-            _dateToGenerateId = dateToGenerateId;
-        }
-
-        public byte[] GenerateMessageId()
-        {
-            return BitConverter.GetBytes(_dateToGenerateId.Ticks);
+            return BitConverter.GetBytes(DateTime.UtcNow.Ticks);
         }
     }
 
@@ -40,18 +38,11 @@ namespace Serilog.Sinks.Graylog.Helpers
     /// <seealso cref="Serilog.Sinks.Graylog.Helpers.IMessageIdGenerator" />
     public sealed class Md5MessageIdGenerator : IMessageIdGenerator
     {
-        private readonly byte[] _message;
-
-        public Md5MessageIdGenerator(byte[] message)
-        {
-            _message = message;
-        }
-
-        public byte[] GenerateMessageId()
+        public byte[] GenerateMessageId(byte[] message)
         {
             using (MD5 md5 = MD5.Create())
             {
-                byte[] messageHash = md5.ComputeHash(_message);
+                byte[] messageHash = md5.ComputeHash(message);
                 return messageHash.Take(8).ToArray();
             }
         }
@@ -59,24 +50,21 @@ namespace Serilog.Sinks.Graylog.Helpers
 
     public interface IMessageIdGeneratorResolver
     {
-        IMessageIdGenerator Resolve(MessageIdGeneratortype generatorType, byte[] message);
+        IMessageIdGenerator Resolve(MessageIdGeneratortype generatorType);
     }
 
     public sealed class MessageIdGeneratorResolver : IMessageIdGeneratorResolver
     {
-        /// <exception cref="ArgumentOutOfRangeException">Condition.</exception>
-        public IMessageIdGenerator Resolve(MessageIdGeneratortype generatorType, byte[] message)
+        private Dictionary<MessageIdGeneratortype, Lazy<IMessageIdGenerator>> _messageGenerators = new Dictionary<MessageIdGeneratortype, Lazy<IMessageIdGenerator>>
         {
-            switch (generatorType)
-            {
-                case MessageIdGeneratortype.Timestamp:
-                    return new TimestampMessageIdGenerator(DateTime.Now);
-                case MessageIdGeneratortype.Md5:
-                    return new Md5MessageIdGenerator(message);
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(generatorType), generatorType, null);
-            }
+            [MessageIdGeneratortype.Timestamp] = new Lazy<IMessageIdGenerator>(() => new TimestampMessageIdGenerator()),
+            [MessageIdGeneratortype.Md5] = new Lazy<IMessageIdGenerator>(() => new Md5MessageIdGenerator())
+        };
 
+        /// <exception cref="ArgumentOutOfRangeException">Condition.</exception>
+        public IMessageIdGenerator Resolve(MessageIdGeneratortype generatorType)
+        {
+            return _messageGenerators[generatorType].Value;
         }
     }
 }
