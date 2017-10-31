@@ -17,7 +17,7 @@ namespace Serilog.Sinks.Graylog
         public static LoggerConfiguration Graylog(this LoggerSinkConfiguration loggerSinkConfiguration,
             GraylogSinkOptions options)
         {
-            var sink = (ILogEventSink)new GraylogSink(options);
+            var sink = (ILogEventSink) new GraylogSink(options);
             return loggerSinkConfiguration.Sink(sink, options.MinimumLogEventLevel);
         }
 
@@ -53,7 +53,7 @@ namespace Serilog.Sinks.Graylog
                 MessageGeneratorType = messageIdGeneratorType,
                 ShortMessageMaxLength = shortMessageMaxLength,
                 StackTraceDepth = stackTraceDepth,
-                Facility = facility,
+                Facility = facility
                 PropertyNamingStrategy = GraylogSinkOptions.DefaultPropertyNamingStrategy
             };
 
