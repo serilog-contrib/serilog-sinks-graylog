@@ -29,6 +29,7 @@ namespace Serilog.Sinks.Graylog
             Facility = DefaultFacility;
             StackTraceDepth = DefaultStackTraceDepth;
             PropertyNamingStrategy = DefaultPropertyNamingStrategy;
+            ThrowOnSendError = true;
         }
 
         /// <summary>
@@ -132,5 +133,13 @@ namespace Serilog.Sinks.Graylog
         /// The property naming strategy.
         /// </value>
         public IPropertyNamingStrategy PropertyNamingStrategy { get; set; }
+
+        /// <summary>
+        /// Indicates of the Sink should propogate send errors.
+        /// </summary>
+        /// <value>
+        /// True if errors should be rethrown and propogated up.
+        /// 
+        public bool ThrowOnSendError { get; set; }
     }
 }

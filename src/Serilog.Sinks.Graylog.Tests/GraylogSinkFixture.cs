@@ -14,7 +14,7 @@ namespace Serilog.Sinks.Graylog.Tests
     {
 
         [Fact(Skip = "This test not work anymore because IMessageBuilder gets from internal dictionary")]
-        
+
         public void WhenEmit_ThenSendData()
         {
             var gelfConverter = new Mock<IGelfConverter>();
@@ -24,7 +24,7 @@ namespace Serilog.Sinks.Graylog.Tests
             {
                 GelfConverter = gelfConverter.Object,
                 TransportType = TransportType.Udp,
-                HostnameOrAddress = "localhost"
+                HostnameOrAddress = "localhost",
             };
 
             GraylogSink target = new GraylogSink(options);
@@ -43,6 +43,59 @@ namespace Serilog.Sinks.Graylog.Tests
             gelfConverter.VerifyAll();
 
             transport.Verify(c => c.Send(It.IsAny<string>()));
+        }
+
+        [Fact]
+        public void WhenError_HandlesGracefully()
+        {
+            var gelfConverter = new Mock<IGelfConverter>();
+            gelfConverter.Setup(c => c.GetGelfJson(It.IsAny<LogEvent>())).Returns(new JObject());
+
+            var transport = new Mock<ITransport>();
+            transport.Setup(c => c.Send(It.IsAny<string>())).Throws(new Exception("Send Failed"));
+
+            var options = new GraylogSinkOptions
+            {
+                GelfConverter = gelfConverter.Object,
+                TransportType = TransportType.Udp,
+                HostnameOrAddress = "localhost",
+                ThrowOnSendError = false
+            };
+
+            var sut = new GraylogSink(options, () => transport.Object);
+
+            var logevent = new LogEvent(DateTimeOffset.Now, LogEventLevel.Fatal, null,
+                new MessageTemplate("O_o", new List<MessageTemplateToken>()), new List<LogEventProperty>());
+
+            sut.Emit(logevent);
+        }
+
+        [Fact]
+        public void WhenError_RethrowsError()
+        {
+            var gelfConverter = new Mock<IGelfConverter>();
+            gelfConverter.Setup(c => c.GetGelfJson(It.IsAny<LogEvent>())).Returns(new JObject());
+
+            var transport = new Mock<ITransport>();
+            transport.Setup(c => c.Send(It.IsAny<string>())).Throws(new Exception("Send Failed"));
+
+            var options = new GraylogSinkOptions
+            {
+                GelfConverter = gelfConverter.Object,
+                TransportType = TransportType.Udp,
+                HostnameOrAddress = "localhost",
+                ThrowOnSendError = true
+            };
+
+            var sut = new GraylogSink(options, () => transport.Object);
+
+            var logevent = new LogEvent(DateTimeOffset.Now, LogEventLevel.Fatal, null,
+                new MessageTemplate("O_o", new List<MessageTemplateToken>()), new List<LogEventProperty>());
+
+            Assert.Throws<Exception>(() =>
+            {
+                sut.Emit(logevent);
+            });
         }
     }
 }

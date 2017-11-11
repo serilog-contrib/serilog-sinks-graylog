@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.CompilerServices;
 using Newtonsoft.Json.Linq;
 using Serilog.Events;
 using Serilog.Sinks.Graylog.Extensions;
@@ -18,6 +17,7 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
     {
         private readonly string _hostName;
         private const string GelfVersion = "1.1";
+        private readonly IPropertyNamingStrategy _propertyNamingStrategy;
         protected GraylogSinkOptions Options { get; }
 
         /// <summary>
@@ -27,8 +27,9 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
         /// <param name="options">The options.</param>
         public GelfMessageBuilder(string hostName, GraylogSinkOptions options)
         {
-            _hostName = hostName;
-            Options = options;
+            Options = options ?? throw new ArgumentNullException(nameof(options));
+            _hostName = string.IsNullOrWhiteSpace(hostName) ? "localhost" : hostName;
+            _propertyNamingStrategy = options.PropertyNamingStrategy ?? new NoOpPropertyNamingStrategy();
         }
 
         /// <summary>
@@ -65,9 +66,9 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
 
         private void AddAdditionalField(IDictionary<string, JToken> jObject,
                                         KeyValuePair<string, LogEventPropertyValue> property,
-                                        string memberPath = "" )
+                                        string memberPath = "")
         {
-            var propertyName = Options.PropertyNamingStrategy?.GetPropertyName(property.Key) ?? property.Key;
+            var propertyName = _propertyNamingStrategy.GetPropertyName(property.Key);
             var key = string.IsNullOrWhiteSpace(memberPath)
                 ? propertyName
                 : $"{memberPath}.{propertyName}";
@@ -87,9 +88,9 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
                     }
 
                     var shouldCallToString = SholdCallToString(scalarValue.Value.GetType());
-                
+
                     JToken value = JToken.FromObject(shouldCallToString ? scalarValue.Value.ToString() : scalarValue.Value);
-                
+
                     jObject.Add(key, value);
                     return;
                 case SequenceValue sequenceValue:
