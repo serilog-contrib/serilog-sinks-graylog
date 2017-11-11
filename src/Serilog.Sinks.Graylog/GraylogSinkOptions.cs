@@ -135,7 +135,7 @@ namespace Serilog.Sinks.Graylog
         public IPropertyNamingStrategy PropertyNamingStrategy { get; set; }
 
         /// <summary>
-        /// Indicates of the Sink should propogate send errors.
+        /// Indicates if the Sink should propogate send errors.
         /// </summary>
         /// <value>
         /// True if errors should be rethrown and propogated up.
