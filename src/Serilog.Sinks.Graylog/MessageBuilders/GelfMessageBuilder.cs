@@ -25,7 +25,7 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
         /// </summary>
         /// <param name="hostName">Name of the host.</param>
         /// <param name="options">The options.</param>
-        public GelfMessageBuilder(string hostName, GraylogSinkOptions options)
+        public GelfMessageBuilder(string hostName = null, GraylogSinkOptions options = null)
         {
             Options = options ?? new GraylogSinkOptions();
             _hostName = string.IsNullOrWhiteSpace(hostName) ? "localhost" : hostName;
