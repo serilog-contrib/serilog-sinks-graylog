@@ -20,33 +20,28 @@ namespace Serilog.Sinks.Graylog
     public class GraylogSink : ILogEventSink
     {
         private readonly IGelfConverter _converter;
-        private readonly ITransport _transport;
+        private readonly Lazy<ITransport> _transport;
         private readonly GraylogSinkOptions options;
 
         public GraylogSink(GraylogSinkOptions graylogSinkOptions)
         {
-            try
-            {
-                options = graylogSinkOptions ?? new GraylogSinkOptions();
-                _transport = MakeTransport(options);
+            options = graylogSinkOptions ?? new GraylogSinkOptions();
+            _transport = new Lazy<ITransport>(() => MakeTransport(options));
+            _converter = options.GelfConverter ?? CreateDefaultConverter(options);
+        }
 
-                var hostName = Dns.GetHostName();
-                var builders =
-                    new Dictionary<BuilderType, Lazy<IMessageBuilder>>
-                    {
-                        [BuilderType.Exception] =
-                        new Lazy<IMessageBuilder>(() => new ExceptionMessageBuilder(hostName, options)),
-                        [BuilderType.Message] =
-                        new Lazy<IMessageBuilder>(() => new GelfMessageBuilder(hostName, options))
-                    };
-
-                _converter = options.GelfConverter ?? new GelfConverter(builders);
-            }
-            catch (Exception e)
+        private static IGelfConverter CreateDefaultConverter(GraylogSinkOptions options)
+        {
+            var hostName = Dns.GetHostName();
+            var builders = new Dictionary<BuilderType, Lazy<IMessageBuilder>>
             {
-                SelfLog.WriteLine($"Unhandled initialization exception -> {e}");
-                if (options.ThrowInternalErrors) throw;
-            }
+                [BuilderType.Exception] =
+                new Lazy<IMessageBuilder>(() => new ExceptionMessageBuilder(hostName, options)),
+                [BuilderType.Message] =
+                new Lazy<IMessageBuilder>(() => new GelfMessageBuilder(hostName, options))
+            };
+
+            return new GelfConverter(builders);
         }
 
         private static ITransport MakeTransport(GraylogSinkOptions options)
@@ -54,7 +49,6 @@ namespace Serilog.Sinks.Graylog
             switch (options.TransportType)
             {
                 case SerilogTransportType.Udp:
-
                     var dns = new DnsWrapper();
                     var ipAddreses = Task.Run(() => dns.GetHostAddresses(options.HostnameOrAddress)).Result;
                     var ipAddress = ipAddreses.FirstOrDefault(c => c.AddressFamily == AddressFamily.InterNetwork);
@@ -83,12 +77,12 @@ namespace Serilog.Sinks.Graylog
             {
                 var jObject = _converter.GetGelfJson(logEvent);
                 var json = jObject.ToString(Newtonsoft.Json.Formatting.None);
-                Task.Run(async () => await _transport.Send(json).ConfigureAwait(false))
+                Task.Run(async () => await _transport.Value.Send(json).ConfigureAwait(false))
                     .GetAwaiter().GetResult();
             }
             catch (Exception e)
             {
-                SelfLog.WriteLine($"Unhandled emit exception -> {e}");
+                SelfLog.WriteLine("Exception while emitting from {0}: {1}", this, e);
                 if (options.ThrowInternalErrors) throw;
             }
         }
