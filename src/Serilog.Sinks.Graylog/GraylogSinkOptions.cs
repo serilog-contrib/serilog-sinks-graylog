@@ -16,7 +16,9 @@ namespace Serilog.Sinks.Graylog
         internal const LogEventLevel DefaultMinimumLogEventLevel = LevelAlias.Minimum;
         internal const int DefaultStackTraceDepth = 10;
         internal const MessageIdGeneratortype DefaultMessageGeneratorType = MessageIdGeneratortype.Timestamp;
-        internal static readonly IPropertyNamingStrategy DefaultPropertyNamingStrategy = new NoOpPropertyNamingStrategy();
+
+        internal static readonly IPropertyNamingStrategy DefaultPropertyNamingStrategy =
+            new NoOpPropertyNamingStrategy();
 
         public GraylogSinkOptions()
         {
@@ -84,6 +86,7 @@ namespace Serilog.Sinks.Graylog
         /// You can implement another one or use default udp transport
         /// </remarks>
         public TransportType TransportType { get; set; }
+
         /// <summary>
         /// Gets or sets the gelf converter.
         /// </summary>
@@ -129,5 +132,7 @@ namespace Serilog.Sinks.Graylog
         /// The property naming strategy.
         /// </value>
         public IPropertyNamingStrategy PropertyNamingStrategy { get; set; }
+
+        public bool ThrowInternalErrors { get; set; }
     }
 }

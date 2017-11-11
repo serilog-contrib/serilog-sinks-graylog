@@ -16,7 +16,8 @@ namespace Serilog.Sinks.Graylog
         /// <param name="options">The options.</param>
         /// <returns></returns>
         public static LoggerConfiguration Graylog(this LoggerSinkConfiguration loggerSinkConfiguration,
-            GraylogSinkOptions options)
+            GraylogSinkOptions options
+        )
         {
             var sink = (ILogEventSink) new GraylogSink(options);
             return loggerSinkConfiguration.Sink(sink, options.MinimumLogEventLevel);
@@ -36,14 +37,14 @@ namespace Serilog.Sinks.Graylog
         /// <param name="facility">The facility.</param>
         /// <returns></returns>
         public static LoggerConfiguration Graylog(this LoggerSinkConfiguration loggerSinkConfiguration,
-                                                  string hostnameOrAddress,
-                                                  int port,
-                                                  TransportType transportType,
-                                                  LogEventLevel minimumLogEventLevel = LevelAlias.Minimum,
-                                                  MessageIdGeneratortype messageIdGeneratorType = GraylogSinkOptions.DefaultMessageGeneratorType,
-                                                  int shortMessageMaxLength = GraylogSinkOptions.DefaultShortMessageMaxLength,
-                                                  int stackTraceDepth = GraylogSinkOptions.DefaultStackTraceDepth,
-                                                  string facility = GraylogSinkOptions.DefaultFacility)
+            string hostnameOrAddress,
+            int port,
+            TransportType transportType,
+            LogEventLevel minimumLogEventLevel = LevelAlias.Minimum,
+            MessageIdGeneratortype messageIdGeneratorType = GraylogSinkOptions.DefaultMessageGeneratorType,
+            int shortMessageMaxLength = GraylogSinkOptions.DefaultShortMessageMaxLength,
+            int stackTraceDepth = GraylogSinkOptions.DefaultStackTraceDepth,
+            string facility = GraylogSinkOptions.DefaultFacility)
         {
             var options = new GraylogSinkOptions
             {
