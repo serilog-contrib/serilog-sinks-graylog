@@ -4,20 +4,20 @@ using Serilog.Core;
 using Serilog.Debugging;
 using Serilog.Events;
 using Serilog.Sinks.Graylog.Transport;
-
+using Serilog.Sinks.Graylog.Helpers;
 
 namespace Serilog.Sinks.Graylog
 {
     public class GraylogSink : ILogEventSink
     {
         private readonly IGelfConverter _converter;
-        private readonly Lazy<ITransport> _transport;
+        private readonly LazyRetry<ITransport> _transport;
         private readonly GraylogSinkOptions options;
 
         public GraylogSink(GraylogSinkOptions graylogSinkOptions, Func<ITransport> transportFactory = null)
         {
             options = graylogSinkOptions ?? new GraylogSinkOptions();
-            _transport = new Lazy<ITransport>(transportFactory ?? TransportFactory.FromOptions(options));
+            _transport = new LazyRetry<ITransport>(transportFactory ?? TransportFactory.FromOptions(options));
             _converter = options.GelfConverter ?? GelfConverterFactory.FromOptions(options).Invoke();
         }
 
