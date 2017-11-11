@@ -16,9 +16,7 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
     /// <seealso cref="Serilog.Sinks.Graylog.MessageBuilders.IMessageBuilder" />
     public class GelfMessageBuilder : IMessageBuilder
     {
-        
         private readonly string _hostName;
-        private readonly IPropertyNamingStrategy _propertyNamingStrategy;
         private const string GelfVersion = "1.1";
         protected GraylogSinkOptions Options { get; }
 
@@ -31,7 +29,6 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
         {
             _hostName = hostName;
             Options = options;
-            _propertyNamingStrategy = options.PropertyNamingStrategy;
         }
 
         /// <summary>
@@ -70,10 +67,10 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
                                         KeyValuePair<string, LogEventPropertyValue> property,
                                         string memberPath = "" )
         {
-            var propertyName = _propertyNamingStrategy.GetPropertyName(property.Key);
-            string key = string.IsNullOrEmpty(memberPath)
-                ? property.Key
-                : $"{memberPath}.{property.Key}";
+            var propertyName = Options.PropertyNamingStrategy?.GetPropertyName(property.Key) ?? property.Key;
+            var key = string.IsNullOrWhiteSpace(memberPath)
+                ? propertyName
+                : $"{memberPath}.{propertyName}";
 
             switch (property.Value)
             {
