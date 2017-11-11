@@ -27,7 +27,7 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
         /// <param name="options">The options.</param>
         public GelfMessageBuilder(string hostName, GraylogSinkOptions options)
         {
-            Options = options ?? throw new ArgumentNullException(nameof(options));
+            Options = options ?? new GraylogSinkOptions();
             _hostName = string.IsNullOrWhiteSpace(hostName) ? "localhost" : hostName;
             _propertyNamingStrategy = options.PropertyNamingStrategy ?? new NoOpPropertyNamingStrategy();
         }
