@@ -83,7 +83,6 @@ namespace Serilog.Sinks.Graylog
             catch (Exception e)
             {
                 SelfLog.WriteLine("Exception while emitting from {0}: {1}", this, e);
-                if (options.ThrowInternalErrors) throw;
             }
         }
     }

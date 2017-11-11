@@ -132,7 +132,5 @@ namespace Serilog.Sinks.Graylog
         /// The property naming strategy.
         /// </value>
         public IPropertyNamingStrategy PropertyNamingStrategy { get; set; }
-
-        public bool ThrowInternalErrors { get; set; }
     }
 }
