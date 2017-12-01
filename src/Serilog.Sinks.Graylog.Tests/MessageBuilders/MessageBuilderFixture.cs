@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using FluentAssertions;
 using Newtonsoft.Json;
 using Serilog.Events;
 using Serilog.Parsing;
@@ -23,9 +22,9 @@ namespace Serilog.Sinks.Graylog.Tests.MessageBuilders
             {
                 facility = "GELF",
                 full_message = "abcdef\"zxc\"",
-                host= "localhost",
+                host = "localhost",
                 level = 2,
-                short_message= "abcdef\"zxc\"",
+                short_message = "abcdef\"zxc\"",
                 timestamp = date.DateTime,
                 version = "1.1",
                 _stringLevel = "Information",

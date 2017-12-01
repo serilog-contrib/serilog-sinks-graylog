@@ -16,7 +16,9 @@ namespace Serilog.Sinks.Graylog
         internal const LogEventLevel DefaultMinimumLogEventLevel = LevelAlias.Minimum;
         internal const int DefaultStackTraceDepth = 10;
         internal const MessageIdGeneratortype DefaultMessageGeneratorType = MessageIdGeneratortype.Timestamp;
-        internal static readonly IPropertyNamingStrategy DefaultPropertyNamingStrategy = new NoOpPropertyNamingStrategy();
+
+        internal static readonly IPropertyNamingStrategy DefaultPropertyNamingStrategy =
+            new NoOpPropertyNamingStrategy();
 
         public GraylogSinkOptions()
         {
@@ -27,6 +29,7 @@ namespace Serilog.Sinks.Graylog
             Facility = DefaultFacility;
             StackTraceDepth = DefaultStackTraceDepth;
             PropertyNamingStrategy = DefaultPropertyNamingStrategy;
+            ThrowOnSendError = true;
         }
 
         /// <summary>
@@ -84,6 +87,7 @@ namespace Serilog.Sinks.Graylog
         /// You can implement another one or use default udp transport
         /// </remarks>
         public TransportType TransportType { get; set; }
+
         /// <summary>
         /// Gets or sets the gelf converter.
         /// </summary>
@@ -129,5 +133,13 @@ namespace Serilog.Sinks.Graylog
         /// The property naming strategy.
         /// </value>
         public IPropertyNamingStrategy PropertyNamingStrategy { get; set; }
+
+        /// <summary>
+        /// Indicates if the Sink should propogate send errors.
+        /// </summary>
+        /// <value>
+        /// True if errors should be rethrown and propogated up.
+        /// 
+        public bool ThrowOnSendError { get; set; }
     }
 }

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Text;
 using Ploeh.AutoFixture;
 using Serilog.Events;
 using Xunit;
-using Serilog.Sinks;
 using Serilog.Sinks.Graylog.Helpers;
 using Serilog.Sinks.Graylog.Tests.ComplexIntegrationTest;
 using Serilog.Sinks.Graylog.Transport;
@@ -26,7 +24,7 @@ namespace Serilog.Sinks.Graylog.Tests
                 MinimumLogEventLevel = LogEventLevel.Information,
                 Facility = "VolkovTestFacility",
                 HostnameOrAddress = "logs.aeroclub.int",
-                Port = 12201
+                Port = 12201,
             });
 
             var logger = loggerConfig.CreateLogger();
@@ -68,7 +66,7 @@ namespace Serilog.Sinks.Graylog.Tests
                 MessageGeneratorType = MessageIdGeneratortype.Timestamp,
                 Facility = "VolkovTestFacility",
                 HostnameOrAddress = "logs.aeroclub.int",
-                Port = 12201
+                Port = 12201,
             });
 
             var logger = loggerConfig.CreateLogger();
@@ -89,7 +87,7 @@ namespace Serilog.Sinks.Graylog.Tests
                 TransportType = TransportType.Udp,
                 Facility = "VolkovTestFacility",
                 HostnameOrAddress = "logs.aeroclub.int",
-                Port = 12201
+                Port = 12201,
             });
 
             var test = new TestClass
