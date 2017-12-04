@@ -13,7 +13,7 @@ namespace Serilog.Sinks.Graylog
         private readonly LazyRetry<ITransport> transport;
 
         public GraylogSink(GraylogSinkOptions options)
-            : base(options.BatchPostingLimit, options.Period)
+            : base(options.BatchSizeLimit, options.Period)
         {
             transport = new LazyRetry<ITransport>(() => TransportFactory.FromOptions(options));
             converter = options.GelfConverter ?? GelfConverterFactory.FromOptions(options);

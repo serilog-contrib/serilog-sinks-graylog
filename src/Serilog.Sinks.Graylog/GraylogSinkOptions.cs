@@ -32,7 +32,7 @@ namespace Serilog.Sinks.Graylog
             StackTraceDepth = DefaultStackTraceDepth;
             PropertyNamingStrategy = DefaultPropertyNamingStrategy;
             Period = DefaultPeriod;
-            BatchPostingLimit = DefaultBatchPostingLimit;
+            BatchSizeLimit = DefaultBatchPostingLimit;
             MessageGeneratorType = DefaultMessageGeneratorType;
             Port = DefaultPort;
         }
@@ -126,8 +126,20 @@ namespace Serilog.Sinks.Graylog
         /// </value>
         public IPropertyNamingStrategy PropertyNamingStrategy { get; set; }
 
-        public int BatchPostingLimit { get; set; }
+        /// <summary>
+        /// Gets or sets the Sink Batch Posting Limit
+        /// </summary>
+        /// <value>
+        /// The Sink's Batch Posting Limit
+        /// </value>
+        public int BatchSizeLimit { get; set; }
 
+        /// <summary>
+        /// Gets or sets the Batch Send Interval
+        /// </summary>
+        /// <value>
+        /// The Sink's Send Interval
+        /// </value>
         public TimeSpan Period { get; set; }
     }
 }

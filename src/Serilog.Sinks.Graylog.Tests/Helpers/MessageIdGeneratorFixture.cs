@@ -10,18 +10,18 @@ namespace Serilog.Sinks.Graylog.Tests.Helpers
 {
     public class MessageIdGeneratorFixture
     {
-        private readonly Fixture _fixture;
+        private readonly Fixture fixture;
 
         public MessageIdGeneratorFixture()
         {
-            _fixture = new Fixture();
+            fixture = new Fixture();
         }
 
         [Fact]
         public void WhenGenerateFromTimeStamp_ThenReturnsExpectedResult()
         {
             var time = DateTime.UtcNow;
-            var given = _fixture.CreateMany<byte>(10).ToArray();
+            var given = fixture.CreateMany<byte>(10).ToArray();
             var target = new TimestampMessageIdGenerator();
 
             var actual = target.GenerateMessageId(given);
@@ -35,7 +35,7 @@ namespace Serilog.Sinks.Graylog.Tests.Helpers
         [Fact]
         public void WhenGenerateTimestampFromMd5_ThenReturnsExpected()
         {
-            var given = _fixture.CreateMany<byte>(10).ToArray();
+            var given = fixture.CreateMany<byte>(10).ToArray();
 
             var target = new Md5MessageIdGenerator();
 
