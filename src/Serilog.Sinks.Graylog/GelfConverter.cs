@@ -13,18 +13,18 @@ namespace Serilog.Sinks.Graylog
 
     public class GelfConverter : IGelfConverter
     {
-        private readonly IDictionary<BuilderType, Lazy<IMessageBuilder>> _messageBuilders;
+        private readonly IDictionary<BuilderType, Lazy<IMessageBuilder>> messageBuilders;
 
         public GelfConverter(IDictionary<BuilderType, Lazy<IMessageBuilder>> messageBuilders)
         {
-            _messageBuilders = messageBuilders;
+            this.messageBuilders = messageBuilders;
         }
 
         public JObject GetGelfJson(LogEvent logEvent)
         {
-            IMessageBuilder builder = logEvent.Exception != null
-                ? _messageBuilders[BuilderType.Exception].Value
-                : _messageBuilders[BuilderType.Message].Value;
+            var builder = logEvent.Exception != null
+                ? messageBuilders[BuilderType.Exception].Value
+                : messageBuilders[BuilderType.Message].Value;
 
             return builder.Build(logEvent);
         }

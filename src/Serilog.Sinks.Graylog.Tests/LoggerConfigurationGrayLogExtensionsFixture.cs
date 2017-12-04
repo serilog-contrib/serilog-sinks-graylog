@@ -17,7 +17,7 @@ namespace Serilog.Sinks.Graylog.Tests
                 MinimumLogEventLevel = LogEventLevel.Information,
                 Facility = "VolkovTestFacility",
                 HostnameOrAddress = "localhost",
-                Port = 12201,
+                Port = 12201
             });
 
             var logger = loggerConfig.CreateLogger();

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Serilog.Events;
 using Serilog.Parsing;
-using Xunit;
 using Serilog.Sinks.Graylog.MessageBuilders;
+using Xunit;
 
 namespace Serilog.Sinks.Graylog.Tests.MessageBuilders
 {
@@ -32,10 +32,10 @@ namespace Serilog.Sinks.Graylog.Tests.MessageBuilders
                 _id_ = "\"asd\""
             };
 
-            LogEvent logEvent = LogEventSource.GetSimpleLogEvent(date);
+            var logEvent = LogEventSource.GetSimpleLogEvent(date);
 
-            string expectedString = JsonConvert.SerializeObject(expected, Newtonsoft.Json.Formatting.None);
-            string actual = target.Build(logEvent).ToString(Newtonsoft.Json.Formatting.None);
+            var expectedString = JsonConvert.SerializeObject(expected, Newtonsoft.Json.Formatting.None);
+            var actual = target.Build(logEvent).ToString(Newtonsoft.Json.Formatting.None);
             //actual.ShouldBeEquivalentTo(expectedString);
         }
 
@@ -46,11 +46,11 @@ namespace Serilog.Sinks.Graylog.Tests.MessageBuilders
             var options = new GraylogSinkOptions();
             var target = new GelfMessageBuilder("localhost", options);
 
-            DateTimeOffset date = DateTimeOffset.Now;
+            var date = DateTimeOffset.Now;
 
-            LogEvent logEvent = LogEventSource.GetComplexEvent(date);
+            var logEvent = LogEventSource.GetComplexEvent(date);
 
-            string actual = target.Build(logEvent).ToString(Newtonsoft.Json.Formatting.None);
+            var actual = target.Build(logEvent).ToString(Newtonsoft.Json.Formatting.None);
         }
 
 
@@ -77,7 +77,7 @@ namespace Serilog.Sinks.Graylog.Tests.MessageBuilders
                             new StructureValue(new List<LogEventProperty>
                             {
                                 new LogEventProperty("id", new ScalarValue(1)),
-                                new LogEventProperty("_TestProp", new ScalarValue(3)),
+                                new LogEventProperty("_TestProp", new ScalarValue(3))
                             }, "TypeTag"))
                     });
             });

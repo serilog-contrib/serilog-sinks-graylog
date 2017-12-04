@@ -20,7 +20,7 @@ namespace Serilog.Sinks.Graylog.Tests
                 [BuilderType.Message] = new Lazy<IMessageBuilder>(() => messageBuilder.Object)
             };
 
-            GelfConverter target = new GelfConverter(messageBuilders);
+            var target = new GelfConverter(messageBuilders);
 
             var simpleEvent = LogEventSource.GetSimpleLogEvent(DateTimeOffset.Now);
 
@@ -42,7 +42,7 @@ namespace Serilog.Sinks.Graylog.Tests
                 [BuilderType.Message] = new Lazy<IMessageBuilder>(() => messageBuilder.Object)
             };
 
-            GelfConverter target = new GelfConverter(messageBuilders);
+            var target = new GelfConverter(messageBuilders);
 
             var simpleEvent = LogEventSource.GetErrorEvent(DateTimeOffset.Now);
 

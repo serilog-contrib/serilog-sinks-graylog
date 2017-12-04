@@ -11,13 +11,16 @@ namespace Serilog.Sinks.Graylog
     /// </summary>
     public class GraylogSinkOptions
     {
-        internal const string DefaultFacility = "GELF";
-        internal const int DefaultShortMessageMaxLength = 500;
-        internal const LogEventLevel DefaultMinimumLogEventLevel = LevelAlias.Minimum;
-        internal const int DefaultStackTraceDepth = 10;
-        internal const MessageIdGeneratortype DefaultMessageGeneratorType = MessageIdGeneratortype.Timestamp;
+        public const int DefaultBatchPostingLimit = 50;
+        public static readonly TimeSpan DefaultPeriod = TimeSpan.FromSeconds(2);
+        public const string DefaultFacility = "GELF";
+        public const int DefaultShortMessageMaxLength = 500;
+        public const LogEventLevel DefaultMinimumLogEventLevel = LevelAlias.Minimum;
+        public const int DefaultStackTraceDepth = 10;
+        public const MessageIdGeneratortype DefaultMessageGeneratorType = MessageIdGeneratortype.Timestamp;
+        public const int DefaultPort = 9200;
 
-        internal static readonly IPropertyNamingStrategy DefaultPropertyNamingStrategy =
+        private static readonly IPropertyNamingStrategy DefaultPropertyNamingStrategy =
             new NoOpPropertyNamingStrategy();
 
         public GraylogSinkOptions()
@@ -25,11 +28,13 @@ namespace Serilog.Sinks.Graylog
             MessageGeneratorType = MessageIdGeneratortype.Timestamp;
             ShortMessageMaxLength = DefaultShortMessageMaxLength;
             MinimumLogEventLevel = DefaultMinimumLogEventLevel;
-            //Spec says: facility must be set by the client to "GELF" if empty
             Facility = DefaultFacility;
             StackTraceDepth = DefaultStackTraceDepth;
             PropertyNamingStrategy = DefaultPropertyNamingStrategy;
-            ThrowOnSendError = true;
+            Period = DefaultPeriod;
+            BatchPostingLimit = DefaultBatchPostingLimit;
+            MessageGeneratorType = DefaultMessageGeneratorType;
+            Port = DefaultPort;
         }
 
         /// <summary>
@@ -47,19 +52,6 @@ namespace Serilog.Sinks.Graylog
         /// The hostname or address.
         /// </value>
         public string HostnameOrAddress { get; set; }
-
-        /// <summary>
-        /// Gets or sets the hostname or address of graylog server.
-        /// </summary>
-        /// <value>
-        /// The hostname or address.
-        /// </value>
-        [Obsolete]
-        public string HostnameOrAdress
-        {
-            get => HostnameOrAddress;
-            set => HostnameOrAddress = value;
-        }
 
         /// <summary>
         /// Gets or sets the facility name.
@@ -134,12 +126,8 @@ namespace Serilog.Sinks.Graylog
         /// </value>
         public IPropertyNamingStrategy PropertyNamingStrategy { get; set; }
 
-        /// <summary>
-        /// Indicates if the Sink should propogate send errors.
-        /// </summary>
-        /// <value>
-        /// True if errors should be rethrown and propogated up.
-        /// 
-        public bool ThrowOnSendError { get; set; }
+        public int BatchPostingLimit { get; set; }
+
+        public TimeSpan Period { get; set; }
     }
 }

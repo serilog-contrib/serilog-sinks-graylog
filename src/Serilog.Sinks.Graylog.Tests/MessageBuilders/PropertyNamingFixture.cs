@@ -1,9 +1,9 @@
-﻿using Serilog.Events;
+﻿using System;
+using System.Collections.Generic;
+using Serilog.Events;
 using Serilog.Parsing;
 using Serilog.Sinks.Graylog.MessageBuilders;
 using Serilog.Sinks.Graylog.MessageBuilders.PropertyNaming;
-using System;
-using System.Collections.Generic;
 using Xunit;
 
 namespace Serilog.Sinks.Graylog.Tests.MessageBuilders
@@ -31,7 +31,7 @@ namespace Serilog.Sinks.Graylog.Tests.MessageBuilders
         {
             var sut = new GelfMessageBuilder("localhost", new GraylogSinkOptions
             {
-                PropertyNamingStrategy = new CamelCasePropertyNamingStrategy(),
+                PropertyNamingStrategy = new CamelCasePropertyNamingStrategy()
             });
 
             var @event = new LogEvent(DateTimeOffset.Now, LogEventLevel.Information, null,
@@ -60,7 +60,7 @@ namespace Serilog.Sinks.Graylog.Tests.MessageBuilders
         {
             var sut = new GelfMessageBuilder("localhost", new GraylogSinkOptions
             {
-                PropertyNamingStrategy = new NoOpPropertyNamingStrategy(),
+                PropertyNamingStrategy = new NoOpPropertyNamingStrategy()
             });
 
             var @event = new LogEvent(DateTimeOffset.Now, LogEventLevel.Information, null,

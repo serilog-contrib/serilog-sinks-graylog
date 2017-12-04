@@ -47,7 +47,7 @@ namespace Serilog.Sinks.Graylog.Tests
                         new StructureValue(new List<LogEventProperty>
                         {
                             new LogEventProperty("id", new ScalarValue(1)),
-                            new LogEventProperty("_TestProp", new ScalarValue(3)),
+                            new LogEventProperty("_TestProp", new ScalarValue(3))
                         }, "TypeTag"))
                 });
             return logEvent;

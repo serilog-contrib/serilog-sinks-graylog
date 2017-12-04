@@ -1,39 +1,40 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Serilog.Core;
-using Serilog.Debugging;
 using Serilog.Events;
-using Serilog.Sinks.Graylog.Transport;
 using Serilog.Sinks.Graylog.Helpers;
+using Serilog.Sinks.Graylog.Transport;
+using Serilog.Sinks.PeriodicBatching;
 
 namespace Serilog.Sinks.Graylog
 {
-    public class GraylogSink : ILogEventSink
+    public class GraylogSink : PeriodicBatchingSink
     {
-        private readonly IGelfConverter _converter;
-        private readonly LazyRetry<ITransport> _transport;
-        private readonly GraylogSinkOptions options;
+        private readonly IGelfConverter converter;
+        private readonly LazyRetry<ITransport> transport;
 
-        public GraylogSink(GraylogSinkOptions graylogSinkOptions, Func<ITransport> transportFactory = null)
+        public GraylogSink(GraylogSinkOptions options)
+            : base(options.BatchPostingLimit, options.Period)
         {
-            options = graylogSinkOptions ?? new GraylogSinkOptions();
-            _transport = new LazyRetry<ITransport>(transportFactory ?? TransportFactory.FromOptions(options));
-            _converter = options.GelfConverter ?? GelfConverterFactory.FromOptions(options).Invoke();
+            transport = new LazyRetry<ITransport>(() => TransportFactory.FromOptions(options));
+            converter = options.GelfConverter ?? GelfConverterFactory.FromOptions(options);
         }
 
-        public void Emit(LogEvent logEvent)
+        protected override async Task EmitBatchAsync(IEnumerable<LogEvent> events)
         {
-            try
+            foreach (var @event in events)
             {
-                var jObject = _converter.GetGelfJson(logEvent);
+                var jObject = converter.GetGelfJson(@event);
                 var json = jObject.ToString(Newtonsoft.Json.Formatting.None);
-                Task.Run(async () => await _transport.Value.Send(json).ConfigureAwait(false))
-                    .GetAwaiter().GetResult();
+                await transport.Value.Send(json);
             }
-            catch (Exception e)
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (transport.Created)
             {
-                SelfLog.WriteLine("Exception while emitting from {0}: {1}", this, e);
-                if (options.ThrowOnSendError) throw;
+                transport.Value.Dispose();
             }
         }
     }

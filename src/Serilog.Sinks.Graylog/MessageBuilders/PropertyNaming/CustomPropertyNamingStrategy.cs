@@ -8,7 +8,7 @@ namespace Serilog.Sinks.Graylog.MessageBuilders.PropertyNaming
     /// <seealso cref="Serilog.Sinks.Graylog.MessageBuilders.PropertyNaming.IPropertyNamingStrategy" />
     public class CustomPropertyNamingStrategy : IPropertyNamingStrategy
     {
-        private readonly Func<string, string> _customConverter;
+        private readonly Func<string, string> customConverter;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomPropertyNamingStrategy"/> class.
@@ -16,7 +16,7 @@ namespace Serilog.Sinks.Graylog.MessageBuilders.PropertyNaming
         /// <param name="customConverter">The custom converter.</param>
         public CustomPropertyNamingStrategy(Func<string, string> customConverter)
         {
-            _customConverter = customConverter;
+            this.customConverter = customConverter;
         }
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace Serilog.Sinks.Graylog.MessageBuilders.PropertyNaming
         /// <returns></returns>
         public string GetPropertyName(string property)
         {
-            return _customConverter(property);
+            return customConverter(property);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Serilog.Sinks.Graylog.Extensions
             var resultStream = new MemoryStream();
             using (var gzipStream = new GZipStream(resultStream, CompressionMode.Compress))
             {
-                byte[] messageBytes = Encoding.UTF8.GetBytes(source);
+                var messageBytes = Encoding.UTF8.GetBytes(source);
                 gzipStream.Write(messageBytes, 0, messageBytes.Length);
             }
             return resultStream.ToArray();

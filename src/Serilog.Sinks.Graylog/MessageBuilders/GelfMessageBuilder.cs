@@ -15,9 +15,9 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
     /// <seealso cref="Serilog.Sinks.Graylog.MessageBuilders.IMessageBuilder" />
     public class GelfMessageBuilder : IMessageBuilder
     {
-        private readonly string _hostName;
+        private readonly string hostName;
         private const string GelfVersion = "1.1";
-        private readonly IPropertyNamingStrategy _propertyNamingStrategy;
+        private readonly IPropertyNamingStrategy propertyNamingStrategy;
         protected GraylogSinkOptions Options { get; }
 
         /// <summary>
@@ -28,8 +28,8 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
         public GelfMessageBuilder(string hostName = null, GraylogSinkOptions options = null)
         {
             Options = options ?? new GraylogSinkOptions();
-            _hostName = string.IsNullOrWhiteSpace(hostName) ? "localhost" : hostName;
-            _propertyNamingStrategy = options.PropertyNamingStrategy ?? new NoOpPropertyNamingStrategy();
+            this.hostName = string.IsNullOrWhiteSpace(hostName) ? "localhost" : hostName;
+            propertyNamingStrategy = options.PropertyNamingStrategy ?? new NoOpPropertyNamingStrategy();
         }
 
         /// <summary>
@@ -39,13 +39,13 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
         /// <returns></returns>
         public virtual JObject Build(LogEvent logEvent)
         {
-            string message = logEvent.RenderMessage();
-            string shortMessage = message.Truncate(Options.ShortMessageMaxLength);
+            var message = logEvent.RenderMessage();
+            var shortMessage = message.Truncate(Options.ShortMessageMaxLength);
 
             var gelfMessage = new GelfMessage
             {
                 Version = GelfVersion,
-                Host = _hostName,
+                Host = hostName,
                 ShortMessage = shortMessage,
                 FullMessage = message,
                 Timestamp = logEvent.Timestamp.DateTime.ConvertToNix(),
@@ -54,8 +54,8 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
                 Facility = Options.Facility
             };
 
-            JObject jsonObject = JObject.FromObject(gelfMessage);
-            foreach (KeyValuePair<string, LogEventPropertyValue> property in logEvent.Properties)
+            var jsonObject = JObject.FromObject(gelfMessage);
+            foreach (var property in logEvent.Properties)
             {
                 AddAdditionalField(jsonObject, property);
             }
@@ -68,7 +68,7 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
                                         KeyValuePair<string, LogEventPropertyValue> property,
                                         string memberPath = "")
         {
-            var propertyName = _propertyNamingStrategy.GetPropertyName(property.Key);
+            var propertyName = propertyNamingStrategy.GetPropertyName(property.Key);
             var key = string.IsNullOrWhiteSpace(memberPath)
                 ? propertyName
                 : $"{memberPath}.{propertyName}";
@@ -89,7 +89,7 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
 
                     var shouldCallToString = SholdCallToString(scalarValue.Value.GetType());
 
-                    JToken value = JToken.FromObject(shouldCallToString ? scalarValue.Value.ToString() : scalarValue.Value);
+                    var value = JToken.FromObject(shouldCallToString ? scalarValue.Value.ToString() : scalarValue.Value);
 
                     jObject.Add(key, value);
                     return;
@@ -98,7 +98,7 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
                     jObject.Add(key, sequenceValuestring);
                     return;
                 case StructureValue structureValue:
-                    foreach (LogEventProperty logEventProperty in structureValue.Properties)
+                    foreach (var logEventProperty in structureValue.Properties)
                     {
                         AddAdditionalField(jObject,
                                            new KeyValuePair<string, LogEventPropertyValue>(logEventProperty.Name, logEventProperty.Value), key);
@@ -111,7 +111,7 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
 
         private bool SholdCallToString(Type type)
         {
-            bool isNumeric = type.IsNumericType();
+            var isNumeric = type.IsNumericType();
             if (type == typeof(DateTime) || isNumeric)
             {
                 return false;
@@ -124,7 +124,7 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
             using (TextWriter tw = new StringWriter())
             {
                 propertyValue.Render(tw);
-                string result = tw.ToString();
+                var result = tw.ToString();
                 result = result.Trim('"');
                 return result;
             }

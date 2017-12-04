@@ -1,7 +1,5 @@
 ﻿using System;
 using FluentAssertions;
-using Newtonsoft.Json.Linq;
-using Serilog.Events;
 using Serilog.Sinks.Graylog.MessageBuilders;
 using Xunit;
 
@@ -14,7 +12,7 @@ namespace Serilog.Sinks.Graylog.Tests.MessageBuilders
         {
             var options = new GraylogSinkOptions();
 
-            ExceptionMessageBuilder exceptionBuilder = new ExceptionMessageBuilder("localhost", options);
+            var exceptionBuilder = new ExceptionMessageBuilder("localhost", options);
 
             Exception testExc = null;
 
@@ -35,10 +33,10 @@ namespace Serilog.Sinks.Graylog.Tests.MessageBuilders
             }
 
 
-            DateTimeOffset date = DateTimeOffset.Now;
-            LogEvent logEvent = LogEventSource.GetExceptionLogEvent(date, testExc);
+            var date = DateTimeOffset.Now;
+            var logEvent = LogEventSource.GetExceptionLogEvent(date, testExc);
 
-            JObject obj = exceptionBuilder.Build(logEvent);
+            var obj = exceptionBuilder.Build(logEvent);
 
             obj.Should().NotBeNull();
         }

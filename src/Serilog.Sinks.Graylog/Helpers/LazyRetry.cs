@@ -4,14 +4,16 @@ namespace Serilog.Sinks.Graylog.Helpers
 {
     public class LazyRetry<T>
     {
-        private readonly Func<T> _valueFactory;
-        private Lazy<T> _lazy;
+        private readonly Func<T> valueFactory;
+        private Lazy<T> lazy;
 
         public LazyRetry(Func<T> valueFactory)
         {
-            _valueFactory = valueFactory;
-            _lazy = new Lazy<T>(valueFactory);
+            this.valueFactory = valueFactory;
+            lazy = new Lazy<T>(valueFactory);
         }
+
+        public bool Created { get; private set; }
 
         public T Value
         {
@@ -19,11 +21,13 @@ namespace Serilog.Sinks.Graylog.Helpers
             {
                 try
                 {
-                    return _lazy.Value;
+                    var result = lazy.Value;
+                    Created = true;
+                    return result;
                 }
                 catch (Exception)
                 {
-                    _lazy = new Lazy<T>(_valueFactory);
+                    lazy = new Lazy<T>(valueFactory);
                     throw;
                 }
             }

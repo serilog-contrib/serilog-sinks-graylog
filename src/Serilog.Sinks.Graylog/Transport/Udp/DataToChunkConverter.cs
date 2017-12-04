@@ -23,8 +23,8 @@ namespace Serilog.Sinks.Graylog.Transport.Udp
     /// <inheritdoc/>
     public sealed class DataToChunkConverter : IDataToChunkConverter
     {
-        private readonly ChunkSettings _settings;
-        private readonly IMessageIdGeneratorResolver _generatorResolver;
+        private readonly ChunkSettings settings;
+        private readonly IMessageIdGeneratorResolver generatorResolver;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataToChunkConverter"/> class.
@@ -33,8 +33,8 @@ namespace Serilog.Sinks.Graylog.Transport.Udp
         /// <param name="generatorResolver">The generator resolver.</param>
         public DataToChunkConverter(ChunkSettings settings, IMessageIdGeneratorResolver generatorResolver)
         {
-            _settings = settings;
-            _generatorResolver = generatorResolver;
+            this.settings = settings;
+            this.generatorResolver = generatorResolver;
         }
 
         /// <summary>
@@ -46,28 +46,28 @@ namespace Serilog.Sinks.Graylog.Transport.Udp
         /// <exception cref="ArgumentException">message was too long</exception>
         public IList<byte[]> ConvertToChunks(byte[] message)
         {
-            int messageLength = message.Length;
+            var messageLength = message.Length;
             if (messageLength <= ChunkSettings.MaxMessageSizeInUdp)
             {
                 return new List<byte[]>(1) {message};
             }
 
-            int chunksCount = messageLength / ChunkSettings.MaxMessageSizeInChunk + 1;
+            var chunksCount = messageLength / ChunkSettings.MaxMessageSizeInChunk + 1;
             if (chunksCount > ChunkSettings.MaxNumberOfChunksAllowed)
             {
                 throw new ArgumentException("message was too long", nameof(message));
             }
 
-            IMessageIdGenerator messageIdGenerator = _generatorResolver.Resolve(_settings.MessageIdGeneratorType);
-            byte[] messageId = messageIdGenerator.GenerateMessageId(message);
+            var messageIdGenerator = generatorResolver.Resolve(settings.MessageIdGeneratorType);
+            var messageId = messageIdGenerator.GenerateMessageId(message);
 
             var result = new List<byte[]>();
             for (byte i = 0; i < chunksCount; i++)
             {
-                IList<byte> chunkHeader = ConstructChunkHeader(messageId, i, (byte)chunksCount);
+                var chunkHeader = ConstructChunkHeader(messageId, i, (byte)chunksCount);
 
-                int skip = i * ChunkSettings.MaxMessageSizeInChunk;
-                byte[] chunkData = message.Skip(skip).Take(ChunkSettings.MaxMessageSizeInChunk).ToArray();
+                var skip = i * ChunkSettings.MaxMessageSizeInChunk;
+                var chunkData = message.Skip(skip).Take(ChunkSettings.MaxMessageSizeInChunk).ToArray();
 
                 var messageChunkFull = new List<byte>(chunkHeader.Count + chunkData.Length);
                 messageChunkFull.AddRange(chunkHeader);

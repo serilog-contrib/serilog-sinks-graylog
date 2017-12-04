@@ -20,11 +20,11 @@ namespace Serilog.Sinks.Graylog.Tests.Helpers
         [Fact]
         public void WhenGenerateFromTimeStamp_ThenReturnsExpectedResult()
         {
-            DateTime time = DateTime.UtcNow;
-            byte[] given = _fixture.CreateMany<byte>(10).ToArray();
+            var time = DateTime.UtcNow;
+            var given = _fixture.CreateMany<byte>(10).ToArray();
             var target = new TimestampMessageIdGenerator();
 
-            byte[] actual = target.GenerateMessageId(given);
+            var actual = target.GenerateMessageId(given);
 
             var actticks = BitConverter.ToInt64(actual, 0);
             var actdate = DateTime.FromBinary(actticks);
@@ -35,11 +35,11 @@ namespace Serilog.Sinks.Graylog.Tests.Helpers
         [Fact]
         public void WhenGenerateTimestampFromMd5_ThenReturnsExpected()
         {
-            byte[] given = _fixture.CreateMany<byte>(10).ToArray();
+            var given = _fixture.CreateMany<byte>(10).ToArray();
 
             var target = new Md5MessageIdGenerator();
 
-            MD5 md5 = MD5.Create();
+            var md5 = MD5.Create();
             var expected = md5.ComputeHash(given).Take(8).ToArray();
 
             var actual = target.GenerateMessageId(given);
@@ -52,7 +52,7 @@ namespace Serilog.Sinks.Graylog.Tests.Helpers
         {
             var resolver = new MessageIdGeneratorResolver();
 
-            IMessageIdGenerator actual = resolver.Resolve(MessageIdGeneratortype.Md5);
+            var actual = resolver.Resolve(MessageIdGeneratortype.Md5);
 
             Assert.IsType<Md5MessageIdGenerator>(actual);
         }
@@ -62,7 +62,7 @@ namespace Serilog.Sinks.Graylog.Tests.Helpers
         {
             var resolver = new MessageIdGeneratorResolver();
 
-            IMessageIdGenerator actual = resolver.Resolve(MessageIdGeneratortype.Timestamp);
+            var actual = resolver.Resolve(MessageIdGeneratortype.Timestamp);
 
             Assert.IsType<TimestampMessageIdGenerator>(actual);
         }

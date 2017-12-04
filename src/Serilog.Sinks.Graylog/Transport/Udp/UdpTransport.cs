@@ -1,41 +1,58 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 using Serilog.Sinks.Graylog.Extensions;
 
 namespace Serilog.Sinks.Graylog.Transport.Udp
 {
-    public class UdpTransport : ITransport
+    public sealed class UdpTransport : ITransport
     {
-        private readonly ITransportClient<byte[]> _transportClient;
-        private readonly IDataToChunkConverter _chunkConverter;
+        private readonly IDataToChunkConverter chunkConverter;
+        private readonly string hostnameOrAddress;
+        private readonly int port;
+        private readonly UdpClient udpClient;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UdpTransport"/> class.
         /// </summary>
-        /// <param name="transportClient">The transport client.</param>
         /// <param name="chunkConverter"></param>
-        public UdpTransport(ITransportClient<byte[]> transportClient, IDataToChunkConverter chunkConverter)
+        /// <param name="hostnameOrAddress"></param>
+        /// <param name="port"></param>
+        public UdpTransport(IDataToChunkConverter chunkConverter, string hostnameOrAddress, int port)
         {
-            _transportClient = transportClient;
-            _chunkConverter = chunkConverter;
+            this.chunkConverter = chunkConverter;
+            this.hostnameOrAddress = hostnameOrAddress;
+            this.port = port;
+            udpClient = new UdpClient();
         }
 
-
+        /// <inheritdoc />
         /// <summary>
         /// Sends the specified target.
         /// </summary>
         /// <param name="message">The message.</param>
-        /// <exception cref="System.ArgumentException">message was too long</exception>
-        /// <exception cref="ArgumentException">message was too long</exception>
+        /// <exception cref="T:System.ArgumentException">message was too long</exception>
+        /// <exception cref="T:System.ArgumentException">message was too long</exception>
         public async Task Send(string message)
         {
-            byte[] compressedMessage = message.Compress();
-            IList<byte[]> chunks = _chunkConverter.ConvertToChunks(compressedMessage);
+            var compressedMessage = message.Compress();
+            var chunks = chunkConverter.ConvertToChunks(compressedMessage);
+            var ipAddreses = await Dns.GetHostAddressesAsync(hostnameOrAddress).ConfigureAwait(false);
+            var ipAddress = ipAddreses.FirstOrDefault(c => c.AddressFamily == AddressFamily.InterNetwork);
+            var ipEndpoint = new IPEndPoint(ipAddress, port);
+
             foreach (var chunk in chunks)
             {
-                await _transportClient.Send(chunk);
+                await udpClient.SendAsync(chunk, chunk.Length, ipEndpoint).ConfigureAwait(false);
             }
+        }
+
+        public void Dispose()
+        {
+            var disposable = udpClient as IDisposable;
+            disposable?.Dispose();
         }
     }
 }

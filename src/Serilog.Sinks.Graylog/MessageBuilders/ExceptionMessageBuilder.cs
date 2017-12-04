@@ -25,9 +25,9 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
 
         public override JObject Build(LogEvent logEvent)
         {
-            Tuple<string, string> excMessageTuple = GetExceptionMessages(logEvent.Exception);
-            string exceptionDetail = excMessageTuple.Item1;
-            string stackTrace = excMessageTuple.Item2;
+            var excMessageTuple = GetExceptionMessages(logEvent.Exception);
+            var exceptionDetail = excMessageTuple.Item1;
+            var stackTrace = excMessageTuple.Item2;
 
             logEvent.AddOrUpdateProperty(new LogEventProperty("ExceptionSource", new ScalarValue(logEvent.Exception.Source)));
             logEvent.AddOrUpdateProperty(new LogEventProperty("ExceptionMessage", new ScalarValue(exceptionDetail)));
@@ -44,7 +44,7 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
         {
             var exceptionSb = new StringBuilder();
             var stackSb = new StringBuilder();
-            Exception nestedException = ex;
+            var nestedException = ex;
             string stackDetail = null;
 
             var counter = 0;
@@ -60,7 +60,7 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
             }
             while (nestedException != null && counter < Options.StackTraceDepth);
 
-            string exceptionDetail = exceptionSb.ToString().Substring(0, exceptionSb.Length - ExceptionDelimiter.Length).Trim();
+            var exceptionDetail = exceptionSb.ToString().Substring(0, exceptionSb.Length - ExceptionDelimiter.Length).Trim();
 
             if (stackSb.Length > 0)
             {

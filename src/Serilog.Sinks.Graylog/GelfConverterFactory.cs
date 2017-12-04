@@ -1,13 +1,13 @@
-﻿using Serilog.Sinks.Graylog.MessageBuilders;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using Serilog.Sinks.Graylog.MessageBuilders;
 
 namespace Serilog.Sinks.Graylog
 {
     public static class GelfConverterFactory
     {
-        public static Func<IGelfConverter> FromOptions(GraylogSinkOptions options) => () =>
+        public static IGelfConverter FromOptions(GraylogSinkOptions options)
         {
             var hostName = Dns.GetHostName();
             var builders = new Dictionary<BuilderType, Lazy<IMessageBuilder>>
@@ -19,6 +19,6 @@ namespace Serilog.Sinks.Graylog
             };
 
             return new GelfConverter(builders);
-        };
+        }
     }
 }

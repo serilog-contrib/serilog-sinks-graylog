@@ -4,7 +4,6 @@ using Serilog.Events;
 using Serilog.Sinks.Graylog.Helpers;
 using Serilog.Sinks.Graylog.MessageBuilders.PropertyNaming;
 using Serilog.Sinks.Graylog.Transport;
-using System;
 
 namespace Serilog.Sinks.Graylog
 {

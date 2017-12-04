@@ -1,11 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace Serilog.Sinks.Graylog.Transport
 {
     /// <summary>
     /// The Transport interface
     /// </summary>
-    public interface ITransport
+    public interface ITransport: IDisposable
     {
         /// <summary>
         /// Sends the specified target.

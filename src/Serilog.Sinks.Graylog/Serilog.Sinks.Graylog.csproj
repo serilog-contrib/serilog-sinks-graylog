@@ -12,23 +12,24 @@
   <PropertyGroup>
     <PackageId>Serilog.Sinks.Graylog</PackageId>
     <Title>Serilog.Sinks.Graylog</Title>
-    <PackageVersion>1.6.1</PackageVersion>
-    <Authors>Anton Volkov</Authors>
-    <Description>The Serilog Graylog Sink project is a sink (basically a writer) for the Serilog logging framework. Structured log events are written to sinks and each sink is responsible for writing it to its own backend, database, store etc. This sink delivers the data to Graylog2, a NoSQL search engine.</Description>
+    <PackageVersion>1.6.0</PackageVersion>
+    <Authors></Authors>
+    <Description></Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <RepositoryUrl>https://github.com/whir1/serilog-sinks-graylog</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/whir1/serilog-sinks-graylog</PackageProjectUrl>
-    <PackageIconUrl>http://serilog.net/images/serilog-sink-nuget.png</PackageIconUrl>
-    <PackageLicenseUrl>https://github.com/whir1/serilog-sinks-graylog/blob/master/LICENSE</PackageLicenseUrl>
-    <Copyright>Anton Volkov Copyright © 2017</Copyright>
+    <RepositoryUrl></RepositoryUrl>
+    <PackageProjectUrl></PackageProjectUrl>
+    <PackageIconUrl></PackageIconUrl>
+    <PackageLicenseUrl></PackageLicenseUrl>
+    <Copyright></Copyright>
     <PackageTags>Serilog Sink Graylog</PackageTags>
     <AssemblyOriginatorKeyFile>sign.snk</AssemblyOriginatorKeyFile>
     <OutputType>library</OutputType>
     <NeutralLanguage>en</NeutralLanguage>
     <RepositoryType>git</RepositoryType>
-    <Version>1.6.1</Version>
-    <AssemblyVersion>1.6.1.0</AssemblyVersion>
-    <FileVersion>1.6.1.0</FileVersion>
+    <Version>2.0.0</Version>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <FileVersion>2.0.0.0</FileVersion>
+    <Company></Company>
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="**\*.resx" />
@@ -38,6 +39,7 @@
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.*" />
     <PackageReference Include="Serilog" Version="2.4.*" />
+    <PackageReference Include="Serilog.Sinks.PeriodicBatching" Version="2.1.0" />
   </ItemGroup>
   <ItemGroup Condition="('$(TargetFramework)'=='netstandard1.6') Or ('$(TargetFramework)'=='netstandard2.0')">
     <PackageReference Include="System.Net.NameResolution" Version="4.3.*" />

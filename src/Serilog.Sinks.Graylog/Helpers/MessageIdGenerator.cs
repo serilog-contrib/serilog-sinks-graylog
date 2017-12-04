@@ -40,9 +40,9 @@ namespace Serilog.Sinks.Graylog.Helpers
     {
         public byte[] GenerateMessageId(byte[] message)
         {
-            using (MD5 md5 = MD5.Create())
+            using (var md5 = MD5.Create())
             {
-                byte[] messageHash = md5.ComputeHash(message);
+                var messageHash = md5.ComputeHash(message);
                 return messageHash.Take(8).ToArray();
             }
         }
@@ -55,7 +55,7 @@ namespace Serilog.Sinks.Graylog.Helpers
 
     public sealed class MessageIdGeneratorResolver : IMessageIdGeneratorResolver
     {
-        private Dictionary<MessageIdGeneratortype, Lazy<IMessageIdGenerator>> _messageGenerators = new Dictionary<MessageIdGeneratortype, Lazy<IMessageIdGenerator>>
+        private Dictionary<MessageIdGeneratortype, Lazy<IMessageIdGenerator>> messageGenerators = new Dictionary<MessageIdGeneratortype, Lazy<IMessageIdGenerator>>
         {
             [MessageIdGeneratortype.Timestamp] = new Lazy<IMessageIdGenerator>(() => new TimestampMessageIdGenerator()),
             [MessageIdGeneratortype.Md5] = new Lazy<IMessageIdGenerator>(() => new Md5MessageIdGenerator())
@@ -64,7 +64,7 @@ namespace Serilog.Sinks.Graylog.Helpers
         /// <exception cref="ArgumentOutOfRangeException">Condition.</exception>
         public IMessageIdGenerator Resolve(MessageIdGeneratortype generatorType)
         {
-            return _messageGenerators[generatorType].Value;
+            return messageGenerators[generatorType].Value;
         }
     }
 }
