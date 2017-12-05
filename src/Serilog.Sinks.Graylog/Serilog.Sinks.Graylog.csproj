@@ -13,11 +13,12 @@
     <PackageId>Serilog.Sinks.Graylog</PackageId>
     <Title>Serilog.Sinks.Graylog</Title>
     <PackageVersion>1.6.0</PackageVersion>
-    <Authors></Authors>
-    <Description></Description>
+    <Authors>Jp Dienst and Serilog.Sinks.Graylog contributors</Authors>
+    <Description>This is a fork of serilog-sinks-graylog that aims to provide a stable release schedule and enteprise grade performance, as well as a semver based versioning strategy.
+</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <RepositoryUrl></RepositoryUrl>
-    <PackageProjectUrl></PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Aenima4six2/serilog-sinks-graylog-fork</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/Aenima4six2/serilog-sinks-graylog-fork</PackageProjectUrl>
     <PackageIconUrl></PackageIconUrl>
     <PackageLicenseUrl></PackageLicenseUrl>
     <Copyright></Copyright>
@@ -30,6 +31,7 @@
     <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <FileVersion>2.0.0.0</FileVersion>
     <Company></Company>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="**\*.resx" />
