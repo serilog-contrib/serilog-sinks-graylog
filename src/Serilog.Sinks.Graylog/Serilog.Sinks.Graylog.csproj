@@ -10,10 +10,10 @@
     <WarningsAsErrors />
   </PropertyGroup>
   <PropertyGroup>
-    <PackageId>Serilog.Sinks.Graylog</PackageId>
-    <Title>Serilog.Sinks.Graylog</Title>
-    <PackageVersion>1.6.0</PackageVersion>
-    <Authors>Jp Dienst and Serilog.Sinks.Graylog contributors</Authors>
+    <PackageId>Serilog.Sinks.Graylog.Fork</PackageId>
+    <Title>Serilog.Sinks.Graylog.Fork</Title>
+    <PackageVersion>2.0.0</PackageVersion>
+    <Authors>Various</Authors>
     <Description>This is a fork of serilog-sinks-graylog that aims to provide a stable release schedule and enteprise grade performance, as well as a semver based versioning strategy.
 </Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
@@ -22,7 +22,7 @@
     <PackageIconUrl></PackageIconUrl>
     <PackageLicenseUrl></PackageLicenseUrl>
     <Copyright></Copyright>
-    <PackageTags>Serilog Sink Graylog</PackageTags>
+    <PackageTags>Serilog Sink Graylog.Fork</PackageTags>
     <AssemblyOriginatorKeyFile>sign.snk</AssemblyOriginatorKeyFile>
     <OutputType>library</OutputType>
     <NeutralLanguage>en</NeutralLanguage>
