@@ -11,11 +11,13 @@ namespace Serilog.Sinks.Graylog.Transport.Http
     {
         private readonly Uri graylogUrl;
         private readonly HttpClient httpClient;
+        private readonly bool skipDispose;
 
-        public HttpTransport(Uri graylogUrl)
+        public HttpTransport(Uri graylogUrl, Func<HttpClient> factory = null)
         {
             this.graylogUrl = graylogUrl;
-            httpClient = new HttpClient();
+            httpClient = factory?.Invoke() ?? new HttpClient();
+            skipDispose = factory == null;
             httpClient.DefaultRequestHeaders.ExpectContinue = false;
             httpClient.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
         }
@@ -30,6 +32,10 @@ namespace Serilog.Sinks.Graylog.Transport.Http
             }
         }
 
-        public void Dispose() => httpClient.Dispose();
+        public void Dispose()
+        {
+            if (skipDispose) return;
+            httpClient.Dispose();
+        }
     }
 }

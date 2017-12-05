@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net.Http;
+using System.Net.Sockets;
 using Serilog.Events;
 using Serilog.Sinks.Graylog.Helpers;
 using Serilog.Sinks.Graylog.MessageBuilders.PropertyNaming;
@@ -141,5 +143,25 @@ namespace Serilog.Sinks.Graylog
         /// The Sink's Send Interval
         /// </value>
         public TimeSpan Period { get; set; }
+
+        /// <summary>
+        /// Gets or sets a user provided Http Client factory
+        /// If you use a dependency injection container and would like to set your own lifetime management
+        /// for the HTTP Trapnsport's HTTP Client, set it here.
+        /// <value>
+        /// The HttpClientFactory used by the HTTP Transport
+        /// </value>
+        /// </summary>
+        public Func<HttpClient> HttpClientFactory { get; set; }
+
+        /// <summary>
+        /// Gets or sets a user provided Udp Client factory
+        /// If you use a dependency injection container and would like to set your own lifetime management
+        /// for the UDP Trapnsport's UDP Client, set it here.
+        /// <value>
+        /// The UdpClientFactory used by the UDP Transport
+        /// </value>
+        /// </summary>
+        public Func<UdpClient> UdpClientFactory { get; set; }
     }
 }

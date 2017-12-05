@@ -23,7 +23,7 @@ namespace Serilog.Sinks.Graylog.Transport
         private static ITransport CreateHttpTransportFactory(GraylogSinkOptions options)
         {
             var url = new Uri($"{options.HostnameOrAddress}:{options.Port}/gelf");
-            var httpTransport = new HttpTransport(url);
+            var httpTransport = new HttpTransport(url, options.HttpClientFactory);
             return httpTransport;
         }
 
@@ -34,7 +34,12 @@ namespace Serilog.Sinks.Graylog.Transport
                 MessageIdGeneratorType = options.MessageGeneratorType
             }, new MessageIdGeneratorResolver());
 
-            var udpTransport = new UdpTransport(chunkConverter, options.HostnameOrAddress, options.Port);
+            var udpTransport = new UdpTransport(
+                chunkConverter,
+                options.HostnameOrAddress,
+                options.Port,
+                options.UdpClientFactory
+            );
             return udpTransport;
         }
     }

@@ -1,4 +1,5 @@
-﻿using Serilog.Configuration;
+﻿using System;
+using Serilog.Configuration;
 using Serilog.Core;
 using Serilog.Events;
 using Serilog.Sinks.Graylog.Helpers;
@@ -35,8 +36,12 @@ namespace Serilog.Sinks.Graylog
         /// <param name="shortMessageMaxLength">Short length of the message maximum.</param>
         /// <param name="stackTraceDepth">The stack trace depth.</param>
         /// <param name="facility">The facility.</param>
+        /// <param name="propertyNamingStrategy"></param>
+        /// <param name="period"></param>
+        /// <param name="batchPostingLimit"></param>
         /// <returns></returns>
-        public static LoggerConfiguration Graylog(this LoggerSinkConfiguration loggerSinkConfiguration,
+        public static LoggerConfiguration Graylog(
+            this LoggerSinkConfiguration loggerSinkConfiguration,
             string hostnameOrAddress,
             int port,
             TransportType transportType,
@@ -44,7 +49,11 @@ namespace Serilog.Sinks.Graylog
             MessageIdGeneratortype messageIdGeneratorType = GraylogSinkOptions.DefaultMessageGeneratorType,
             int shortMessageMaxLength = GraylogSinkOptions.DefaultShortMessageMaxLength,
             int stackTraceDepth = GraylogSinkOptions.DefaultStackTraceDepth,
-            string facility = GraylogSinkOptions.DefaultFacility)
+            string facility = GraylogSinkOptions.DefaultFacility,
+            IPropertyNamingStrategy propertyNamingStrategy = null,
+            TimeSpan? period = null,
+            int batchPostingLimit = GraylogSinkOptions.DefaultBatchPostingLimit
+        )
         {
             var options = new GraylogSinkOptions
             {
@@ -56,7 +65,9 @@ namespace Serilog.Sinks.Graylog
                 ShortMessageMaxLength = shortMessageMaxLength,
                 StackTraceDepth = stackTraceDepth,
                 Facility = facility,
-                PropertyNamingStrategy = new NoOpPropertyNamingStrategy()
+                PropertyNamingStrategy = propertyNamingStrategy ?? new NoOpPropertyNamingStrategy(),
+                Period = period ?? GraylogSinkOptions.DefaultPeriod,
+                BatchSizeLimit = batchPostingLimit
             };
 
             return loggerSinkConfiguration.Graylog(options);
