@@ -25,7 +25,7 @@ namespace Serilog.Sinks.Graylog
             {
                 var jObject = converter.GetGelfJson(@event);
                 var json = jObject.ToString(Newtonsoft.Json.Formatting.None);
-                await transport.Value.Send(json);
+                await transport.Value.Send(json).ConfigureAwait(false);
             }
         }
 
