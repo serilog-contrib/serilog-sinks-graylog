@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <PropertyGroup Label="Configuration">
-    <SignAssembly>True</SignAssembly>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <TargetFrameworks>net46;netstandard1.6</TargetFrameworks>
@@ -20,10 +20,10 @@
     <RepositoryUrl>https://github.com/Aenima4six2/serilog-sinks-graylog-fork</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Aenima4six2/serilog-sinks-graylog-fork</PackageProjectUrl>
     <PackageIconUrl></PackageIconUrl>
-    <PackageLicenseUrl></PackageLicenseUrl>
+    <PackageLicenseUrl>https://github.com/Aenima4six2/serilog-sinks-graylog-fork/blob/master/LICENSE</PackageLicenseUrl>
     <Copyright></Copyright>
-    <PackageTags>Serilog Sink Graylog.Fork</PackageTags>
-    <AssemblyOriginatorKeyFile>sign.snk</AssemblyOriginatorKeyFile>
+    <PackageTags>Serilog Sink Graylog Fork</PackageTags>
+    <AssemblyOriginatorKeyFile>sign.pfx</AssemblyOriginatorKeyFile>
     <OutputType>library</OutputType>
     <NeutralLanguage>en</NeutralLanguage>
     <RepositoryType>git</RepositoryType>
@@ -36,7 +36,6 @@
   <ItemGroup>
     <EmbeddedResource Include="**\*.resx" />
     <None Remove="*.ncrunchproject" />
-    <None Include="sign.snk" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.*" />
