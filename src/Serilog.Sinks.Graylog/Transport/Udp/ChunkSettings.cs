@@ -13,12 +13,6 @@ namespace Serilog.Sinks.Graylog.Transport.Udp
         public const byte PrefixSize = 12;
 
         /// <summary>
-        /// The message identifier size
-        /// <seealso cref="http://docs.graylog.org/en/2.0/pages/gelf.html"/>
-        /// </summary>
-        public const byte MessageIdSize = 16;
-
-        /// <summary>
         /// The maximum number of chunks allowed
         /// <seealso cref="http://docs.graylog.org/en/2.0/pages/gelf.html"/>
         /// </summary>
