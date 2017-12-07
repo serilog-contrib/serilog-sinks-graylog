@@ -51,7 +51,7 @@ namespace Serilog.Sinks.Graylog
         /// <value>
         /// The hostname or address.
         /// </value>
-        [Obsolete]
+        [Obsolete("Use HostnameOrAddress")]
         public string HostnameOrAdress
         {
             get => HostnameOrAddress;

@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Serilog.Core;
+using Serilog.Debugging;
 using Serilog.Events;
 using Serilog.Sinks.Graylog.Helpers;
 using Serilog.Sinks.Graylog.MessageBuilders;
@@ -56,10 +57,12 @@ namespace Serilog.Sinks.Graylog
                     var udpClient = new UdpTransportClient(ipEndpoint);
                     var udpTransport = new UdpTransport(udpClient, chunkConverter);
                     return udpTransport;
+
                 case SerilogTransportType.Http:
                     var httpClient = new HttpTransportClient($"{options.HostnameOrAddress}:{options.Port}/gelf");
                     var httpTransport = new HttpTransport(httpClient);
                     return httpTransport;
+
                 default:
                     throw new ArgumentOutOfRangeException(nameof(options), options.TransportType, null);
             }
@@ -68,9 +71,17 @@ namespace Serilog.Sinks.Graylog
 
         public void Emit(LogEvent logEvent)
         {
-            JObject json = _converter.GetGelfJson(logEvent);
+            try
+            {
 
-            Task.Factory.StartNew(async () => await _transport.Send(json.ToString(Newtonsoft.Json.Formatting.None)).ConfigureAwait(false)).GetAwaiter().GetResult();
+                JObject json = _converter.GetGelfJson(logEvent);
+
+                Task.Run(async () => await _transport.Send(json.ToString(Newtonsoft.Json.Formatting.None)).ConfigureAwait(false)).GetAwaiter().GetResult();
+            }
+            catch (Exception exc)
+            {
+                SelfLog.WriteLine("Oops something going wrong {0}", exc);
+            }
         }
     }
 }
