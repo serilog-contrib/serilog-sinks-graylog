@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
+using System.Threading;
 using Ploeh.AutoFixture;
 using Serilog.Events;
 using Xunit;
@@ -71,6 +73,35 @@ namespace Serilog.Sinks.Graylog.Tests
             var logger = loggerConfig.CreateLogger();
 
             logger.Information("battle profile:  {@BattleProfile}", profile);
+        }
+
+        [Fact]
+        [Trait("Category", "Integration")]
+        public void TestSimpl2e()
+        {
+            var fixture = new Fixture();
+            fixture.Behaviors.Clear();
+            fixture.Behaviors.Add(new OmitOnRecursionBehavior(1));
+            var profiles = fixture.CreateMany<Profile>(3000).ToList();
+
+            var loggerConfig = new LoggerConfiguration();
+
+            loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
+            {
+                MinimumLogEventLevel = LogEventLevel.Information,
+                MessageGeneratorType = MessageIdGeneratortype.Timestamp,
+                TransportType = TransportType.Http,
+                Facility = "VolkovTestFacility",
+                HostnameOrAddress = "http://logs.aeroclub.int",
+                Port = 12201
+            });
+
+            var logger = loggerConfig.CreateLogger();
+
+            profiles.AsParallel().ForAll(profile =>
+            {
+                logger.Information("TestSend {@BattleProfile}", profile);
+            });
         }
 
         [Fact]

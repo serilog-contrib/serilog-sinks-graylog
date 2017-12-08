@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Ploeh.AutoFixture;
 using Serilog.Events;
 using Xunit;
@@ -13,6 +16,56 @@ namespace Serilog.Sinks.Graylog.Tests
     [Trait("Category", "Integration")]
     public class IntegrateSinkTestWithUdp
     {
+        [Fact]
+        [Trait("Category", "Integration")]
+        public void VerfyLoggerVerbocity()
+        {
+            var loggerConfig = new LoggerConfiguration();
+
+            loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
+            {
+                ShortMessageMaxLength = 50,
+                MinimumLogEventLevel = LogEventLevel.Fatal,
+                Facility = "VolkovTestFacility",
+                HostnameOrAddress = "logs.aeroclub.int",
+                Port = 12201
+            });
+
+            var logger = loggerConfig.CreateLogger();
+
+            var test = new TestClass
+            {
+                Id = 1,
+                SomeTestDateTime = DateTime.UtcNow,
+                Bar = new Bar
+                {
+                    Id = 2,
+                    Prop = "123",
+                    TestBarBooleanProperty = false
+
+                },
+                TestClassBooleanProperty = true,
+                TestPropertyOne = "1",
+                TestPropertyThree = "3",
+                TestPropertyTwo = "2"
+            };
+
+            logger.Information("SomeComplexTestEntry {@test}", "Info");
+
+            logger.Debug("SomeComplexTestEntry {@test}", "Debug");
+
+            logger.Fatal("SomeComplexTestEntry {@test}", "Fatal");
+
+            logger.Error("SomeComplexTestEntry {@test}", "Error");
+
+        }
+
+        [Fact]
+        public void VerifyChunkedMessage()
+        {
+            
+        }
+
         [Fact]
         [Trait("Category", "Integration")]
         //[Fact]
@@ -49,6 +102,46 @@ namespace Serilog.Sinks.Graylog.Tests
             };
 
             logger.Information("SomeComplexTestEntry {@test}", test);
+        }
+
+        [Fact()]
+        [Trait("Category", "Integration")]
+        public async Task SendManyMessages()
+        {
+            var fixture = new Fixture();
+            fixture.Behaviors.Clear();
+            fixture.Behaviors.Add(new OmitOnRecursionBehavior(1));
+            var profiles = fixture.CreateMany<Profile>(1000).ToList();
+
+            var loggerConfig = new LoggerConfiguration();
+
+            loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
+            {
+                MinimumLogEventLevel = LogEventLevel.Information,
+                MessageGeneratorType = MessageIdGeneratortype.Md5,
+                Facility = "VolkovTestFacility",
+                HostnameOrAddress = "logs.aeroclub.int",
+                Port = 12201
+            });
+
+            var logger = loggerConfig.CreateLogger();
+
+            profiles.AsParallel(). ForAll(profile =>
+            {
+                Thread.Sleep(5);
+                logger.Information("TestSend {@BattleProfile}", profile);
+            });
+
+
+            //for (int i = 0; i < profiles.Count; i++)
+            //{
+            //    await Task.Delay(2);
+            //    if (profiles.Count % 100 == 0)
+            //    {
+            //        Console.WriteLine(i);
+            //    }
+            //    logger.Information("TestSend {@BattleProfile}", profiles[i]);
+            //}
         }
 
         [Fact]

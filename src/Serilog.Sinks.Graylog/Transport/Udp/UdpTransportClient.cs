@@ -11,7 +11,7 @@ namespace Serilog.Sinks.Graylog.Transport.Udp
     public sealed class UdpTransportClient : ITransportClient<byte[]>
     {
         private readonly IPEndPoint _target;
-        private UdpClient _client;
+        private readonly UdpClient _client;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UdpTransportClient"/> class.
@@ -20,7 +20,7 @@ namespace Serilog.Sinks.Graylog.Transport.Udp
         public UdpTransportClient(IPEndPoint target)
         {
             _target = target;
-            _client = new UdpClient(target);
+            _client = new UdpClient();
         }
 
         /// <summary>

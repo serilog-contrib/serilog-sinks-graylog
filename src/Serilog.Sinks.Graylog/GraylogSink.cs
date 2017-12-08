@@ -69,6 +69,8 @@ namespace Serilog.Sinks.Graylog
             
         }
 
+
+
         public void Emit(LogEvent logEvent)
         {
             try

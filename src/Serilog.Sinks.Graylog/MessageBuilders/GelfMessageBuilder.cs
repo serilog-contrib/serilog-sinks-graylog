@@ -66,11 +66,12 @@ namespace Serilog.Sinks.Graylog.MessageBuilders
         }
 
 
+
+
         private void AddAdditionalField(IDictionary<string, JToken> jObject,
                                         KeyValuePair<string, LogEventPropertyValue> property,
                                         string memberPath = "" )
         {
-            var propertyName = _propertyNamingStrategy.GetPropertyName(property.Key);
             string key = string.IsNullOrEmpty(memberPath)
                 ? property.Key
                 : $"{memberPath}.{property.Key}";
