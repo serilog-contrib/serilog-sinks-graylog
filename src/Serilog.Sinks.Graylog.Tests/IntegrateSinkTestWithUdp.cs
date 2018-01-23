@@ -7,9 +7,10 @@ using Ploeh.AutoFixture;
 using Serilog.Events;
 using Xunit;
 using Serilog.Sinks;
-using Serilog.Sinks.Graylog.Helpers;
+using Serilog.Sinks.Graylog.Core;
+using Serilog.Sinks.Graylog.Core.Helpers;
+using Serilog.Sinks.Graylog.Core.Transport;
 using Serilog.Sinks.Graylog.Tests.ComplexIntegrationTest;
-using Serilog.Sinks.Graylog.Transport;
 
 namespace Serilog.Sinks.Graylog.Tests
 {
@@ -131,17 +132,6 @@ namespace Serilog.Sinks.Graylog.Tests
                 Thread.Sleep(5);
                 logger.Information("TestSend {@BattleProfile}", profile);
             });
-
-
-            //for (int i = 0; i < profiles.Count; i++)
-            //{
-            //    await Task.Delay(2);
-            //    if (profiles.Count % 100 == 0)
-            //    {
-            //        Console.WriteLine(i);
-            //    }
-            //    logger.Information("TestSend {@BattleProfile}", profiles[i]);
-            //}
         }
 
         [Fact]

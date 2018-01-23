@@ -1,9 +1,9 @@
 ﻿using Serilog.Configuration;
 using Serilog.Core;
 using Serilog.Events;
-using Serilog.Sinks.Graylog.Helpers;
-using Serilog.Sinks.Graylog.MessageBuilders.PropertyNaming;
-using Serilog.Sinks.Graylog.Transport;
+using Serilog.Sinks.Graylog.Core;
+using Serilog.Sinks.Graylog.Core.Helpers;
+using Serilog.Sinks.Graylog.Core.Transport;
 
 namespace Serilog.Sinks.Graylog
 {
@@ -55,7 +55,6 @@ namespace Serilog.Sinks.Graylog
                 ShortMessageMaxLength = shortMessageMaxLength,
                 StackTraceDepth = stackTraceDepth,
                 Facility = facility,
-                PropertyNamingStrategy = new NoOpPropertyNamingStrategy()
             };
 
             return loggerSinkConfiguration.Graylog(options);

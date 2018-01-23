@@ -8,7 +8,6 @@
     <DebugType>full</DebugType>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
-
   </PropertyGroup>
   <PropertyGroup>
     <PackageId>Serilog.Sinks.Graylog</PackageId>
@@ -48,5 +47,9 @@
   <ItemGroup Condition="('$(TargetFramework)'=='net45') Or ('$(TargetFramework)'=='net46') Or ('$(TargetFramework)'=='net461')">
     <Reference Include="System" />
     <Reference Include="System.Net.Http" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Serilog.Sinks.Graylog.Core\Serilog.Sinks.Graylog.Core.csproj" />
   </ItemGroup>
 </Project>

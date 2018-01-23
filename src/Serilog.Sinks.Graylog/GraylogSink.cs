@@ -8,13 +8,13 @@ using Newtonsoft.Json.Linq;
 using Serilog.Core;
 using Serilog.Debugging;
 using Serilog.Events;
-using Serilog.Sinks.Graylog.Helpers;
-using Serilog.Sinks.Graylog.MessageBuilders;
-using Serilog.Sinks.Graylog.Transport;
-using Serilog.Sinks.Graylog.Transport.Http;
-using Serilog.Sinks.Graylog.Transport.Udp;
-using SerilogTransportType = Serilog.Sinks.Graylog.Transport.TransportType;
-
+using Serilog.Sinks.Graylog.Core;
+using Serilog.Sinks.Graylog.Core.Helpers;
+using Serilog.Sinks.Graylog.Core.MessageBuilders;
+using Serilog.Sinks.Graylog.Core.Transport;
+using Serilog.Sinks.Graylog.Core.Transport.Http;
+using Serilog.Sinks.Graylog.Core.Transport.Udp;
+using SinnkTransportType = Serilog.Sinks.Graylog.Core.Transport.TransportType;
 
 namespace Serilog.Sinks.Graylog
 {
@@ -42,7 +42,7 @@ namespace Serilog.Sinks.Graylog
         {
             switch (options.TransportType)
             {
-                case SerilogTransportType.Udp:
+                case SinnkTransportType.Udp:
 
                     IDnsInfoProvider dns = new DnsWrapper();
                     IPAddress[] ipAddreses = Task.Run(() => dns.GetHostAddresses(options.HostnameOrAddress)).Result;
@@ -58,7 +58,7 @@ namespace Serilog.Sinks.Graylog
                     var udpTransport = new UdpTransport(udpClient, chunkConverter);
                     return udpTransport;
 
-                case SerilogTransportType.Http:
+                case SinnkTransportType.Http:
                     var httpClient = new HttpTransportClient($"{options.HostnameOrAddress}:{options.Port}/gelf");
                     var httpTransport = new HttpTransport(httpClient);
                     return httpTransport;

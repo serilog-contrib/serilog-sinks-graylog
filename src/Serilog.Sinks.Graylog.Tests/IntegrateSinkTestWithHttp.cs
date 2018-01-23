@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using Ploeh.AutoFixture;
 using Serilog.Events;
 using Xunit;
-using Serilog.Sinks;
-using Serilog.Sinks.Graylog.Helpers;
+using Serilog.Sinks.Graylog.Core;
+using Serilog.Sinks.Graylog.Core.Helpers;
+using Serilog.Sinks.Graylog.Core.Transport;
 using Serilog.Sinks.Graylog.Tests.ComplexIntegrationTest;
-using Serilog.Sinks.Graylog.Transport;
 
 namespace Serilog.Sinks.Graylog.Tests
 {
@@ -51,7 +49,7 @@ namespace Serilog.Sinks.Graylog.Tests
 
         [Fact]
         [Trait("Category", "Integration")]
-        public void TestSimple()
+        public void LogInformationWitnOneProfile()
         {
             var fixture = new Fixture();
             fixture.Behaviors.Clear();
@@ -76,13 +74,13 @@ namespace Serilog.Sinks.Graylog.Tests
         }
 
         [Fact]
-        [Trait("Category", "Integration")]
-        public void TestSimpl2e()
+        [Trait("Ignore", "Integration")]
+        public void Log10Profiles()
         {
             var fixture = new Fixture();
             fixture.Behaviors.Clear();
             fixture.Behaviors.Add(new OmitOnRecursionBehavior(1));
-            var profiles = fixture.CreateMany<Profile>(3000).ToList();
+            var profiles = fixture.CreateMany<Profile>(10).ToList();
 
             var loggerConfig = new LoggerConfiguration();
 

@@ -5,7 +5,8 @@ using Moq;
 using Newtonsoft.Json.Linq;
 using Serilog.Events;
 using Serilog.Parsing;
-using Serilog.Sinks.Graylog.Transport;
+using Serilog.Sinks.Graylog.Core;
+using Serilog.Sinks.Graylog.Core.Transport;
 using Xunit;
 
 namespace Serilog.Sinks.Graylog.Tests
