@@ -22,6 +22,7 @@
     <PackageReference Include="AutoFixture" Version="3.50.2" />
     <PackageReference Include="FluentAssertions" Version="4.19.2" />
     <PackageReference Include="Moq" Version="4.7.1" />
+    <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Serilog.Sinks.Graylog\Serilog.Sinks.Graylog.csproj" />
