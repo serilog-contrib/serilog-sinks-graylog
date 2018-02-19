@@ -9,9 +9,9 @@ namespace Serilog.Sinks.Graylog.Transport
     public interface ITransport: IDisposable
     {
         /// <summary>
-        /// Sends the specified target.
+        /// Sends the specified target asynchronously.
         /// </summary>
         /// <param name="message">The message.</param>
-        Task Send(string message);
+        Task SendAsync(string message);
     }
 }

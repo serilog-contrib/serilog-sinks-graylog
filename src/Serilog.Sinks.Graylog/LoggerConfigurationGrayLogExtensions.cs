@@ -20,7 +20,10 @@ namespace Serilog.Sinks.Graylog
             GraylogSinkOptions options
         )
         {
-            var sink = (ILogEventSink)new GraylogSink(options);
+            var sink = options.UseBatchMode
+                ? new GraylogPeriodicBatchSink(options)
+                : (ILogEventSink)new GraylogSink(options);
+
             return loggerSinkConfiguration.Sink(sink, options.MinimumLogEventLevel);
         }
 

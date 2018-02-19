@@ -1,40 +1,30 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Serilog.Events;
-using Serilog.Sinks.Graylog.Helpers;
+﻿using Serilog.Sinks.Graylog.Helpers;
 using Serilog.Sinks.Graylog.Transport;
-using Serilog.Sinks.PeriodicBatching;
 
 namespace Serilog.Sinks.Graylog
 {
-    public class GraylogSink : PeriodicBatchingSink
+    public class GraylogSink : ILogEventSink
     {
         private readonly IGelfConverter converter;
         private readonly LazyRetry<ITransport> transport;
 
         public GraylogSink(GraylogSinkOptions options)
-            : base(options.BatchSizeLimit, options.Period)
         {
             transport = new LazyRetry<ITransport>(() => TransportFactory.FromOptions(options));
             converter = options.GelfConverter ?? GelfConverterFactory.FromOptions(options);
         }
 
-        protected override async Task EmitBatchAsync(IEnumerable<LogEvent> events)
+        public void Emit(LogEvent @event)
         {
-            foreach (var @event in events)
+            try
             {
                 var jObject = converter.GetGelfJson(@event);
                 var json = jObject.ToString(Newtonsoft.Json.Formatting.None);
-                await transport.Value.Send(json).ConfigureAwait(false);
+                transport.Value.SendAsync(json).ConfigureAwait(false).GetAwaiter().GetResult();
             }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-            if (transport.Created)
+            catch (Exception exc)
             {
-                transport.Value.Dispose();
+                SelfLog.WriteLine("Oops something going wrong {0}", exc);
             }
         }
     }

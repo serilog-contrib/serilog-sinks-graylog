@@ -12,22 +12,22 @@ namespace Serilog.Sinks.Graylog.Transport
             switch (options.TransportType)
             {
                 case TransportType.Udp:
-                    return CreateUdpTransportFactory(options);
+                    return CreateSyncUdpTransport(options);
                 case TransportType.Http:
-                    return CreateHttpTransportFactory(options);
+                    return CreateHttpTransport(options);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(options), options.TransportType, null);
             }
         }
 
-        private static ITransport CreateHttpTransportFactory(GraylogSinkOptions options)
+        private static ITransport CreateHttpTransport(GraylogSinkOptions options)
         {
             var url = new Uri($"{options.HostnameOrAddress}:{options.Port}/gelf");
             var httpTransport = new HttpTransport(url, options.HttpClientFactory);
             return httpTransport;
         }
 
-        private static ITransport CreateUdpTransportFactory(GraylogSinkOptions options)
+        private static ITransport CreateSyncUdpTransport(GraylogSinkOptions options)
         {
             var chunkConverter = new DataToChunkConverter(new ChunkSettings
             {
@@ -40,6 +40,7 @@ namespace Serilog.Sinks.Graylog.Transport
                 options.Port,
                 options.UdpClientFactory
             );
+
             return udpTransport;
         }
     }

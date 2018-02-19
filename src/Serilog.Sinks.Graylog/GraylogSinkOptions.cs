@@ -21,6 +21,7 @@ namespace Serilog.Sinks.Graylog
         public const int DefaultStackTraceDepth = 10;
         public const MessageIdGeneratortype DefaultMessageGeneratorType = MessageIdGeneratortype.Timestamp;
         public const int DefaultPort = 9200;
+        public const bool DefaultUseBatchMode = true;
 
         private static readonly IPropertyNamingStrategy DefaultPropertyNamingStrategy =
             new NoOpPropertyNamingStrategy();
@@ -37,6 +38,7 @@ namespace Serilog.Sinks.Graylog
             BatchSizeLimit = DefaultBatchPostingLimit;
             MessageGeneratorType = DefaultMessageGeneratorType;
             Port = DefaultPort;
+            UseBatchMode = DefaultUseBatchMode;
         }
 
         /// <summary>
@@ -148,20 +150,28 @@ namespace Serilog.Sinks.Graylog
         /// Gets or sets a user provided Http Client factory
         /// If you use a dependency injection container and would like to set your own lifetime management
         /// for the HTTP Trapnsport's HTTP Client, set it here.
+        /// </summary>
         /// <value>
         /// The HttpClientFactory used by the HTTP Transport
         /// </value>
-        /// </summary>
         public Func<HttpClient> HttpClientFactory { get; set; }
 
         /// <summary>
         /// Gets or sets a user provided Udp Client factory
         /// If you use a dependency injection container and would like to set your own lifetime management
         /// for the UDP Trapnsport's UDP Client, set it here.
+        /// </summary>
         /// <value>
         /// The UdpClientFactory used by the UDP Transport
         /// </value>
-        /// </summary>
         public Func<UdpClient> UdpClientFactory { get; set; }
+
+        /// <summary>
+        /// Uses a Periodic Batch Sink to send messages for slower Graylog endpoints
+        /// </summary>
+        /// <value>
+        /// True if batch mode should be used
+        /// </value>
+        public bool UseBatchMode { get; set; }
     }
 }
