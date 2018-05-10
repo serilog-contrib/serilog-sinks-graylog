@@ -61,5 +61,13 @@ namespace Serilog.Sinks.Graylog.Batching
 
             return Task.WhenAll(sendTasks);
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            _transport?.Dispose();
+            base.Dispose(disposing);
+        }
     }
+
+
 }

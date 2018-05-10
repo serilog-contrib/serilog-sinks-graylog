@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace Serilog.Sinks.Graylog.Core.Transport
 {
@@ -6,7 +7,7 @@ namespace Serilog.Sinks.Graylog.Core.Transport
     /// The Transport client interface
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface ITransportClient<in T>
+    public interface ITransportClient<in T> : IDisposable
     {
         /// <summary>
         /// Sends the specified payload.

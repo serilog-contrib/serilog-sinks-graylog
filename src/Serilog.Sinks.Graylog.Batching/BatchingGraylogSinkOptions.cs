@@ -5,6 +5,13 @@ namespace Serilog.Sinks.Graylog.Batching
 {
     public class BatchingGraylogSinkOptions : GraylogSinkOptions
     {
+        public BatchingGraylogSinkOptions()
+        {
+            BatchSizeLimit = 10;
+            Period  = TimeSpan.FromSeconds(1);
+            QueueLimit = 10;
+        }
+
         public int BatchSizeLimit { get; set; }
 
         public TimeSpan Period { get; set; }

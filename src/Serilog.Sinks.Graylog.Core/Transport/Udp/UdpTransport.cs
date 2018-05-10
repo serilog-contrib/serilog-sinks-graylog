@@ -37,5 +37,10 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Udp
             var sendTasks = chunks.Select(c => _transportClient.Send(c));
             return Task.WhenAll(sendTasks.ToArray());
         }
+
+        public void Dispose()
+        {
+            _transportClient?.Dispose();
+        }
     }
 }

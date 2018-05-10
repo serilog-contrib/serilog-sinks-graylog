@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 
@@ -8,7 +9,7 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Udp
     /// Udp transport client
     /// </summary>
     /// <seealso cref="byte" />
-    public sealed class UdpTransportClient : ITransportClient<byte[]>
+    public sealed class UdpTransportClient : ITransportClient<byte[]>, IDisposable
     {
         private readonly IPEndPoint _target;
         private readonly UdpClient _client;
@@ -30,6 +31,11 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Udp
         public Task Send(byte[] payload)
         {
             return _client.SendAsync(payload, payload.Length, _target);
+        }
+
+        public void Dispose()
+        {
+            (_client as IDisposable)?.Dispose();
         }
     }
 }

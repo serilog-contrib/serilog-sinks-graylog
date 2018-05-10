@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace Serilog.Sinks.Graylog.Core.Transport.Http
 {
@@ -14,6 +15,11 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Http
         public Task Send(string message)
         {
             return _transportClient.Send(message);
+        }
+
+        public void Dispose()
+        {
+            _transportClient?.Dispose();
         }
     }
 }

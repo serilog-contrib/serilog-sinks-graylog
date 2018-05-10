@@ -6,7 +6,7 @@ using Serilog.Debugging;
 
 namespace Serilog.Sinks.Graylog.Core.Transport.Http
 {
-    public class HttpTransportClient : ITransportClient<string>
+    public class HttpTransportClient : ITransportClient<string>, IDisposable
     {
         private readonly string _graylogUrl;
         private readonly HttpClient _httpClient;
@@ -30,6 +30,11 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Http
             {
                 throw new LoggingFailedException("Unable send log message to graylog via HTTP transport");
             }
+        }
+
+        public void Dispose()
+        {
+            _httpClient?.Dispose();
         }
     }
 }
