@@ -22,15 +22,16 @@
     <PackageIconUrl>http://serilog.net/images/serilog-sink-nuget.png</PackageIconUrl>
     <PackageLicenseUrl>https://github.com/whir1/serilog-sinks-graylog/blob/master/LICENSE</PackageLicenseUrl>
     <Copyright>Anton Volkov Copyright © 2017</Copyright>
-    <PackageTags>Serilog Sink Graylog</PackageTags>
+    <PackageTags>Serilog Sink Graylog Batching</PackageTags>
     <AssemblyOriginatorKeyFile>sign.snk</AssemblyOriginatorKeyFile>
     <OutputType>library</OutputType>
     <NeutralLanguage>en</NeutralLanguage>
     <RepositoryType>git</RepositoryType>
-    <Version>0.1.0</Version>
-    <AssemblyVersion>1.7.0.0</AssemblyVersion>
-    <FileVersion>1.7.0.0</FileVersion>
+    <Version>0.0.1-beta1</Version>
+    <AssemblyVersion>0.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
     <SignAssembly>true</SignAssembly>
+    <PackageReleaseNotes>beta</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Serilog.Sinks.PeriodicBatching" Version="2.1.1" />

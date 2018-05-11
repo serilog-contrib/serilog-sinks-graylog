@@ -43,19 +43,6 @@ namespace Serilog.Sinks.Graylog.Core
         public string HostnameOrAddress { get; set; }
 
         /// <summary>
-        /// Gets or sets the hostname or address of graylog server.
-        /// </summary>
-        /// <value>
-        /// The hostname or address.
-        /// </value>
-        [Obsolete("Use HostnameOrAddress")]
-        public string HostnameOrAdress
-        {
-            get => HostnameOrAddress;
-            set => HostnameOrAddress = value;
-        }
-
-        /// <summary>
         /// Gets or sets the facility name.
         /// </summary>
         /// <value>
