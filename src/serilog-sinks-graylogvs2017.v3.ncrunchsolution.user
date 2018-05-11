@@ -10,5 +10,29 @@
       <ShowIgnoredTestsMenuOption>false</ShowIgnoredTestsMenuOption>
     </TestsWindowMenuOptions>
     <TestsWindowSplitterDistance>452</TestsWindowSplitterDistance>
+    <TestsWindowTreeLayout>
+      <Column>
+        <Name>Name</Name>
+        <Width>600</Width>
+      </Column>
+      <Column>
+        <Name>Status</Name>
+        <Width>150</Width>
+      </Column>
+      <Column>
+        <Name>LastExecutionTime</Name>
+        <Width>180</Width>
+      </Column>
+      <Column>
+        <Name>GridNode</Name>
+        <Width>160</Width>
+      </Column>
+    </TestsWindowTreeLayout>
+    <TestsWindowTreeSortOrder>
+      <Sort>
+        <Name>Name</Name>
+        <Order>Descending</Order>
+      </Sort>
+    </TestsWindowTreeSortOrder>
   </Settings>
 </SolutionConfiguration>

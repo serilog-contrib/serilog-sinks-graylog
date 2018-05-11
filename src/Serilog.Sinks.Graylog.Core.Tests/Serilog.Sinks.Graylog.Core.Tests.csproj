@@ -1,18 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
-  <PropertyGroup Label="Configuration">
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-  </PropertyGroup>
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <TargetFrameworks>net46</TargetFrameworks>
     <DebugType>full</DebugType>
   </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>sign.snk</AssemblyOriginatorKeyFile>
-    <OutputType>library</OutputType>
-  </PropertyGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="**\*.resx" />
-  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Diagnostics.TraceSource" Version="4.3.0" />
     <PackageReference Include="xunit" Version="2.2.*" />
@@ -22,13 +13,23 @@
     <PackageReference Include="AutoFixture" Version="3.50.2" />
     <PackageReference Include="FluentAssertions" Version="4.19.2" />
     <PackageReference Include="Moq" Version="4.7.1" />
-    <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Serilog.Sinks.Graylog.Core\Serilog.Sinks.Graylog.Core.csproj" />
+    <ProjectReference Include="..\Serilog.Sinks.Graylog.Tests\Serilog.Sinks.Graylog.Tests.csproj" />
     <ProjectReference Include="..\Serilog.Sinks.Graylog\Serilog.Sinks.Graylog.csproj" />
+    <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="FluentAssertions">
+      <HintPath>..\..\..\..\..\.nuget\packages\fluentassertions\4.19.2\lib\net45\FluentAssertions.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.core">
+      <HintPath>..\..\..\..\..\.nuget\packages\xunit.extensibility.core\2.2.0\lib\netstandard1.1\xunit.core.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>
+
 </Project>

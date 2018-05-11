@@ -5,7 +5,7 @@ using Serilog.Sinks.Graylog.Core;
 using Serilog.Sinks.Graylog.Core.Helpers;
 using Serilog.Sinks.Graylog.Core.Transport;
 
-namespace Serilog.Sinks.Graylog
+namespace Serilog.Sinks.Graylog.Batching
 {
     public static class LoggerConfigurationGrayLogExtensions
     {
@@ -15,9 +15,10 @@ namespace Serilog.Sinks.Graylog
         /// <param name="loggerSinkConfiguration">The logger sink configuration.</param>
         /// <param name="options">The options.</param>
         /// <returns></returns>
-        public static LoggerConfiguration Graylog(this LoggerSinkConfiguration loggerSinkConfiguration, GraylogSinkOptions options)
+        public static LoggerConfiguration Graylog(this LoggerSinkConfiguration loggerSinkConfiguration,
+                                                  BatchingGraylogSinkOptions options)
         {
-            var sink = (ILogEventSink) new GraylogSink(options);
+            var sink = (ILogEventSink)new PeriodicBatchingGraylogSink(options);
             return loggerSinkConfiguration.Sink(sink, options.MinimumLogEventLevel);
         }
 
@@ -44,7 +45,7 @@ namespace Serilog.Sinks.Graylog
                                                   int stackTraceDepth = GraylogSinkOptions.DefaultStackTraceDepth,
                                                   string facility = GraylogSinkOptions.DefaultFacility)
         {
-            var options = new GraylogSinkOptions
+            var options = new BatchingGraylogSinkOptions
             {
                 HostnameOrAddress = hostnameOrAddress,
                 Port = port,
