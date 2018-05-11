@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Text;
+using System.Linq;
 using Ploeh.AutoFixture;
 using Serilog.Events;
 using Xunit;
-using Serilog.Sinks;
-using Serilog.Sinks.Graylog.Helpers;
+using Serilog.Sinks.Graylog.Core;
+using Serilog.Sinks.Graylog.Core.Helpers;
+using Serilog.Sinks.Graylog.Core.Transport;
 using Serilog.Sinks.Graylog.Tests.ComplexIntegrationTest;
-using Serilog.Sinks.Graylog.Transport;
 
 namespace Serilog.Sinks.Graylog.Tests
 {
@@ -49,7 +49,7 @@ namespace Serilog.Sinks.Graylog.Tests
 
         [Fact]
         [Trait("Category", "Integration")]
-        public void TestSimple()
+        public void LogInformationWitnOneProfile()
         {
             var fixture = new Fixture();
             fixture.Behaviors.Clear();
@@ -71,6 +71,35 @@ namespace Serilog.Sinks.Graylog.Tests
             var logger = loggerConfig.CreateLogger();
 
             logger.Information("battle profile:  {@BattleProfile}", profile);
+        }
+
+        [Fact]
+        [Trait("Ignore", "Integration")]
+        public void Log10Profiles()
+        {
+            var fixture = new Fixture();
+            fixture.Behaviors.Clear();
+            fixture.Behaviors.Add(new OmitOnRecursionBehavior(1));
+            var profiles = fixture.CreateMany<Profile>(10).ToList();
+
+            var loggerConfig = new LoggerConfiguration();
+
+            loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
+            {
+                MinimumLogEventLevel = LogEventLevel.Information,
+                MessageGeneratorType = MessageIdGeneratortype.Timestamp,
+                TransportType = TransportType.Http,
+                Facility = "VolkovTestFacility",
+                HostnameOrAddress = "http://logs.aeroclub.int",
+                Port = 12201
+            });
+
+            var logger = loggerConfig.CreateLogger();
+
+            profiles.AsParallel().ForAll(profile =>
+            {
+                logger.Information("TestSend {@BattleProfile}", profile);
+            });
         }
 
         [Fact]

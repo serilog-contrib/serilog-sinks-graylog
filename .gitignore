@@ -12,5 +12,8 @@
 *.nupkg
 *ncrunch*
 *.ide
-*.ide
 src/.vs/*
+*.ide-wal
+src/.vs/serilog-sinks-graylogvs2017/v15/sqlite3/db.lock
+*.ide-shm
+src/.vs/serilog-sinks-graylogvs2017/v15/Server/sqlite3/db.lock
