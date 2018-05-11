@@ -38,15 +38,17 @@ namespace Serilog.Sinks.Graylog.Batching
 
         protected override void EmitBatch(IEnumerable<LogEvent> events)
         {
-            IEnumerable<Task> sendTasks = events.Select(logEvent =>
+            // ReSharper disable once PossibleMultipleEnumeration
+            Task[] sendTasks = events.Select(logEvent =>
             {
                 JObject json = _converter.GetGelfJson(logEvent);
                 Task resultTask = _transport.Send(json.ToString(Newtonsoft.Json.Formatting.None));
                 return resultTask;
-            });
+            }).ToArray();
 
-            Task.WaitAll(sendTasks.ToArray());
+            Task.WaitAll(sendTasks);
 
+            // ReSharper disable once PossibleMultipleEnumeration
             base.EmitBatch(events);
         }
 
@@ -68,6 +70,4 @@ namespace Serilog.Sinks.Graylog.Batching
             base.Dispose(disposing);
         }
     }
-
-
 }

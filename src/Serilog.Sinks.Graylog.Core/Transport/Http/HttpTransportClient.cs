@@ -6,7 +6,7 @@ using Serilog.Debugging;
 
 namespace Serilog.Sinks.Graylog.Core.Transport.Http
 {
-    public class HttpTransportClient : ITransportClient<string>, IDisposable
+    public class HttpTransportClient : ITransportClient<string>
     {
         private readonly string _graylogUrl;
         private readonly HttpClient _httpClient;

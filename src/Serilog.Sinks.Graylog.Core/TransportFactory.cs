@@ -28,12 +28,18 @@ namespace Serilog.Sinks.Graylog.Core
         {
             _options = options;
 
-            string hostName = Dns.GetHostName();
-
             _builders = new Dictionary<BuilderType, Lazy<IMessageBuilder>>
             {
-                [BuilderType.Exception] = new Lazy<IMessageBuilder>(() => new ExceptionMessageBuilder(hostName, _options)),
-                [BuilderType.Message] = new Lazy<IMessageBuilder>(() => new GelfMessageBuilder(hostName, _options))
+                [BuilderType.Exception] = new Lazy<IMessageBuilder>(() =>
+                {
+                    string hostName = Dns.GetHostName();
+                    return new ExceptionMessageBuilder(hostName, _options);
+                }),
+                [BuilderType.Message] = new Lazy<IMessageBuilder>(() =>
+                {
+                    string hostName = Dns.GetHostName();
+                    return new GelfMessageBuilder(hostName, _options);
+                })
             };
         }
 

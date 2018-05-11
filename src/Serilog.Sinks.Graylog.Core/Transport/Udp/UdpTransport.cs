@@ -34,7 +34,7 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Udp
             byte[] compressedMessage = message.Compress();
             IList<byte[]> chunks = _chunkConverter.ConvertToChunks(compressedMessage);
 
-            var sendTasks = chunks.Select(c => _transportClient.Send(c));
+            IEnumerable<Task> sendTasks = chunks.Select(c => _transportClient.Send(c));
             return Task.WhenAll(sendTasks.ToArray());
         }
 

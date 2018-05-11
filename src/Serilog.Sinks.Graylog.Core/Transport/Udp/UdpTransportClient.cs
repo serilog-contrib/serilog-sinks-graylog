@@ -9,7 +9,7 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Udp
     /// Udp transport client
     /// </summary>
     /// <seealso cref="byte" />
-    public sealed class UdpTransportClient : ITransportClient<byte[]>, IDisposable
+    public sealed class UdpTransportClient : ITransportClient<byte[]>
     {
         private readonly IPEndPoint _target;
         private readonly UdpClient _client;

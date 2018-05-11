@@ -15,8 +15,7 @@ namespace Serilog.Sinks.Graylog
         /// <param name="loggerSinkConfiguration">The logger sink configuration.</param>
         /// <param name="options">The options.</param>
         /// <returns></returns>
-        public static LoggerConfiguration Graylog(this LoggerSinkConfiguration loggerSinkConfiguration,
-            GraylogSinkOptions options)
+        public static LoggerConfiguration Graylog(this LoggerSinkConfiguration loggerSinkConfiguration, GraylogSinkOptions options)
         {
             var sink = (ILogEventSink) new GraylogSink(options);
             return loggerSinkConfiguration.Sink(sink, options.MinimumLogEventLevel);
