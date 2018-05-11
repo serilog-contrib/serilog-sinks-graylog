@@ -22,10 +22,19 @@ namespace Serilog.Sinks.Graylog.Core
     public class SinkComponentsBuilder : ISinkComponentsBuilder
     {
         private readonly GraylogSinkOptions _options;
+        private readonly Dictionary<BuilderType, Lazy<IMessageBuilder>> _builders;
 
         public SinkComponentsBuilder(GraylogSinkOptions options)
         {
             _options = options;
+
+            string hostName = Dns.GetHostName();
+
+            _builders = new Dictionary<BuilderType, Lazy<IMessageBuilder>>
+            {
+                [BuilderType.Exception] = new Lazy<IMessageBuilder>(() => new ExceptionMessageBuilder(hostName, _options)),
+                [BuilderType.Message] = new Lazy<IMessageBuilder>(() => new GelfMessageBuilder(hostName, _options))
+            };
         }
 
         public ITransport MakeTransport()
@@ -61,17 +70,8 @@ namespace Serilog.Sinks.Graylog.Core
 
         public IGelfConverter MakeGelfConverter()
         {
-            string hostName = Dns.GetHostName();
-
-            IDictionary<BuilderType, Lazy<IMessageBuilder>> builders = new Dictionary<BuilderType, Lazy<IMessageBuilder>>
-            {
-                [BuilderType.Exception] = new Lazy<IMessageBuilder>(() => new ExceptionMessageBuilder(hostName, _options)),
-                [BuilderType.Message] = new Lazy<IMessageBuilder>(() => new GelfMessageBuilder(hostName, _options))
-            };
-
-            IGelfConverter converter = _options.GelfConverter ?? new GelfConverter(builders);
+            IGelfConverter converter = _options.GelfConverter ?? new GelfConverter(_builders);
             return converter;
         }
-
     }
 }
