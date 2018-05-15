@@ -31,7 +31,7 @@
 
   build_script:
     - cmd: dotnet restore -v m  ./src/serilog-sinks-graylogvs2017.sln
-    - cmd: dotent build  -v m -c Debug ./src/serilog-sinks-graylogvs2017.sln
+    - cmd: dotnet build  -v m -c Debug ./src/serilog-sinks-graylogvs2017.sln
     - cmd: dotnet pack -v m --include-symbols -o ../../artifacts --version-suffix Beta ./src/Serilog.Sinks.Graylog/Serilog.Sinks.Graylog.csproj
     - cmd: dotnet pack -v m --include-symbols -o ../../artifacts --version-suffix Beta ./src/Serilog.Sinks.Graylog.Batching/Serilog.Sinks.Graylog.Batching.csproj
     #- cmd: msbuild /t:restore /v:Minimal ./src/serilog-sinks-graylogvs2017.sln
