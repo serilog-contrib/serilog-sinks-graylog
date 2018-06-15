@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Security.Cryptography;
 using FluentAssertions;
-using Ploeh.AutoFixture;
+using AutoFixture;
 using Serilog.Sinks.Graylog.Core.Helpers;
 using Xunit;
 
@@ -44,7 +44,7 @@ namespace Serilog.Sinks.Graylog.Core.Tests.Helpers
 
             var actual = target.GenerateMessageId(given);
 
-            actual.ShouldBeEquivalentTo(expected);
+            actual.Should().BeEquivalentTo(expected);
         }
 
         [Fact]

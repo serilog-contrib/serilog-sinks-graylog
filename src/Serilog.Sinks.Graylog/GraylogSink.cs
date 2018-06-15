@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Serilog.Core;
@@ -25,14 +26,20 @@ namespace Serilog.Sinks.Graylog
         {
             try
             {
-                JObject json = _converter.GetGelfJson(logEvent);
-
-                Task.Run(async () => await _transport.Send(json.ToString(Newtonsoft.Json.Formatting.None)).ConfigureAwait(false)).GetAwaiter().GetResult();
+                Task emitTask = EmitAsync(logEvent);
+                emitTask.RunSynchronously(TaskScheduler.FromCurrentSynchronizationContext());
             }
             catch (Exception exc)
             {
                 SelfLog.WriteLine("Oops something going wrong {0}", exc);
             }
+        }
+
+        private Task EmitAsync(LogEvent logEvent)
+        {
+            JObject json = _converter.GetGelfJson(logEvent);
+            string payload = json.ToString(Newtonsoft.Json.Formatting.None);
+            return _transport.Send(payload);
         }
     }
 }
