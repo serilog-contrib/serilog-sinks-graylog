@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using Moq;
-using Ploeh.AutoFixture;
+using AutoFixture;
 using Serilog.Sinks.Graylog.Core.Helpers;
 using Serilog.Sinks.Graylog.Core.Transport.Udp;
 using Xunit;
@@ -40,7 +40,7 @@ namespace Serilog.Sinks.Graylog.Core.Tests.Transport.Udp
                 giwenData
             };
 
-            actual.ShouldBeEquivalentTo(expected);
+            actual.Should().BeEquivalentTo(expected);
         }
 
         [Fact]
@@ -76,8 +76,8 @@ namespace Serilog.Sinks.Graylog.Core.Tests.Transport.Udp
 
             for(int i=0; i < actual.Count; i++)
             {
-                actual[i].Take(2).ToArray().ShouldBeEquivalentTo(new[] {0x1e, 0x0f});
-                actual[i].Skip(2).Take(8).ToArray().ShouldBeEquivalentTo(messageId);
+                actual[i].Take(2).ToArray().Should().BeEquivalentTo(new[] {0x1e, 0x0f});
+                actual[i].Skip(2).Take(8).ToArray().Should().BeEquivalentTo(messageId);
                 actual[i].Skip(10).Take(1).First().Should().Be((byte)i);
                 actual[i].Skip(11).Take(1).First().Should().Be(13);
                 Assert.True(actual[i].Skip(12).All(c => c == 0));
