@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Moq;
-using Ploeh.AutoFixture;
+using AutoFixture;
 using Serilog.Sinks.Graylog.Core.Transport;
 using Serilog.Sinks.Graylog.Core.Transport.Http;
 using Xunit;

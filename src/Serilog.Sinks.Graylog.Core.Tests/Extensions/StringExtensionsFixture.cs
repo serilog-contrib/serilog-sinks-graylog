@@ -16,7 +16,7 @@ namespace Serilog.Sinks.Graylog.Core.Tests.Extensions
             };
 
             byte[] actual = giwen.Compress();
-            actual.ShouldAllBeEquivalentTo(expected);
+            actual.Should().BeEquivalentTo(expected);
         }
 
         [Theory]
@@ -27,7 +27,7 @@ namespace Serilog.Sinks.Graylog.Core.Tests.Extensions
         {
             var actual = given.Truncate(length);
 
-            actual.ShouldBeEquivalentTo(expected);
+            actual.Should().BeEquivalentTo(expected);
         }
     }
 }
