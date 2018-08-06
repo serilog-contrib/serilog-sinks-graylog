@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Ploeh.AutoFixture;
+using AutoFixture;
 using Serilog.Events;
 using Xunit;
 using Serilog.Sinks;

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Ploeh.AutoFixture;
+using AutoFixture;
 using Serilog.Events;
 using Xunit;
 using Serilog.Sinks.Graylog.Core;

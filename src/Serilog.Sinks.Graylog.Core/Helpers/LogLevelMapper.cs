@@ -7,7 +7,7 @@ namespace Serilog.Sinks.Graylog.Core.Helpers
     {
         private static readonly Dictionary<LogEventLevel, int> LogLevelMap = new Dictionary<LogEventLevel, int>
         {
-            [LogEventLevel.Verbose] = 5,
+            [LogEventLevel.Verbose] = 7,
             [LogEventLevel.Debug] = 7,
             [LogEventLevel.Information] = 6,
             [LogEventLevel.Warning] = 4,
