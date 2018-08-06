@@ -107,7 +107,7 @@ namespace Serilog.Sinks.Graylog.Tests
 
         [Fact()]
         [Trait("Category", "Integration")]
-        public async Task SendManyMessages()
+        public void SendManyMessages()
         {
             var fixture = new Fixture();
             fixture.Behaviors.Clear();
