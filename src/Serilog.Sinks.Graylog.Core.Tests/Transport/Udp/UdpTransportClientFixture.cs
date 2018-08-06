@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using System.Net;
-using Ploeh.AutoFixture;
+using AutoFixture;
 using Serilog.Sinks.Graylog.Core.Transport.Udp;
 using Xunit;
 

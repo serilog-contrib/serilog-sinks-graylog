@@ -1,6 +1,16 @@
-# serilog-sinks-graylog
+# Status
 
 [![Build status](https://ci.appveyor.com/api/projects/status/jaxp1cti0yu5boq7?svg=true)](https://ci.appveyor.com/project/whir1/serilog-sinks-graylog)
+
+### serilog-sinks-graylog
+
+[![NuGet](https://img.shields.io/nuget/v/serilog.sinks.graylog.svg)](https://www.nuget.org/packages/serilog.sinks.graylog/)
+[![Downloads](https://img.shields.io/nuget/dt/serilog.sinks.graylog.svg)](https://www.nuget.org/packages/serilog.sinks.graylog/)
+
+### serilog-sinks-graylog-Batching
+
+[![NuGet](https://img.shields.io/nuget/v/serilog.sinks.graylog.batching.svg)](https://www.nuget.org/packages/Serilog.Sinks.Graylog.Batching/)
+[![Downloads](https://img.shields.io/nuget/dt/serilog.sinks.graylog.batching.svg)](https://www.nuget.org/packages/Serilog.Sinks.Graylog.Batching/)
 
 codecov not working because Open cover not covering .Net Core projects
 
