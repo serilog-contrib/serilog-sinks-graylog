@@ -66,8 +66,8 @@ namespace Serilog.Sinks.Graylog.Batching
 
         protected override void Dispose(bool disposing)
         {
-            _transport?.Dispose();
             base.Dispose(disposing);
+            _transport?.Dispose();
         }
     }
 }
