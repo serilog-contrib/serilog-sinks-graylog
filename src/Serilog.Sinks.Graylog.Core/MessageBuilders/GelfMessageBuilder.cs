@@ -45,12 +45,14 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
                 Version = GelfVersion,
                 Host = _hostName,
                 ShortMessage = shortMessage,
-                FullMessage = message,
                 Timestamp = logEvent.Timestamp.DateTime.ConvertToNix(),
                 Level = LogLevelMapper.GetMappedLevel(logEvent.Level),
                 StringLevel = logEvent.Level.ToString(),
                 Facility = Options.Facility
             };
+
+            if (message.Length > Options.ShortMessageMaxLength)
+                gelfMessage.FullMessage = message;
 
             JObject jsonObject = JObject.FromObject(gelfMessage);
             foreach (KeyValuePair<string, LogEventPropertyValue> property in logEvent.Properties)
