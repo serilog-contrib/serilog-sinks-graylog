@@ -52,7 +52,9 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
             };
 
             if (message.Length > Options.ShortMessageMaxLength)
+            {
                 gelfMessage.FullMessage = message;
+            }
 
             JObject jsonObject = JObject.FromObject(gelfMessage);
             foreach (KeyValuePair<string, LogEventPropertyValue> property in logEvent.Properties)
