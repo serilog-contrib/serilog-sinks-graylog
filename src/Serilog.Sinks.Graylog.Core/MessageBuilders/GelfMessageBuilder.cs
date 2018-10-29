@@ -17,14 +17,14 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
         
         private readonly string _hostName;
         private const string GelfVersion = "1.1";
-        protected GraylogSinkOptions Options { get; }
+        protected GraylogSinkOptionsBase Options { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GelfMessageBuilder"/> class.
         /// </summary>
         /// <param name="hostName">Name of the host.</param>
         /// <param name="options">The options.</param>
-        public GelfMessageBuilder(string hostName, GraylogSinkOptions options)
+        public GelfMessageBuilder(string hostName, GraylogSinkOptionsBase options)
         {
             _hostName = hostName;
             Options = options;

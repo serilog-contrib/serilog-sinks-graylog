@@ -3,7 +3,7 @@ using Serilog.Sinks.Graylog.Core;
 
 namespace Serilog.Sinks.Graylog.Batching
 {
-    public class BatchingGraylogSinkOptions : GraylogSinkOptions
+    public class BatchingGraylogSinkOptions : GraylogSinkOptionsBase
     {
         public BatchingGraylogSinkOptions()
         {

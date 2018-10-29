@@ -40,10 +40,10 @@ namespace Serilog.Sinks.Graylog.Batching
                                                   int port,
                                                   TransportType transportType,
                                                   LogEventLevel minimumLogEventLevel = LevelAlias.Minimum,
-                                                  MessageIdGeneratortype messageIdGeneratorType = GraylogSinkOptions.DefaultMessageGeneratorType,
-                                                  int shortMessageMaxLength = GraylogSinkOptions.DefaultShortMessageMaxLength,
-                                                  int stackTraceDepth = GraylogSinkOptions.DefaultStackTraceDepth,
-                                                  string facility = GraylogSinkOptions.DefaultFacility)
+                                                  MessageIdGeneratortype messageIdGeneratorType = GraylogSinkOptionsBase.DefaultMessageGeneratorType,
+                                                  int shortMessageMaxLength = GraylogSinkOptionsBase.DefaultShortMessageMaxLength,
+                                                  int stackTraceDepth = GraylogSinkOptionsBase.DefaultStackTraceDepth,
+                                                  string facility = GraylogSinkOptionsBase.DefaultFacility)
         {
             var options = new BatchingGraylogSinkOptions
             {

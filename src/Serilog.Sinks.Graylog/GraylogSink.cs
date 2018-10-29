@@ -26,8 +26,7 @@ namespace Serilog.Sinks.Graylog
         {
             try
             {
-                Task emitTask = EmitAsync(logEvent);
-                emitTask.RunSynchronously(TaskScheduler.FromCurrentSynchronizationContext());
+                Task.Run(() => EmitAsync(logEvent)).GetAwaiter().GetResult();
             }
             catch (Exception exc)
             {
