@@ -21,13 +21,13 @@ namespace Serilog.Sinks.Graylog.Core
 
     public class SinkComponentsBuilder : ISinkComponentsBuilder
     {
-        private readonly GraylogSinkOptions _options;
+        private readonly GraylogSinkOptionsBase _options;
         private readonly Dictionary<BuilderType, Lazy<IMessageBuilder>> _builders;
 
-        public SinkComponentsBuilder(GraylogSinkOptions options)
+        public SinkComponentsBuilder(GraylogSinkOptionsBase options)
         {
             _options = options;
-
+            
             _builders = new Dictionary<BuilderType, Lazy<IMessageBuilder>>
             {
                 [BuilderType.Exception] = new Lazy<IMessageBuilder>(() =>

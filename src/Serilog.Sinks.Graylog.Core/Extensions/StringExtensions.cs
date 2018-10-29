@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.IO.Compression;
 using System.Text;
 
@@ -28,6 +29,11 @@ namespace Serilog.Sinks.Graylog.Core.Extensions
             return source.Length > maxLength 
                 ? source.Substring(0, maxLength) 
                 : source;
+        }
+
+        public static string Expand(this string source)
+        {
+            return Environment.ExpandEnvironmentVariables(source);
         }
     }
 }
