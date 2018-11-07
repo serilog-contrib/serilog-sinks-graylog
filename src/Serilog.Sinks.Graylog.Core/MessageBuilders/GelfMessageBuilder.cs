@@ -45,7 +45,7 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
                 Version = GelfVersion,
                 Host = _hostName,
                 ShortMessage = shortMessage,
-                Timestamp = logEvent.Timestamp.DateTime.ConvertToNix(),
+                Timestamp = logEvent.Timestamp.ConvertToNix(),
                 Level = LogLevelMapper.GetMappedLevel(logEvent.Level),
                 StringLevel = logEvent.Level.ToString(),
                 Facility = Options.Facility

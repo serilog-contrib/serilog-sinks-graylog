@@ -11,9 +11,9 @@ namespace Serilog.Sinks.Graylog.Core.Extensions
         /// </summary>
         /// <param name="dateTime">The date time.</param>
         /// <returns></returns>
-        public static double ConvertToNix(this DateTime dateTime)
+        public static double ConvertToNix(this DateTimeOffset dateTimeOffset)
         {
-            var duration = dateTime.ToUniversalTime() - Epoch;
+            var duration = dateTimeOffset.ToUniversalTime() - Epoch;
             return Math.Round((double) duration.TotalSeconds, 3, MidpointRounding.AwayFromZero);
         }
 
