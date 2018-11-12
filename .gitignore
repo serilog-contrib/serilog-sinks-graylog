@@ -18,3 +18,4 @@ src/.vs/serilog-sinks-graylogvs2017/v15/sqlite3/db.lock
 *.ide-shm
 src/.vs/serilog-sinks-graylogvs2017/v15/Server/sqlite3/db.lock
 src/.vs/serilog-sinks-graylogvs2017/DesignTimeBuild/.dtbcache
+/.vs/slnx.sqlite
