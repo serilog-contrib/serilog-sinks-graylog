@@ -64,7 +64,7 @@ new GraylogSinkOptions
       }
 ```
 
-All options you can see at https://github.com/whir1/serilog-sinks-graylog/blob/master/src/Serilog.Sinks.Graylog/GraylogSinkOptions.cs
+All options you can see at https://github.com/whir1/serilog-sinks-graylog/blob/master/src/Serilog.Sinks.Graylog.Core/GraylogSinkOptions.cs
 
 You can create your own implementation of transports or converter and set it to options. But maybe i'll delete this feature in the future
 
