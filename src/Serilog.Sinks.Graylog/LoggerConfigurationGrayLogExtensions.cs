@@ -1,9 +1,12 @@
-﻿using Serilog.Configuration;
+﻿using System;
+using Serilog.Configuration;
 using Serilog.Core;
 using Serilog.Events;
 using Serilog.Sinks.Graylog.Core;
+using Serilog.Sinks.Graylog.Core.Extensions;
 using Serilog.Sinks.Graylog.Core.Helpers;
 using Serilog.Sinks.Graylog.Core.Transport;
+
 
 namespace Serilog.Sinks.Graylog
 {
@@ -39,22 +42,21 @@ namespace Serilog.Sinks.Graylog
                                                   int port,
                                                   TransportType transportType,
                                                   LogEventLevel minimumLogEventLevel = LevelAlias.Minimum,
-                                                  MessageIdGeneratortype messageIdGeneratorType = GraylogSinkOptions.DefaultMessageGeneratorType,
-                                                  int shortMessageMaxLength = GraylogSinkOptions.DefaultShortMessageMaxLength,
-                                                  int stackTraceDepth = GraylogSinkOptions.DefaultStackTraceDepth,
-                                                  string facility = GraylogSinkOptions.DefaultFacility)
+                                                  MessageIdGeneratortype messageIdGeneratorType = GraylogSinkOptionsBase.DefaultMessageGeneratorType,
+                                                  int shortMessageMaxLength = GraylogSinkOptionsBase.DefaultShortMessageMaxLength,
+                                                  int stackTraceDepth = GraylogSinkOptionsBase.DefaultStackTraceDepth,
+                                                  string facility = GraylogSinkOptionsBase.DefaultFacility)
         {
-            var options = new GraylogSinkOptions
-            {
-                HostnameOrAddress = hostnameOrAddress,
-                Port = port,
-                TransportType = transportType,
-                MinimumLogEventLevel = minimumLogEventLevel,
-                MessageGeneratorType = messageIdGeneratorType,
-                ShortMessageMaxLength = shortMessageMaxLength,
-                StackTraceDepth = stackTraceDepth,
-                Facility = facility,
-            };
+            // ReSharper disable once UseObjectOrCollectionInitializer
+            var options = new GraylogSinkOptions();
+            options.HostnameOrAddress = hostnameOrAddress.Expand();
+            options.Port = port;
+            options.TransportType = transportType;
+            options.MinimumLogEventLevel = minimumLogEventLevel;
+            options.MessageGeneratorType = messageIdGeneratorType;
+            options.ShortMessageMaxLength = shortMessageMaxLength;
+            options.StackTraceDepth = stackTraceDepth;
+            options.Facility = facility.Expand();
 
             return loggerSinkConfiguration.Graylog(options);
         }

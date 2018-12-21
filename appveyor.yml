@@ -38,11 +38,16 @@
     #- cmd: msbuild /t:build /p:Configuration=Debug /v:Minimal ./src/serilog-sinks-graylogvs2017.sln
     #- cmd: msbuild /t:pack /v:minimal /p:IncludeSymbols=true /p:PackageOutputPath=../../artifacts /p:PackageVersion=%newVersion% ./src/Serilog.Sinks.Graylog/Serilog.Sinks.Graylog.csproj
  
-  test_script:
+  test:
+    categories:
+      except:
+        - Integration
+
+  #test_script:
+    #- dotnet test ./src/Serilog.Sinks.Graylog.Core.Tests --filter Category!=Integration
     #- dotnet add .\src\Serilog.Sinks.Graylog.Tests\Serilog.Sinks.Graylog.Tests.csproj package coverlet.msbuild
-    - dotnet test ./src/Serilog.Sinks.Graylog.Core.Tests
-    - OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:"C:\projects\serilog-sinks-graylog\src\Serilog.Sinks.Graylog.Core.Tests\bin\Debug\net46\Serilog.Sinks.Graylog.Core.Tests.dll -notrait \"category=Integration\" " -filter:"+[Serilog.Sinks.Graylog*]* -[*]*Test*" -output:"coverage.xml" -oldstyle
-    - OpenCover.Console.exe -register:user -target:"C:/Program Files/dotnet/dotnet.exe" -targetargs:"test /p:DebugType=full C:\projects\serilog-sinks-graylog\src\Serilog.Sinks.Graylog.Core.Tests\Serilog.Sinks.Graylog.Core.Tests.csproj" -filter:"+[Serilog.Sinks.Graylog*]* -[*]*Test*" -output:"coverage.xml" -oldstyle
+    #- OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.x86.exe" -targetargs:"C:\projects\serilog-sinks-graylog\src\Serilog.Sinks.Graylog.Core.Tests\bin\Debug\net46\Serilog.Sinks.Graylog.Core.Tests.dll -notrait \"category=Integration\" " -filter:"+[Serilog.Sinks.Graylog*]* -[*]*Test*" -output:"coverage.xml" -oldstyle
+    #- OpenCover.Console.exe -register:user -target:"C:/Program Files/dotnet/dotnet.exe" -targetargs:"test /p:DebugType=full C:\projects\serilog-sinks-graylog\src\Serilog.Sinks.Graylog.Core.Tests\Serilog.Sinks.Graylog.Core.Tests.csproj" -filter:"+[Serilog.Sinks.Graylog*]* -[*]*Test*" -output:"coverage.xml" -oldstyle
     #- codecov -f "coverage.xml" -t cd3f1ab1-60c6-4848-824b-466b93321d96
 #  test:
 #    categories:

@@ -19,7 +19,7 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
         /// </summary>
         /// <param name="hostName">Name of the host.</param>
         /// <param name="options">The options.</param>
-        public ExceptionMessageBuilder(string hostName, GraylogSinkOptions options) : base(hostName, options)
+        public ExceptionMessageBuilder(string hostName, GraylogSinkOptionsBase options) : base(hostName, options)
         {
         }
 

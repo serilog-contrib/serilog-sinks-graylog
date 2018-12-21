@@ -21,7 +21,7 @@ namespace Serilog.Sinks.Graylog.Batching
 
         }
 
-        public PeriodicBatchingGraylogSink(GraylogSinkOptions options, int batchSizeLimit, TimeSpan period) : base(batchSizeLimit, period)
+        public PeriodicBatchingGraylogSink(BatchingGraylogSinkOptions options, int batchSizeLimit, TimeSpan period) : base(batchSizeLimit, period)
         {
             ISinkComponentsBuilder sinkComponentsBuilder = new SinkComponentsBuilder(options);
             _transport = new Lazy<ITransport>(() => sinkComponentsBuilder.MakeTransport());
@@ -29,7 +29,7 @@ namespace Serilog.Sinks.Graylog.Batching
 
         }
 
-        public PeriodicBatchingGraylogSink(GraylogSinkOptions options, int batchSizeLimit, TimeSpan period, int queueLimit) : base(batchSizeLimit, period, queueLimit)
+        public PeriodicBatchingGraylogSink(BatchingGraylogSinkOptions options, int batchSizeLimit, TimeSpan period, int queueLimit) : base(batchSizeLimit, period, queueLimit)
         {
             ISinkComponentsBuilder sinkComponentsBuilder = new SinkComponentsBuilder(options);
             _transport = new Lazy<ITransport>(() => sinkComponentsBuilder.MakeTransport());
