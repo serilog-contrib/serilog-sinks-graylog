@@ -1,10 +1,11 @@
 codecov:
   branch: master
-  ignore:
-    - "src/Serilog.Sinks.Graylog.Core.Tests"
-    - "src/Serilog.Sinks.Graylog.Tests*"
 
 coverage:
   precision: 2
   round: down
   range: 50...100  
+
+ignore:
+  - "**/*Tests/**"
+  
