@@ -1,16 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
-  <PropertyGroup Label="Configuration">
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-  </PropertyGroup>
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <DebugType>full</DebugType>
   </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>sign.snk</AssemblyOriginatorKeyFile>
-    <OutputType>library</OutputType>
-  </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
+    <PackageReference Include="altcover" Version="4.0.661" />
+
     <PackageReference Include="System.Diagnostics.TraceSource" Version="4.3.0" />
     <PackageReference Include="AutoFixture" Version="4.4.0" />
     <PackageReference Include="FluentAssertions" Version="5.4.0" />
@@ -19,10 +15,11 @@
     <PackageReference Include="xunit.abstractions" Version="2.0.1" />
     <PackageReference Include="xunit.extensibility.execution" Version="2.3.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
+
+    <ProjectReference Include="..\Serilog.Sinks.Graylog\Serilog.Sinks.Graylog.csproj" />
+    <ProjectReference Include="..\Serilog.Sinks.Graylog.Core\Serilog.Sinks.Graylog.Core.csproj" />
+
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Serilog.Sinks.Graylog.Core\Serilog.Sinks.Graylog.Core.csproj" />
-    <ProjectReference Include="..\Serilog.Sinks.Graylog\Serilog.Sinks.Graylog.csproj" />
-  </ItemGroup>
+
 </Project>

@@ -51,25 +51,18 @@ namespace Serilog.Sinks.Graylog.Tests
                 TestPropertyTwo = "2"
             };
 
-            logger.Information("SomeComplexTestEntry {@test}", "Info");
+            logger.Information("SomeComplexTestEntry {@test}", test);
 
-            logger.Debug("SomeComplexTestEntry {@test}", "Debug");
+            logger.Debug("SomeComplexTestEntry {@test}", test);
 
-            logger.Fatal("SomeComplexTestEntry {@test}", "Fatal");
+            logger.Fatal("SomeComplexTestEntry {@test}", test);
 
-            logger.Error("SomeComplexTestEntry {@test}", "Error");
+            logger.Error("SomeComplexTestEntry {@test}", test);
 
-        }
-
-        [Fact]
-        public void VerifyChunkedMessage()
-        {
-            
         }
 
         [Fact]
         [Trait("Category", "Integration")]
-        //[Fact]
         public void TestComplex()
         {
             var loggerConfig = new LoggerConfiguration();
