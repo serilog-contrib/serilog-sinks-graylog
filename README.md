@@ -13,8 +13,6 @@
 [![NuGet](https://img.shields.io/nuget/v/serilog.sinks.graylog.batching.svg)](https://www.nuget.org/packages/Serilog.Sinks.Graylog.Batching/)
 [![Downloads](https://img.shields.io/nuget/dt/serilog.sinks.graylog.batching.svg)](https://www.nuget.org/packages/Serilog.Sinks.Graylog.Batching/)
 
-codecov not working because Open cover not covering .Net Core projects
-
 ## What is this sink ?
 The Serilog Graylog sink project is a sink (basically a writer) for the Serilog logging framework. Structured log events are written to sinks and each sink is responsible for writing it to its own backend, database, store etc. This sink delivers the data to Graylog2, a NoSQL search engine.
 
