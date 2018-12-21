@@ -63,10 +63,10 @@
   image: Visual Studio 2017
 
   build_script:
-    - cmd: msbuild /t:restore ./src/serilog-sinks-graylogvs2017.sln
-    - cmd: msbuild /t:build /p:Configuration=Release /v:Minimal ./src/serilog-sinks-graylogvs2017.sln
-    - cmd: msbuild /t:pack /p:IncludeSymbols=true /p:Configuration=Release /p:PackageOutputPath=../../artifacts ./src/Serilog.Sinks.Graylog/Serilog.Sinks.Graylog.csproj
-    - cmd: msbuild /t:pack /p:IncludeSymbols=true /p:Configuration=Release /p:PackageOutputPath=../../artifacts ./src/Serilog.Sinks.Graylog.Batching/Serilog.Sinks.Graylog.Batching.csproj
+    - cmd: dotnet restore -v m  ./src/serilog-sinks-graylogvs2017.sln
+    - cmd: dotnet build  -v m -c Release ./src/serilog-sinks-graylogvs2017.sln
+    - cmd: dotnet pack -v m --include-source --no-build -o ../../artifacts ./src/Serilog.Sinks.Graylog/Serilog.Sinks.Graylog.csproj
+    - cmd: dotnet pack -v m --include-source --no-build -o ../../artifacts ./src/Serilog.Sinks.Graylog.Batching/Serilog.Sinks.Graylog.Batching.csproj
   test:
     categories:
       except:
