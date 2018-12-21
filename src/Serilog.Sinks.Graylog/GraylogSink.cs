@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Serilog.Core;
@@ -12,14 +11,15 @@ namespace Serilog.Sinks.Graylog
 {
     public class GraylogSink : ILogEventSink
     {
-        private readonly IGelfConverter _converter;
-        private readonly ITransport _transport;
+        private readonly Lazy<IGelfConverter> _converter;
+        private readonly Lazy<ITransport> _transport;
 
+        
         public GraylogSink(GraylogSinkOptions options)
         {
             ISinkComponentsBuilder sinkComponentsBuilder = new SinkComponentsBuilder(options);
-            _transport = sinkComponentsBuilder.MakeTransport();
-            _converter = sinkComponentsBuilder.MakeGelfConverter();
+            _transport = new Lazy<ITransport>(() => sinkComponentsBuilder.MakeTransport());
+            _converter = new Lazy<IGelfConverter>(() => sinkComponentsBuilder.MakeGelfConverter());
         }
 
         public void Emit(LogEvent logEvent)
@@ -37,9 +37,9 @@ namespace Serilog.Sinks.Graylog
 
         private Task EmitAsync(LogEvent logEvent)
         {
-            JObject json = _converter.GetGelfJson(logEvent);
+            JObject json = _converter.Value.GetGelfJson(logEvent);
             string payload = json.ToString(Newtonsoft.Json.Formatting.None);
-            return _transport.Send(payload);
+            return _transport.Value.Send(payload);
         }
     }
 }

@@ -107,12 +107,12 @@ namespace Serilog.Sinks.Graylog.Tests
 
         [Fact()]
         [Trait("Category", "Integration")]
-        public void SendManyMessages()
+        public async Task SendManyMessages()
         {
             var fixture = new Fixture();
             fixture.Behaviors.Clear();
             fixture.Behaviors.Add(new OmitOnRecursionBehavior(1));
-            var profiles = fixture.CreateMany<Profile>(1000).ToList();
+            var profiles = fixture.CreateMany<Profile>(50).ToList();
 
             var loggerConfig = new LoggerConfiguration();
 
@@ -127,11 +127,13 @@ namespace Serilog.Sinks.Graylog.Tests
 
             var logger = loggerConfig.CreateLogger();
 
-            profiles.AsParallel(). ForAll(profile =>
+            var tasks = profiles.Select(c => 
             {
-                Thread.Sleep(5);
-                logger.Information("TestSend {@BattleProfile}", profile);
+                return Task.Run(() => logger.Information("TestSend {@BattleProfile}", c));
             });
+
+
+            await Task.WhenAll(tasks.ToArray());
         }
 
         [Fact]

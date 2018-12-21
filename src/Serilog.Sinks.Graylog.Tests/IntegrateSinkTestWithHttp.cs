@@ -96,10 +96,10 @@ namespace Serilog.Sinks.Graylog.Tests
 
             var logger = loggerConfig.CreateLogger();
 
-            profiles.AsParallel().ForAll(profile =>
-            {
-                logger.Information("TestSend {@BattleProfile}", profile);
-            });
+            //profiles.AsParallel().ForAll(profile =>
+            //{
+            //    logger.Information("TestSend {@BattleProfile}", profile);
+            //});
         }
 
         [Fact]
