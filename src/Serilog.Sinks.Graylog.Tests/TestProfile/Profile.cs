@@ -5,6 +5,7 @@ namespace Serilog.Sinks.Graylog.Tests.ComplexIntegrationTest
 {
     public class Profile
     {
+        public string Type { get; set; }
         public int Id { get; set; }
         public LocalizedString FirstName { get; set; }
         public LocalizedString MiddleName { get; set; }

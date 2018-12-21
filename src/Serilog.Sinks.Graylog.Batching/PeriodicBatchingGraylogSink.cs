@@ -48,7 +48,8 @@ namespace Serilog.Sinks.Graylog.Batching
                     return resultTask;
                 }).ToArray();
 
-                Task.WaitAll(sendTasks);
+                var t = Task.WhenAll(sendTasks);
+                t.GetAwaiter().GetResult();
                 base.EmitBatch(events);
             }
             catch (Exception exc)

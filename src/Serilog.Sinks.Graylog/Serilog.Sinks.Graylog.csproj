@@ -1,7 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
-  <PropertyGroup Label="Configuration">
-    <SignAssembly>True</SignAssembly>
-  </PropertyGroup>
   <PropertyGroup>
     <TargetFrameworks>net46;netstandard1.6;netstandard2.0;net45;net461</TargetFrameworks>
     <!--Hack to include referenced project as content dll -->
@@ -25,6 +22,10 @@
     <NeutralLanguage>en</NeutralLanguage>
     <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <FileVersion>2.0.0.0</FileVersion>
+
+    <SignAssembly>true</SignAssembly>
+
+    <AssemblyOriginatorKeyFile>sign.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   
   <ItemGroup>

@@ -88,6 +88,7 @@ namespace Serilog.Sinks.Graylog.Tests
             var test = new TestClass
             {
                 Id = 1,
+                Type = "UDP",
                 SomeTestDateTime = DateTime.UtcNow,
                 Bar = new Bar
                 {
@@ -112,7 +113,12 @@ namespace Serilog.Sinks.Graylog.Tests
             var fixture = new Fixture();
             fixture.Behaviors.Clear();
             fixture.Behaviors.Add(new OmitOnRecursionBehavior(1));
-            var profiles = fixture.CreateMany<Profile>(50).ToList();
+            var profiles = fixture.CreateMany<Profile>(10).ToList();
+
+            foreach (var profile in profiles)
+            {
+                profile.Type = "UDP";
+            }
 
             var loggerConfig = new LoggerConfiguration();
 
@@ -269,5 +275,6 @@ namespace Serilog.Sinks.Graylog.Tests
 
         public string TestPropertyThree { get; set; }
         public DateTime SomeTestDateTime { get; set; }
+        public string Type { get; set; }
     }
 }

@@ -48,6 +48,39 @@ namespace Serilog.Sinks.Graylog.Tests
         }
 
         [Fact]
+        public void WhenHostIsWrong_ThenLoggerCreationShouldNotBeFail()
+        {
+            var loggerConfig = new LoggerConfiguration();
+
+            loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
+            {
+                ShortMessageMaxLength = 50,
+                MinimumLogEventLevel = LogEventLevel.Information,
+                TransportType = TransportType.Http,
+                Facility = "VolkovTestFacility",
+                HostnameOrAddress = "abracadabra",
+                Port = 12201
+            });
+
+            var logger = loggerConfig.CreateLogger();
+
+            var test = new TestClass
+            {
+                Id = 1,
+                Bar = new Bar
+                {
+                    Id = 2,
+                    Prop = "123"
+                },
+                TestPropertyOne = "1",
+                TestPropertyThree = "3",
+                TestPropertyTwo = "2"
+            };
+
+            logger.Information("SomeComplexTestEntry {@test}", test);
+        }
+
+        [Fact]
         [Trait("Category", "Integration")]
         public void LogInformationWitnOneProfile()
         {
