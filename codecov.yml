@@ -1,7 +1,7 @@
 codecov:
   branch: master
   ignore:
-    - ./src/*Tests/*
+    - "**/*Tests/*"
 
 coverage:
   precision: 2
