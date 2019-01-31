@@ -30,16 +30,16 @@ namespace Serilog.Sinks.Graylog.Tests
 
             GraylogSink target = new GraylogSink(options);
 
-            var logevent = new LogEvent(DateTimeOffset.Now, LogEventLevel.Fatal, null,
+            var logEvent = new LogEvent(DateTimeOffset.Now, LogEventLevel.Fatal, null,
                 new MessageTemplate("O_o", new List<MessageTemplateToken>()), new List<LogEventProperty>());
 
-            var jobject = new JObject();
-            transport.Setup(c => c.Send(jobject.ToString(Newtonsoft.Json.Formatting.None))).Returns(Task.CompletedTask);
+            var jObject = new JObject();
+            transport.Setup(c => c.Send(jObject.ToString(Newtonsoft.Json.Formatting.None))).Returns(Task.CompletedTask);
 
 
-            gelfConverter.Setup(c => c.GetGelfJson(logevent)).Returns(jobject);
+            gelfConverter.Setup(c => c.GetGelfJson(logEvent)).Returns(jObject);
 
-            target.Emit(logevent);
+            target.Emit(logEvent);
 
             gelfConverter.VerifyAll();
 

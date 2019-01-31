@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using AutoFixture;
 using Serilog.Events;
 using Xunit;
-using Serilog.Sinks;
-using Serilog.Sinks.Graylog.Core;
 using Serilog.Sinks.Graylog.Core.Helpers;
 using Serilog.Sinks.Graylog.Core.Transport;
 using Serilog.Sinks.Graylog.Tests.ComplexIntegrationTest;
@@ -19,7 +15,7 @@ namespace Serilog.Sinks.Graylog.Tests
     {
         [Fact]
         [Trait("Category", "Integration")]
-        public void VerfyLoggerVerbocity()
+        public void VerifyLoggerVerbocity()
         {
             var loggerConfig = new LoggerConfiguration();
 
@@ -101,7 +97,7 @@ namespace Serilog.Sinks.Graylog.Tests
 
         [Fact()]
         [Trait("Category", "Integration")]
-        public async Task SendManyMessages()
+        public Task SendManyMessages()
         {
             var fixture = new Fixture();
             fixture.Behaviors.Clear();
@@ -132,7 +128,7 @@ namespace Serilog.Sinks.Graylog.Tests
             });
 
 
-            await Task.WhenAll(tasks.ToArray());
+            return Task.WhenAll(tasks.ToArray());
         }
 
         [Fact]

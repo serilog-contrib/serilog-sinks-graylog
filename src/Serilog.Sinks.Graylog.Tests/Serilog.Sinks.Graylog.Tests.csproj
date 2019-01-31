@@ -6,6 +6,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
     <PackageReference Include="altcover" Version="4.0.661" />
+    <PackageReference Include="Serilog.Exceptions" Version="5.0.0" />
 
     <PackageReference Include="System.Diagnostics.TraceSource" Version="4.3.0" />
     <PackageReference Include="AutoFixture" Version="4.4.0" />

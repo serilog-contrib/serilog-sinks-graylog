@@ -16,6 +16,7 @@ namespace Serilog.Sinks.Graylog.Core
         public const int DefaultStackTraceDepth = 10;
         public const MessageIdGeneratortype DefaultMessageGeneratorType = MessageIdGeneratortype.Timestamp;
 
+        // ReSharper disable once PublicConstructorInAbstractClass
         public GraylogSinkOptionsBase()
         {
             MessageGeneratorType = MessageIdGeneratortype.Timestamp;

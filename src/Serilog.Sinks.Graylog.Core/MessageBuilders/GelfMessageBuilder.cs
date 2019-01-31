@@ -16,7 +16,7 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
     {
         
         private readonly string _hostName;
-        private const string GelfVersion = "1.1";
+        private const string DefaultGelfVersion = "1.1";
         protected GraylogSinkOptionsBase Options { get; }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
 
             var gelfMessage = new GelfMessage
             {
-                Version = GelfVersion,
+                Version = DefaultGelfVersion,
                 Host = _hostName,
                 ShortMessage = shortMessage,
                 Timestamp = logEvent.Timestamp.ConvertToNix(),
@@ -65,9 +65,6 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
             return jsonObject;
         }
 
-
-
-
         private void AddAdditionalField(IDictionary<string, JToken> jObject,
                                         KeyValuePair<string, LogEventPropertyValue> property,
                                         string memberPath = "" )
@@ -87,32 +84,38 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
                     if (scalarValue.Value == null)
                     {
                         jObject.Add(key, null);
-                        return;
+                        break;
                     }
 
-                    var shouldCallToString = SholdCallToString(scalarValue.Value.GetType());
+                    var shouldCallToString = ShouldCallToString(scalarValue.Value.GetType());
                 
                     JToken value = JToken.FromObject(shouldCallToString ? scalarValue.Value.ToString() : scalarValue.Value);
                 
                     jObject.Add(key, value);
-                    return;
+                    break;
                 case SequenceValue sequenceValue:
-                    var sequenceValuestring = RenderPropertyValue(sequenceValue);
-                    jObject.Add(key, sequenceValuestring);
-                    return;
+                    var sequenceValueString = RenderPropertyValue(sequenceValue);
+                    jObject.Add(key, sequenceValueString);
+                    break;
                 case StructureValue structureValue:
                     foreach (LogEventProperty logEventProperty in structureValue.Properties)
                     {
                         AddAdditionalField(jObject,
-                                           new KeyValuePair<string, LogEventPropertyValue>(logEventProperty.Name, logEventProperty.Value), key);
+                                           new KeyValuePair<string, LogEventPropertyValue>(logEventProperty.Name, logEventProperty.Value)
+                                           , key);
                     }
-                    return;
-                default:
-                    return;
+                    break;
+                case DictionaryValue dictionaryValue:
+                    foreach (KeyValuePair<ScalarValue, LogEventPropertyValue> dictionaryValueElement in dictionaryValue.Elements)
+                    {
+                        var renderedKey = RenderPropertyValue(dictionaryValueElement.Key);
+                        AddAdditionalField(jObject, new KeyValuePair<string, LogEventPropertyValue>(renderedKey, dictionaryValueElement.Value), key);
+                    }
+                    break;
             }
         }
 
-        private bool SholdCallToString(Type type)
+        private bool ShouldCallToString(Type type)
         {
             bool isNumeric = type.IsNumericType();
             if (type == typeof(DateTime) || isNumeric)

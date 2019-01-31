@@ -2,8 +2,8 @@
 using System.Linq;
 using AutoFixture;
 using Serilog.Events;
+using Serilog.Exceptions;
 using Xunit;
-using Serilog.Sinks.Graylog.Core;
 using Serilog.Sinks.Graylog.Core.Helpers;
 using Serilog.Sinks.Graylog.Core.Transport;
 using Serilog.Sinks.Graylog.Tests.ComplexIntegrationTest;
@@ -82,7 +82,34 @@ namespace Serilog.Sinks.Graylog.Tests
 
         [Fact]
         [Trait("Category", "Integration")]
-        public void LogInformationWitnOneProfile()
+        public void LogInformationWithLevel()
+        {
+            var fixture = new Fixture();
+            fixture.Behaviors.Clear();
+            fixture.Behaviors.Add(new OmitOnRecursionBehavior(1));
+            var profile = fixture.Create<Profile>();
+
+            var loggerConfig = new LoggerConfiguration();
+
+            loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
+            {
+                MinimumLogEventLevel = LogEventLevel.Error,
+                MessageGeneratorType = MessageIdGeneratortype.Timestamp,
+                TransportType = TransportType.Http,
+                Facility = "VolkovTestFacility",
+                HostnameOrAddress = "http://logs.aeroclub.int",
+                Port = 12201
+            });
+
+            var logger = loggerConfig.CreateLogger();
+
+            logger.Information("battle profile:  {@BattleProfile}", profile);
+        }
+
+
+        [Fact]
+        [Trait("Category", "Integration")]
+        public void LogInformationWithOneProfile()
         {
             var fixture = new Fixture();
             fixture.Behaviors.Clear();
@@ -129,10 +156,10 @@ namespace Serilog.Sinks.Graylog.Tests
 
             var logger = loggerConfig.CreateLogger();
 
-            //profiles.AsParallel().ForAll(profile =>
-            //{
-            //    logger.Information("TestSend {@BattleProfile}", profile);
-            //});
+            profiles.AsParallel().ForAll(profile =>
+            {
+                logger.Information("TestSend {@BattleProfile}", profile);
+            });
         }
 
         [Fact]
@@ -141,7 +168,9 @@ namespace Serilog.Sinks.Graylog.Tests
         {
             var loggerConfig = new LoggerConfiguration();
 
-            loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
+            loggerConfig
+                .Enrich.WithExceptionDetails()
+                .WriteTo.Graylog(new GraylogSinkOptions
             {
                 MinimumLogEventLevel = LogEventLevel.Information,
                 MessageGeneratorType = MessageIdGeneratortype.Timestamp,
