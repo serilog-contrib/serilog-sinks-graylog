@@ -9,7 +9,7 @@ using Serilog.Sinks.Graylog.Core.Transport;
 
 namespace Serilog.Sinks.Graylog
 {
-    public class GraylogSink : ILogEventSink
+    public class GraylogSink : ILogEventSink, IDisposable
     {
         private readonly Lazy<IGelfConverter> _converter;
         private readonly Lazy<ITransport> _transport;
@@ -20,6 +20,11 @@ namespace Serilog.Sinks.Graylog
             ISinkComponentsBuilder sinkComponentsBuilder = new SinkComponentsBuilder(options);
             _transport = new Lazy<ITransport>(() => sinkComponentsBuilder.MakeTransport());
             _converter = new Lazy<IGelfConverter>(() => sinkComponentsBuilder.MakeGelfConverter());
+        }
+        
+        public void Dispose()
+        {
+            _transport.Value.Dispose();
         }
 
         public void Emit(LogEvent logEvent)
