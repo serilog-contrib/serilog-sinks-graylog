@@ -27,7 +27,7 @@
 
     <AssemblyOriginatorKeyFile>sign.snk</AssemblyOriginatorKeyFile>
 
-    <PackageLicenseExpression>https://github.com/whir1/serilog-sinks-graylog/blob/master/LICENSE</PackageLicenseExpression>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
     
   </PropertyGroup>
