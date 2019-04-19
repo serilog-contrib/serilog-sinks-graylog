@@ -1,4 +1,5 @@
-﻿using Serilog.Configuration;
+﻿using System;
+using Serilog.Configuration;
 using Serilog.Core;
 using Serilog.Events;
 using Serilog.Sinks.Graylog.Core;
@@ -34,6 +35,9 @@ namespace Serilog.Sinks.Graylog.Batching
         /// <param name="shortMessageMaxLength">Short length of the message maximum.</param>
         /// <param name="stackTraceDepth">The stack trace depth.</param>
         /// <param name="facility">The facility.</param>
+        /// <param name="batchSizeLimit">The batch size limit</param>
+        /// <param name="period">The period limit default is one second</param>
+        /// <param name="queueLimit">queue limit</param>
         /// <returns></returns>
         public static LoggerConfiguration Graylog(this LoggerSinkConfiguration loggerSinkConfiguration,
                                                   string hostnameOrAddress,
@@ -43,8 +47,16 @@ namespace Serilog.Sinks.Graylog.Batching
                                                   MessageIdGeneratortype messageIdGeneratorType = GraylogSinkOptionsBase.DefaultMessageGeneratorType,
                                                   int shortMessageMaxLength = GraylogSinkOptionsBase.DefaultShortMessageMaxLength,
                                                   int stackTraceDepth = GraylogSinkOptionsBase.DefaultStackTraceDepth,
-                                                  string facility = GraylogSinkOptionsBase.DefaultFacility)
+                                                  string facility = GraylogSinkOptionsBase.DefaultFacility,
+                                                  int batchSizeLimit = 10,
+                                                  TimeSpan period = default,
+                                                  int queueLimit = 1000)
         {
+            if (period == default)
+            {
+                period = TimeSpan.FromSeconds(1);
+            }
+
             var options = new BatchingGraylogSinkOptions
             {
                 HostnameOrAddress = hostnameOrAddress,
@@ -55,6 +67,9 @@ namespace Serilog.Sinks.Graylog.Batching
                 ShortMessageMaxLength = shortMessageMaxLength,
                 StackTraceDepth = stackTraceDepth,
                 Facility = facility,
+                BatchSizeLimit = batchSizeLimit,
+                Period = period,
+                QueueLimit = queueLimit,
             };
 
             return loggerSinkConfiguration.Graylog(options);
