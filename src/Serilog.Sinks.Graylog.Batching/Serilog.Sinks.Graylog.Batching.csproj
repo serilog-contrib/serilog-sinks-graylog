@@ -16,8 +16,8 @@
     <PackageProjectUrl>https://github.com/whir1/serilog-sinks-graylog</PackageProjectUrl>
     <RepositoryUrl>https://github.com/whir1/serilog-sinks-graylog</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Copyright>Anton Volkov Copyright © 2018</Copyright>
-    <PackageLicenseUrl>https://github.com/whir1/serilog-sinks-graylog/blob/master/LICENSE</PackageLicenseUrl>
+    <Copyright>Anton Volkov Copyright © 2019</Copyright>
+    
     <PackageIconUrl>http://serilog.net/images/serilog-sink-nuget.png</PackageIconUrl>
     <PackageTags>Serilog Sink Graylog Batching</PackageTags>
     <NeutralLanguage>en</NeutralLanguage>
@@ -27,6 +27,7 @@
     <AssemblyOriginatorKeyFile>sign.snk</AssemblyOriginatorKeyFile>
     <AssemblyVersion>1.0.6.0</AssemblyVersion>
     <FileVersion>1.0.6.0</FileVersion>
+    <PackageLicenseExpression>https://github.com/whir1/serilog-sinks-graylog/blob/master/LICENSE</PackageLicenseExpression>
 
   </PropertyGroup>
   <ItemGroup>
