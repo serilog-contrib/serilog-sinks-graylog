@@ -16,6 +16,8 @@ namespace Serilog.Sinks.Graylog.Core
         public const int DefaultStackTraceDepth = 10;
         public const MessageIdGeneratortype DefaultMessageGeneratorType = MessageIdGeneratortype.Timestamp;
 
+        public const int DefaultMaxMessageSizeInUdp = 8192;
+
         // ReSharper disable once PublicConstructorInAbstractClass
         public GraylogSinkOptionsBase()
         {
@@ -25,6 +27,7 @@ namespace Serilog.Sinks.Graylog.Core
             //Spec says: facility must be set by the client to "GELF" if empty
             Facility = DefaultFacility;
             StackTraceDepth = DefaultStackTraceDepth;
+            MaxMessageSizeInUdp = DefaultMaxMessageSizeInUdp;
         }
 
         /// <summary>
@@ -107,5 +110,13 @@ namespace Serilog.Sinks.Graylog.Core
         /// The stack trace depth.
         /// </value>
         public int StackTraceDepth { get; set; }
+
+        /// <summary>
+        /// Gets or sets the maximum udp message size.
+        /// </summary>
+        /// <value>
+        /// The maximum udp message size
+        /// </value>
+        public int MaxMessageSizeInUdp { get; set; }
     }
 }

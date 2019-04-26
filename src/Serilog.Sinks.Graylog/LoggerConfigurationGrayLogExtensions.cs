@@ -36,6 +36,7 @@ namespace Serilog.Sinks.Graylog
         /// <param name="shortMessageMaxLength">Short length of the message maximum.</param>
         /// <param name="stackTraceDepth">The stack trace depth.</param>
         /// <param name="facility">The facility.</param>
+        /// <param name="maxMessageSizeInUdp">the maxMessageSizeInUdp</param>
         /// <returns></returns>
         public static LoggerConfiguration Graylog(this LoggerSinkConfiguration loggerSinkConfiguration,
                                                   string hostnameOrAddress,
@@ -45,7 +46,8 @@ namespace Serilog.Sinks.Graylog
                                                   MessageIdGeneratortype messageIdGeneratorType = GraylogSinkOptionsBase.DefaultMessageGeneratorType,
                                                   int shortMessageMaxLength = GraylogSinkOptionsBase.DefaultShortMessageMaxLength,
                                                   int stackTraceDepth = GraylogSinkOptionsBase.DefaultStackTraceDepth,
-                                                  string facility = GraylogSinkOptionsBase.DefaultFacility)
+                                                  string facility = GraylogSinkOptionsBase.DefaultFacility,
+                                                  int maxMessageSizeInUdp = GraylogSinkOptionsBase.DefaultMaxMessageSizeInUdp)
         {
             // ReSharper disable once UseObjectOrCollectionInitializer
             var options = new GraylogSinkOptions();
@@ -57,6 +59,7 @@ namespace Serilog.Sinks.Graylog
             options.ShortMessageMaxLength = shortMessageMaxLength;
             options.StackTraceDepth = stackTraceDepth;
             options.Facility = facility.Expand();
+            options.MaxMessageSizeInUdp = maxMessageSizeInUdp;
 
             return loggerSinkConfiguration.Graylog(options);
         }

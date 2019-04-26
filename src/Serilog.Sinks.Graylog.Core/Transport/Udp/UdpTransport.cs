@@ -28,7 +28,6 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Udp
         /// </summary>
         /// <param name="message">The message.</param>
         /// <exception cref="System.ArgumentException">message was too long</exception>
-        /// <exception cref="System.ArgumentException">message was too long</exception>
         public Task Send(string message)
         {
             byte[] compressedMessage = message.Compress();

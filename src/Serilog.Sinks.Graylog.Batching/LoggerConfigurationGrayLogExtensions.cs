@@ -38,6 +38,7 @@ namespace Serilog.Sinks.Graylog.Batching
         /// <param name="batchSizeLimit">The batch size limit</param>
         /// <param name="period">The period limit default is one second</param>
         /// <param name="queueLimit">queue limit</param>
+        /// <param name="maxMessageSizeInUdp">the maxMessageSizeInUdp</param>
         /// <returns></returns>
         public static LoggerConfiguration Graylog(this LoggerSinkConfiguration loggerSinkConfiguration,
                                                   string hostnameOrAddress,
@@ -48,6 +49,7 @@ namespace Serilog.Sinks.Graylog.Batching
                                                   int shortMessageMaxLength = GraylogSinkOptionsBase.DefaultShortMessageMaxLength,
                                                   int stackTraceDepth = GraylogSinkOptionsBase.DefaultStackTraceDepth,
                                                   string facility = GraylogSinkOptionsBase.DefaultFacility,
+                                                  int maxMessageSizeInUdp = GraylogSinkOptionsBase.DefaultMaxMessageSizeInUdp,
                                                   int batchSizeLimit = 10,
                                                   TimeSpan period = default,
                                                   int queueLimit = 1000)
@@ -70,6 +72,7 @@ namespace Serilog.Sinks.Graylog.Batching
                 BatchSizeLimit = batchSizeLimit,
                 Period = period,
                 QueueLimit = queueLimit,
+                MaxMessageSizeInUdp = maxMessageSizeInUdp
             };
 
             return loggerSinkConfiguration.Graylog(options);

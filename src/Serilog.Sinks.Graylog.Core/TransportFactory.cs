@@ -55,10 +55,9 @@ namespace Serilog.Sinks.Graylog.Core
 
                     var ipEndpoint = new IPEndPoint(ipAddress ?? throw new InvalidOperationException(), _options.Port);
 
-                    IDataToChunkConverter chunkConverter = new DataToChunkConverter(new ChunkSettings
-                    {
-                        MessageIdGeneratorType = _options.MessageGeneratorType
-                    }, new MessageIdGeneratorResolver());
+
+                    var chunkSettings = new ChunkSettings(_options.MessageGeneratorType, _options.MaxMessageSizeInUdp);
+                    IDataToChunkConverter chunkConverter = new DataToChunkConverter(chunkSettings, new MessageIdGeneratorResolver());
 
                     var udpClient = new UdpTransportClient(ipEndpoint);
                     var udpTransport = new UdpTransport(udpClient, chunkConverter);

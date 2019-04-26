@@ -31,7 +31,8 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Udp
         /// </summary>
         /// <param name="settings">The settings.</param>
         /// <param name="generatorResolver">The generator resolver.</param>
-        public DataToChunkConverter(ChunkSettings settings, IMessageIdGeneratorResolver generatorResolver)
+        public DataToChunkConverter(ChunkSettings settings, 
+                                    IMessageIdGeneratorResolver generatorResolver)
         {
             _settings = settings;
             _generatorResolver = generatorResolver;
@@ -47,12 +48,12 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Udp
         public IList<byte[]> ConvertToChunks(byte[] message)
         {
             int messageLength = message.Length;
-            if (messageLength <= ChunkSettings.MaxMessageSizeInUdp)
+            if (messageLength <= _settings.MaxMessageSizeInUdp)
             {
                 return new List<byte[]>(1) {message};
             }
 
-            int chunksCount = messageLength / ChunkSettings.MaxMessageSizeInChunk + 1;
+            int chunksCount = messageLength / _settings.MaxMessageSizeInChunk + 1;
             if (chunksCount > ChunkSettings.MaxNumberOfChunksAllowed)
             {
                 throw new ArgumentException("message was too long", nameof(message));
@@ -66,8 +67,8 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Udp
             {
                 IList<byte> chunkHeader = ConstructChunkHeader(messageId, i, (byte)chunksCount);
 
-                int skip = i * ChunkSettings.MaxMessageSizeInChunk;
-                byte[] chunkData = message.Skip(skip).Take(ChunkSettings.MaxMessageSizeInChunk).ToArray();
+                int skip = i * _settings.MaxMessageSizeInChunk;
+                byte[] chunkData = message.Skip(skip).Take(_settings.MaxMessageSizeInChunk).ToArray();
 
                 var messageChunkFull = new List<byte>(chunkHeader.Count + chunkData.Length);
                 messageChunkFull.AddRange(chunkHeader);
