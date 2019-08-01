@@ -20,7 +20,7 @@
     <Copyright>Anton Volkov Copyright © 2019</Copyright>
     <NeutralLanguage>en</NeutralLanguage>
     
-    <Version>2.0.8</Version>
+    <Version>2.0.9</Version>
     <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <FileVersion>2.0.0.0</FileVersion>
     <SignAssembly>true</SignAssembly>
@@ -28,6 +28,8 @@
     <AssemblyOriginatorKeyFile>sign.snk</AssemblyOriginatorKeyFile>
 
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+
+    <PackageReleaseNotes>Update package dependencies</PackageReleaseNotes>
 
     
   </PropertyGroup>
@@ -38,8 +40,8 @@
     <None Include="sign.snk" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="Serilog" Version="2.7.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="Serilog" Version="2.8.0" />
   </ItemGroup>
   <ItemGroup Condition="('$(TargetFramework)'=='netstandard1.6') Or ('$(TargetFramework)'=='netstandard2.0')">
     <PackageReference Include="System.Net.NameResolution" Version="4.3.*" />
