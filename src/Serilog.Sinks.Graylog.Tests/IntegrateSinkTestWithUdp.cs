@@ -158,6 +158,32 @@ namespace Serilog.Sinks.Graylog.Tests
 
         [Fact]
         [Trait("Category", "Integration")]
+        public void IncludeTemplate()
+        {
+            var fixture = new Fixture();
+            fixture.Behaviors.Clear();
+            fixture.Behaviors.Add(new OmitOnRecursionBehavior(1));
+            var profile = fixture.Create<Profile>();
+
+            var loggerConfig = new LoggerConfiguration();
+
+            loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
+            {
+                MinimumLogEventLevel = LogEventLevel.Information,
+                MessageGeneratorType = MessageIdGeneratortype.Timestamp,
+                Facility = "VolkovTestFacility",
+                HostnameOrAddress = "logs.aeroclub.int",
+                Port = 12201,
+                IncludeMessageTemplate = true
+            });
+
+            var logger = loggerConfig.CreateLogger();
+
+            logger.Information("battle profile:  {@BattleProfile}", profile);
+        }
+
+        [Fact]
+        [Trait("Category", "Integration")]
         public void TestException()
         {
             var loggerConfig = new LoggerConfiguration();
