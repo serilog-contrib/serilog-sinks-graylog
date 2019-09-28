@@ -43,7 +43,7 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
             var gelfMessage = new GelfMessage
             {
                 Version = DefaultGelfVersion,
-                Host = _hostName,
+                Host = Options.Host ?? _hostName,
                 ShortMessage = shortMessage,
                 Timestamp = logEvent.Timestamp.ConvertToNix(),
                 Level = LogLevelMapper.GetMappedLevel(logEvent.Level),

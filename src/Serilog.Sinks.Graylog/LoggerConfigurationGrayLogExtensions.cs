@@ -37,6 +37,7 @@ namespace Serilog.Sinks.Graylog
         /// <param name="stackTraceDepth">The stack trace depth.</param>
         /// <param name="facility">The facility.</param>
         /// <param name="maxMessageSizeInUdp">the maxMessageSizeInUdp</param>
+        /// <param name="host">The host property to use in GELF message. If null, DNS hostname will be used instead.</param>
         /// <returns></returns>
         public static LoggerConfiguration Graylog(this LoggerSinkConfiguration loggerSinkConfiguration,
                                                   string hostnameOrAddress,
@@ -47,7 +48,8 @@ namespace Serilog.Sinks.Graylog
                                                   int shortMessageMaxLength = GraylogSinkOptionsBase.DefaultShortMessageMaxLength,
                                                   int stackTraceDepth = GraylogSinkOptionsBase.DefaultStackTraceDepth,
                                                   string facility = GraylogSinkOptionsBase.DefaultFacility,
-                                                  int maxMessageSizeInUdp = GraylogSinkOptionsBase.DefaultMaxMessageSizeInUdp)
+                                                  int maxMessageSizeInUdp = GraylogSinkOptionsBase.DefaultMaxMessageSizeInUdp,
+                                                  string host = GraylogSinkOptionsBase.DefaultHost)
         {
             // ReSharper disable once UseObjectOrCollectionInitializer
             var options = new GraylogSinkOptions();
@@ -60,6 +62,7 @@ namespace Serilog.Sinks.Graylog
             options.StackTraceDepth = stackTraceDepth;
             options.Facility = facility.Expand();
             options.MaxMessageSizeInUdp = maxMessageSizeInUdp;
+            options.Host = host;
 
             return loggerSinkConfiguration.Graylog(options);
         }

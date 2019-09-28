@@ -17,6 +17,10 @@ namespace Serilog.Sinks.Graylog.Core
         public const MessageIdGeneratortype DefaultMessageGeneratorType = MessageIdGeneratortype.Timestamp;
 
         public const int DefaultMaxMessageSizeInUdp = 8192;
+        /// <summary>
+        /// The default option value (null) for GELF's "host" property. DNS hostname will be used instead.
+        /// </summary>
+        public const string DefaultHost = null;
 
         // ReSharper disable once PublicConstructorInAbstractClass
         public GraylogSinkOptionsBase()
@@ -28,6 +32,7 @@ namespace Serilog.Sinks.Graylog.Core
             Facility = DefaultFacility;
             StackTraceDepth = DefaultStackTraceDepth;
             MaxMessageSizeInUdp = DefaultMaxMessageSizeInUdp;
+            Host = DefaultHost;
         }
 
         /// <summary>
@@ -118,5 +123,10 @@ namespace Serilog.Sinks.Graylog.Core
         /// The maximum udp message size
         /// </value>
         public int MaxMessageSizeInUdp { get; set; }
+
+        /// <summary>
+        /// Gets or sets the host property required by the GELF format. If set to null, DNS hostname will be used instead.
+        /// </summary>
+        public string Host { get; set; }
     }
 }
