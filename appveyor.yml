@@ -79,5 +79,5 @@
     provider: NuGet
     api_key:
       secure: Nu7tXoU7+zOS71RJaH0nzqb3Ae3l5y6N+UnwgsvDP3rZ/zWaQDtQ9bp9rpxcS/ZK
-      skip_symbols: false
+      skip_symbols: true
       artifact: /.*\.nupkg/
