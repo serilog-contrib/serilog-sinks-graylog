@@ -62,6 +62,12 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
                 AddAdditionalField(jsonObject, property);
             }
 
+            if (Options.IncludeMessageTemplate)
+            {
+                string messageTemplate = logEvent.MessageTemplate.Text;
+                jsonObject.Add($"_{Options.MessageTemplateFieldName}", messageTemplate);
+            }
+
             return jsonObject;
         }
 
@@ -77,9 +83,14 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
             {
                 case ScalarValue scalarValue:
                     if (key.Equals("id", StringComparison.OrdinalIgnoreCase))
+                    {
                         key = "id_";
+                    }
+
                     if (!key.StartsWith("_", StringComparison.OrdinalIgnoreCase))
+                    {
                         key = "_" + key;
+                    }
 
                     if (scalarValue.Value == null)
                     {

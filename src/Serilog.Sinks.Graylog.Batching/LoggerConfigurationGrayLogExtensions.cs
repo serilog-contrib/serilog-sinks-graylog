@@ -39,6 +39,8 @@ namespace Serilog.Sinks.Graylog.Batching
         /// <param name="period">The period limit default is one second</param>
         /// <param name="queueLimit">queue limit</param>
         /// <param name="maxMessageSizeInUdp">the maxMessageSizeInUdp</param>
+        /// <param name="includeMessageTemplate">if set to <c>true</c> if include message template to graylog.</param>
+        /// <param name="messageTemplateFieldName">Name of the message template field.</param>
         /// <returns></returns>
         public static LoggerConfiguration Graylog(this LoggerSinkConfiguration loggerSinkConfiguration,
                                                   string hostnameOrAddress,
@@ -52,28 +54,32 @@ namespace Serilog.Sinks.Graylog.Batching
                                                   int maxMessageSizeInUdp = GraylogSinkOptionsBase.DefaultMaxMessageSizeInUdp,
                                                   int batchSizeLimit = 10,
                                                   TimeSpan period = default,
-                                                  int queueLimit = 1000)
+                                                  int queueLimit = 1000,
+                                                  bool includeMessageTemplate = false,
+                                                  string messageTemplateFieldName = GraylogSinkOptionsBase.DefaultMessageTemplateFieldName
+            )
         {
             if (period == default)
             {
                 period = TimeSpan.FromSeconds(1);
             }
 
-            var options = new BatchingGraylogSinkOptions
-            {
-                HostnameOrAddress = hostnameOrAddress,
-                Port = port,
-                TransportType = transportType,
-                MinimumLogEventLevel = minimumLogEventLevel,
-                MessageGeneratorType = messageIdGeneratorType,
-                ShortMessageMaxLength = shortMessageMaxLength,
-                StackTraceDepth = stackTraceDepth,
-                Facility = facility,
-                BatchSizeLimit = batchSizeLimit,
-                Period = period,
-                QueueLimit = queueLimit,
-                MaxMessageSizeInUdp = maxMessageSizeInUdp
-            };
+            // ReSharper disable once UseObjectOrCollectionInitializer
+            var options = new BatchingGraylogSinkOptions();
+            options.HostnameOrAddress = hostnameOrAddress;
+            options.Port = port;
+            options.TransportType = transportType;
+            options.MinimumLogEventLevel = minimumLogEventLevel;
+            options.MessageGeneratorType = messageIdGeneratorType;
+            options.ShortMessageMaxLength = shortMessageMaxLength;
+            options.StackTraceDepth = stackTraceDepth;
+            options.Facility = facility;
+            options.BatchSizeLimit = batchSizeLimit;
+            options.Period = period;
+            options.QueueLimit = queueLimit;
+            options.MaxMessageSizeInUdp = maxMessageSizeInUdp;
+            options.IncludeMessageTemplate = includeMessageTemplate;
+            options.MessageTemplateFieldName = messageTemplateFieldName;
 
             return loggerSinkConfiguration.Graylog(options);
         }

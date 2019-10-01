@@ -7,14 +7,14 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
 
-    <PackageReference Include="altcover" Version="5.3.679" />
+    <PackageReference Include="altcover" Version="6.1.708" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="AutoFixture" Version="4.11.0" />
-    <PackageReference Include="FluentAssertions" Version="5.7.0" />
-    <PackageReference Include="Moq" Version="4.12.0" />
+    <PackageReference Include="FluentAssertions" Version="5.9.0" />
+    <PackageReference Include="Moq" Version="4.13.0" />
 
     <ProjectReference Include="..\Serilog.Sinks.Graylog.Core\Serilog.Sinks.Graylog.Core.csproj" />
     <ProjectReference Include="..\Serilog.Sinks.Graylog.Tests\Serilog.Sinks.Graylog.Tests.csproj" />

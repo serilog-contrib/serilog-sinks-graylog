@@ -20,7 +20,7 @@
     <Copyright>Anton Volkov Copyright © 2019</Copyright>
     <NeutralLanguage>en</NeutralLanguage>
     
-    <Version>2.0.9</Version>
+    <Version>2.0.11</Version>
     <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <FileVersion>2.0.0.0</FileVersion>
     <SignAssembly>true</SignAssembly>

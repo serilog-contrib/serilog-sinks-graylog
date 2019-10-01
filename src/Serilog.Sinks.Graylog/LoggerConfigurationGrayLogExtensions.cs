@@ -38,6 +38,8 @@ namespace Serilog.Sinks.Graylog
         /// <param name="facility">The facility.</param>
         /// <param name="maxMessageSizeInUdp">the maxMessageSizeInUdp</param>
         /// <param name="host">The host property to use in GELF message. If null, DNS hostname will be used instead.</param>
+        /// <param name="includeMessageTemplate">if set to <c>true</c> if include message template to graylog.</param>
+        /// <param name="messageTemplateFieldName">Name of the message template field.</param>
         /// <returns></returns>
         public static LoggerConfiguration Graylog(this LoggerSinkConfiguration loggerSinkConfiguration,
                                                   string hostnameOrAddress,
@@ -49,7 +51,10 @@ namespace Serilog.Sinks.Graylog
                                                   int stackTraceDepth = GraylogSinkOptionsBase.DefaultStackTraceDepth,
                                                   string facility = GraylogSinkOptionsBase.DefaultFacility,
                                                   int maxMessageSizeInUdp = GraylogSinkOptionsBase.DefaultMaxMessageSizeInUdp,
-                                                  string host = GraylogSinkOptionsBase.DefaultHost)
+                                                  string host = GraylogSinkOptionsBase.DefaultHost,
+                                                  bool includeMessageTemplate = false,
+                                                  string messageTemplateFieldName = GraylogSinkOptionsBase.DefaultMessageTemplateFieldName
+                                                  )
         {
             // ReSharper disable once UseObjectOrCollectionInitializer
             var options = new GraylogSinkOptions();
@@ -63,7 +68,8 @@ namespace Serilog.Sinks.Graylog
             options.Facility = facility.Expand();
             options.MaxMessageSizeInUdp = maxMessageSizeInUdp;
             options.Host = host;
-
+            options.IncludeMessageTemplate = includeMessageTemplate;
+            options.MessageTemplateFieldName = messageTemplateFieldName;
             return loggerSinkConfiguration.Graylog(options);
         }
     }

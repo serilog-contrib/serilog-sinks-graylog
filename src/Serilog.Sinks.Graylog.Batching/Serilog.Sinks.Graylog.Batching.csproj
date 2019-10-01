@@ -23,7 +23,7 @@
     <NeutralLanguage>en</NeutralLanguage>
     <RepositoryType>git</RepositoryType>
     <SignAssembly>true</SignAssembly>
-    <Version>1.0.8</Version>
+    <Version>1.0.10</Version>
     <AssemblyOriginatorKeyFile>sign.snk</AssemblyOriginatorKeyFile>
     <AssemblyVersion>1.0.8.0</AssemblyVersion>
     <FileVersion>1.0.8.0</FileVersion>
@@ -33,10 +33,20 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Serilog" Version="2.8.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     <PackageReference Include="Serilog.Sinks.PeriodicBatching" Version="2.2.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Serilog.Sinks.Graylog.Core\Serilog.Sinks.Graylog.Core.csproj" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup Condition="('$(TargetFramework)'=='netstandard1.6') Or ('$(TargetFramework)'=='netstandard2.0')">
+    <PackageReference Include="System.Net.NameResolution" Version="4.3.*" />
+  </ItemGroup>
+  
+  <ItemGroup Condition="('$(TargetFramework)'=='net45') Or ('$(TargetFramework)'=='net46') Or ('$(TargetFramework)'=='net461')">
+    <Reference Include="System" />
+    <Reference Include="System.Net.Http" />
   </ItemGroup>
 
   <!--Hack to include referenced project as content dll -->
