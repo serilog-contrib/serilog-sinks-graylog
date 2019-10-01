@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Serilog.Events;
 using Serilog.Parsing;
 using Serilog.Sinks.Graylog.Core.MessageBuilders;
@@ -52,6 +53,27 @@ namespace Serilog.Sinks.Graylog.Core.Tests.MessageBuilders
             LogEvent logEvent = LogEventSource.GetComplexEvent(date);
 
             string actual = target.Build(logEvent).ToString(Newtonsoft.Json.Formatting.None);
+        }
+
+        [Fact]
+        public void GetSimpleLogEvent_GraylogSinkOptionsContainsHost_ReturnsOptionsHost()
+        {
+            //arrange
+            GraylogSinkOptions options = new GraylogSinkOptions()
+            {
+                Host = "my_host"
+            };
+            GelfMessageBuilder messageBuilder = new GelfMessageBuilder("localhost", options);
+            DateTime date = DateTime.UtcNow;
+            string expectedHost = "my_host";
+            
+            //act
+            LogEvent logEvent = LogEventSource.GetSimpleLogEvent(date);
+            JObject actual = messageBuilder.Build(logEvent);
+            string actualHost = actual.Value<string>("host");
+
+            //assert
+            Assert.Equal(expectedHost, actualHost);
         }
 
 
