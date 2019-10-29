@@ -45,7 +45,7 @@
     - codecov -f "./src/Serilog.Sinks.Graylog.Tests/coverage.xml" -t cd3f1ab1-60c6-4848-824b-466b93321d96
   
   artifacts:
-    - path: "C:\\artifacts\\artifacts\\*.*"
+    - path: "./artifacts/*.*"
 -
   branches:
     only:
@@ -73,7 +73,7 @@
         - Integration
   
   artifacts:
-    - path: "C:\\artifacts\\artifacts\\*.*"
+    - path: "./artifacts/*.*"
 
   deploy:
     provider: NuGet
