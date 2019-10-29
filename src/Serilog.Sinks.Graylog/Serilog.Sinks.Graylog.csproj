@@ -15,6 +15,9 @@
     <PackageProjectUrl>https://github.com/whir1/serilog-sinks-graylog</PackageProjectUrl>
     <PackageIconUrl>http://serilog.net/images/serilog-sink-nuget.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/whir1/serilog-sinks-graylog</RepositoryUrl>
+
+    <PackageIcon>serilog-sink-nuget.png</PackageIcon>
+
     <RepositoryType>git</RepositoryType>
     <PackageTags>Serilog Sink Graylog</PackageTags>
     <Copyright>Anton Volkov Copyright © 2019</Copyright>
@@ -33,9 +36,10 @@
 
     
   </PropertyGroup>
-  
   <ItemGroup>
     <EmbeddedResource Include="**\*.resx" />
+
+    <None Include="..\serilog-sink-nuget.png" Pack="true" Visible="false" PackagePath="" />
     <None Remove="*.ncrunchproject" />
     <None Include="sign.snk" />
   </ItemGroup>

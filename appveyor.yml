@@ -26,8 +26,8 @@
   build_script:
     - cmd: dotnet restore -v n  ./src/serilog-sinks-graylogvs2017.sln
     - cmd: dotnet build  -v n -c Debug ./src/serilog-sinks-graylogvs2017.sln
-    - cmd: dotnet pack -v n --include-symbols --include-source -o ../../artifacts --version-suffix -p:SymbolPackageFormat=snupkg Beta ./src/Serilog.Sinks.Graylog/Serilog.Sinks.Graylog.csproj
-    - cmd: dotnet pack -v n --include-symbols --include-source -o ../../artifacts --version-suffix -p:SymbolPackageFormat=snupkg Beta ./src/Serilog.Sinks.Graylog.Batching/Serilog.Sinks.Graylog.Batching.csproj
+    - cmd: dotnet pack -v n --include-symbols --include-source -o "../../artifacts" --version-suffix Beta -p:SymbolPackageFormat=snupkg ./src/Serilog.Sinks.Graylog/Serilog.Sinks.Graylog.csproj
+    - cmd: dotnet pack -v n --include-symbols --include-source -o "../../artifacts" --version-suffix Beta -p:SymbolPackageFormat=snupkg ./src/Serilog.Sinks.Graylog.Batching/Serilog.Sinks.Graylog.Batching.csproj
 
   test:
     categories:
@@ -65,8 +65,8 @@
   build_script:
     - cmd: dotnet restore -v n  ./src/serilog-sinks-graylogvs2017.sln
     - cmd: dotnet build  -v n -c Release ./src/serilog-sinks-graylogvs2017.sln
-    - cmd: dotnet pack -v n --include-source --include-symbols -o -p:SymbolPackageFormat=snupkg ../../artifacts ./src/Serilog.Sinks.Graylog/Serilog.Sinks.Graylog.csproj
-    - cmd: dotnet pack -v n --include-source --include-symbols -o -p:SymbolPackageFormat=snupkg ../../artifacts ./src/Serilog.Sinks.Graylog.Batching/Serilog.Sinks.Graylog.Batching.csproj
+    - cmd: dotnet pack -v n --include-symbols --include-source -o "../../artifacts" -p:SymbolPackageFormat=snupkg ./src/Serilog.Sinks.Graylog/Serilog.Sinks.Graylog.csproj
+    - cmd: dotnet pack -v n --include-symbols --include-source -o "../../artifacts" -p:SymbolPackageFormat=snupkg ./src/Serilog.Sinks.Graylog.Batching/Serilog.Sinks.Graylog.Batching.csproj
   test:
     categories:
       except:
