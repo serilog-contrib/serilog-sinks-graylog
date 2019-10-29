@@ -31,7 +31,7 @@ namespace Serilog.Sinks.Graylog
         {
             try
             {
-                await EmitAsync(logEvent);
+                await EmitAsync(logEvent).ConfigureAwait(false);
             }
             catch (Exception exc)
             {

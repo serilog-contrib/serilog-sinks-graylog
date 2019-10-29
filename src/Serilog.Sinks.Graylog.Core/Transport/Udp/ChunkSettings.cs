@@ -5,13 +5,13 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Udp
     public sealed class ChunkSettings
     {
         /// <inheritdoc />
-        public ChunkSettings(MessageIdGeneratortype messageIdGeneratorType, int maxMessageSizeInUdp)
+        public ChunkSettings(MessageIdGeneratorType messageIdGeneratorType, int maxMessageSizeInUdp)
         {
             MessageIdGeneratorType = messageIdGeneratorType;
             MaxMessageSizeInUdp = maxMessageSizeInUdp;
         }
 
-        public MessageIdGeneratortype MessageIdGeneratorType { get; }
+        public MessageIdGeneratorType MessageIdGeneratorType { get; }
 
         /// <summary>
         /// The prefix size

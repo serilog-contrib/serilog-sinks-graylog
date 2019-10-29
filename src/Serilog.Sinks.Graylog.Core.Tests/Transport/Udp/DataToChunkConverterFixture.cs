@@ -18,7 +18,7 @@ namespace Serilog.Sinks.Graylog.Core.Tests.Transport.Udp
 
         public DataToChunkConverterFixture()
         {
-            _settings = new ChunkSettings(MessageIdGeneratortype.Md5, 8192);
+            _settings = new ChunkSettings(MessageIdGeneratorType.Md5, 8192);
             _fixture = new Fixture();
             _resolver = new Mock<IMessageIdGeneratorResolver>();
         }

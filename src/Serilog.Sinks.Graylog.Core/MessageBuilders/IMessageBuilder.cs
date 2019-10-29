@@ -17,7 +17,7 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
     }
 
     /// <summary>
-    /// Biuilder type
+    /// Builder type
     /// </summary>
     public enum BuilderType
     {

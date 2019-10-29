@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoFixture;
 using Serilog.Events;
-using Serilog.Exceptions;
 using Xunit;
 using Serilog.Sinks.Graylog.Core.Helpers;
 using Serilog.Sinks.Graylog.Core.Transport;
@@ -11,8 +11,54 @@ using Serilog.Sinks.Graylog.Tests.ComplexIntegrationTest;
 namespace Serilog.Sinks.Graylog.Tests
 {
     [Trait("Category", "Integration")]
-    public class IntegrateSinkTestWithHttp
+    public class IntegrateSinkTestWithTcp
     {
+        [Fact]
+        [Trait("Category", "Integration")]
+        public void VerifyLoggerVerbocity()
+        {
+            var loggerConfig = new LoggerConfiguration();
+
+            loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
+            {
+                ShortMessageMaxLength = 50,
+                MinimumLogEventLevel = LogEventLevel.Fatal,
+                Facility = "VolkovTestFacility",
+                HostnameOrAddress = "logs.aeroclub.int",
+                Port = 12202,
+                TransportType = TransportType.Tcp
+                
+            });
+
+            var logger = loggerConfig.CreateLogger();
+
+            var test = new TestClass
+            {
+                Id = 1,
+                SomeTestDateTime = DateTime.UtcNow,
+                Bar = new Bar
+                {
+                    Id = 2,
+                    Prop = "123",
+                    TestBarBooleanProperty = false
+
+                },
+                TestClassBooleanProperty = true,
+                TestPropertyOne = "1",
+                TestPropertyThree = "3",
+                TestPropertyTwo = "2"
+            };
+
+            logger.Information("SomeComplexTestEntry {@test}", test);
+
+            logger.Debug("SomeComplexTestEntry {@test}", test);
+
+            logger.Fatal("SomeComplexTestEntry {@test}", test);
+
+            logger.Error("SomeComplexTestEntry {@test}", test);
+
+        }
+
         [Fact]
         [Trait("Category", "Integration")]
         public void TestComplex()
@@ -23,10 +69,10 @@ namespace Serilog.Sinks.Graylog.Tests
             {
                 ShortMessageMaxLength = 50,
                 MinimumLogEventLevel = LogEventLevel.Information,
-                TransportType = TransportType.Http,
+                TransportType = TransportType.Tcp,
                 Facility = "VolkovTestFacility",
-                HostnameOrAddress = "http://logs.aeroclub.int",
-                Port = 12201
+                HostnameOrAddress = "logs.aeroclub.int",
+                Port = 12202
             });
 
             var logger = loggerConfig.CreateLogger();
@@ -34,11 +80,16 @@ namespace Serilog.Sinks.Graylog.Tests
             var test = new TestClass
             {
                 Id = 1,
+                Type = "TCP",
+                SomeTestDateTime = DateTime.UtcNow,
                 Bar = new Bar
                 {
                     Id = 2,
-                    Prop = "123"
+                    Prop = "123",
+                    TestBarBooleanProperty = false
+                    
                 },
+                TestClassBooleanProperty = true,
                 TestPropertyOne = "1",
                 TestPropertyThree = "3",
                 TestPropertyTwo = "2"
@@ -47,119 +98,94 @@ namespace Serilog.Sinks.Graylog.Tests
             logger.Information("SomeComplexTestEntry {@test}", test);
         }
 
-        [Fact]
-        public void WhenHostIsWrong_ThenLoggerCreationShouldNotBeFail()
-        {
-            var loggerConfig = new LoggerConfiguration();
-
-            loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
-            {
-                ShortMessageMaxLength = 50,
-                MinimumLogEventLevel = LogEventLevel.Information,
-                TransportType = TransportType.Http,
-                Facility = "VolkovTestFacility",
-                HostnameOrAddress = "abracadabra",
-                Port = 12201
-            });
-
-            var logger = loggerConfig.CreateLogger();
-
-            var test = new TestClass
-            {
-                Id = 1,
-                Bar = new Bar
-                {
-                    Id = 2,
-                    Prop = "123"
-                },
-                TestPropertyOne = "1",
-                TestPropertyThree = "3",
-                TestPropertyTwo = "2"
-            };
-
-            logger.Information("SomeComplexTestEntry {@test}", test);
-        }
-
-        [Fact]
+        [Fact()]
         [Trait("Category", "Integration")]
-        public void LogInformationWithLevel()
-        {
-            var fixture = new Fixture();
-            fixture.Behaviors.Clear();
-            fixture.Behaviors.Add(new OmitOnRecursionBehavior(1));
-            var profile = fixture.Create<Profile>();
-
-            var loggerConfig = new LoggerConfiguration();
-
-            loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
-            {
-                MinimumLogEventLevel = LogEventLevel.Error,
-                MessageGeneratorType = MessageIdGeneratorType.Timestamp,
-                TransportType = TransportType.Http,
-                Facility = "VolkovTestFacility",
-                HostnameOrAddress = "http://logs.aeroclub.int",
-                Port = 12201
-            });
-
-            var logger = loggerConfig.CreateLogger();
-
-            logger.Information("battle profile:  {@BattleProfile}", profile);
-        }
-
-
-        [Fact]
-        [Trait("Category", "Integration")]
-        public void LogInformationWithOneProfile()
-        {
-            var fixture = new Fixture();
-            fixture.Behaviors.Clear();
-            fixture.Behaviors.Add(new OmitOnRecursionBehavior(1));
-            var profile = fixture.Create<Profile>();
-
-            var loggerConfig = new LoggerConfiguration();
-
-            loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
-            {
-                MinimumLogEventLevel = LogEventLevel.Information,
-                MessageGeneratorType = MessageIdGeneratorType.Timestamp,
-                TransportType = TransportType.Http,
-                Facility = "VolkovTestFacility",
-                HostnameOrAddress = "http://logs.aeroclub.int",
-                Port = 12201
-            });
-
-            var logger = loggerConfig.CreateLogger();
-
-            logger.Information("battle profile:  {@BattleProfile}", profile);
-        }
-
-        [Fact]
-        [Trait("Ignore", "Integration")]
-        public void Log10Profiles()
+        public Task SendManyMessages()
         {
             var fixture = new Fixture();
             fixture.Behaviors.Clear();
             fixture.Behaviors.Add(new OmitOnRecursionBehavior(1));
             var profiles = fixture.CreateMany<Profile>(10).ToList();
 
+            foreach (var profile in profiles)
+            {
+                profile.Type = "TCP";
+            }
+
             var loggerConfig = new LoggerConfiguration();
 
             loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
             {
                 MinimumLogEventLevel = LogEventLevel.Information,
-                MessageGeneratorType = MessageIdGeneratorType.Timestamp,
-                TransportType = TransportType.Http,
+                MessageGeneratorType = MessageIdGeneratortype.Md5,
+                TransportType = TransportType.Tcp,
                 Facility = "VolkovTestFacility",
-                HostnameOrAddress = "http://logs.aeroclub.int",
-                Port = 12201
+                HostnameOrAddress = "logs.aeroclub.int",
+                Port = 12202
             });
 
             var logger = loggerConfig.CreateLogger();
 
-            profiles.AsParallel().ForAll(profile =>
+            var tasks = profiles.Select(c => 
             {
-                logger.Information("TestSend {@BattleProfile}", profile);
+                return Task.Run(() => logger.Information("TestSend {@BattleProfile}", c));
             });
+
+
+            return Task.WhenAll(tasks.ToArray());
+        }
+
+        [Fact]
+        [Trait("Category", "Integration")]
+        public void TestSimple()
+        {
+            var fixture = new Fixture();
+            fixture.Behaviors.Clear();
+            fixture.Behaviors.Add(new OmitOnRecursionBehavior(1));
+            var profile = fixture.Create<Profile>();
+
+            var loggerConfig = new LoggerConfiguration();
+
+            loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
+            {
+                MinimumLogEventLevel = LogEventLevel.Information,
+                MessageGeneratorType = MessageIdGeneratortype.Timestamp,
+                TransportType = TransportType.Tcp,
+                Facility = "VolkovTestFacility",
+                HostnameOrAddress = "logs.aeroclub.int",
+                Port = 12202
+            });
+
+            var logger = loggerConfig.CreateLogger();
+
+            logger.Information("battle profile:  {@BattleProfile}", profile);
+        }
+
+        [Fact]
+        [Trait("Category", "Integration")]
+        public void IncludeTemplate()
+        {
+            var fixture = new Fixture();
+            fixture.Behaviors.Clear();
+            fixture.Behaviors.Add(new OmitOnRecursionBehavior(1));
+            var profile = fixture.Create<Profile>();
+
+            var loggerConfig = new LoggerConfiguration();
+
+            loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
+            {
+                MinimumLogEventLevel = LogEventLevel.Information,
+                MessageGeneratorType = MessageIdGeneratortype.Timestamp,
+                TransportType = TransportType.Tcp,
+                Facility = "VolkovTestFacility",
+                HostnameOrAddress = "logs.aeroclub.int",
+                Port = 12202,
+                IncludeMessageTemplate = true
+            });
+
+            var logger = loggerConfig.CreateLogger();
+
+            logger.Information("battle profile:  {@BattleProfile}", profile);
         }
 
         [Fact]
@@ -168,16 +194,14 @@ namespace Serilog.Sinks.Graylog.Tests
         {
             var loggerConfig = new LoggerConfiguration();
 
-            loggerConfig
-                .Enrich.WithExceptionDetails()
-                .WriteTo.Graylog(new GraylogSinkOptions
+            loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
             {
                 MinimumLogEventLevel = LogEventLevel.Information,
-                MessageGeneratorType = MessageIdGeneratorType.Timestamp,
-                TransportType = TransportType.Http,
+                MessageGeneratorType = MessageIdGeneratortype.Timestamp,
+                TransportType = TransportType.Tcp,
                 Facility = "VolkovTestFacility",
-                HostnameOrAddress = "http://logs.aeroclub.int",
-                Port = 12201
+                HostnameOrAddress = "logs.aeroclub.int",
+                Port = 12202
             });
 
             var test = new TestClass
@@ -213,5 +237,27 @@ namespace Serilog.Sinks.Graylog.Tests
             }
         }
 
+        [Fact]
+        [Trait("Category", "Integration")]
+        public void SerializeEvent()
+        {
+            var loggerConfig = new LoggerConfiguration();
+
+            loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
+            {
+                MinimumLogEventLevel = LogEventLevel.Information,
+                MessageGeneratorType = MessageIdGeneratortype.Timestamp,
+                TransportType = TransportType.Tcp,
+                Facility = "VolkovTestFacility",
+                HostnameOrAddress = "logs.aeroclub.int",
+                Port = 12202
+            });
+
+            var payload = new Event("123");
+
+            var logger = loggerConfig.CreateLogger();
+
+            logger.Information("test event {@payload}, type:{type}", payload, "TCP");
+        }
     }
 }

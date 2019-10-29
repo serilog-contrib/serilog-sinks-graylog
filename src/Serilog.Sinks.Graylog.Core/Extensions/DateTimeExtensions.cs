@@ -9,12 +9,12 @@ namespace Serilog.Sinks.Graylog.Core.Extensions
         /// <summary>
         /// Converts to nix date time.
         /// </summary>
-        /// <param name="dateTime">The date time.</param>
+        /// <param name="dateTimeOffset"></param>
         /// <returns></returns>
         public static double ConvertToNix(this DateTimeOffset dateTimeOffset)
         {
             var duration = dateTimeOffset.ToUniversalTime() - Epoch;
-            return Math.Round((double) duration.TotalSeconds, 3, MidpointRounding.AwayFromZero);
+            return Math.Round(duration.TotalSeconds, 3, MidpointRounding.AwayFromZero);
         }
 
     }

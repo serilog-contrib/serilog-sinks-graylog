@@ -52,7 +52,7 @@ namespace Serilog.Sinks.Graylog.Core.Tests.Helpers
         {
             var resolver = new MessageIdGeneratorResolver();
 
-            IMessageIdGenerator actual = resolver.Resolve(MessageIdGeneratortype.Md5);
+            IMessageIdGenerator actual = resolver.Resolve(MessageIdGeneratorType.Md5);
 
             Assert.IsType<Md5MessageIdGenerator>(actual);
         }
@@ -62,7 +62,7 @@ namespace Serilog.Sinks.Graylog.Core.Tests.Helpers
         {
             var resolver = new MessageIdGeneratorResolver();
 
-            IMessageIdGenerator actual = resolver.Resolve(MessageIdGeneratortype.Timestamp);
+            IMessageIdGenerator actual = resolver.Resolve(MessageIdGeneratorType.Timestamp);
 
             Assert.IsType<TimestampMessageIdGenerator>(actual);
         }

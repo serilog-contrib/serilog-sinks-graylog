@@ -11,8 +11,8 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
     /// <seealso cref="GelfMessageBuilder" />
     public class ExceptionMessageBuilder : GelfMessageBuilder
     {
-        private const string ExceptionDelimiter = " - ";
-        private const string StackTraceDelimiter = "--- Inner exception stack trace ---";
+        private const string DefaultExceptionDelimiter = " - ";
+        private const string DefaultStackTraceDelimiter = "--- Inner exception stack trace ---";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExceptionMessageBuilder"/> class.
@@ -50,21 +50,21 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
             var counter = 0;
             do
             {
-                exceptionSb.Append(nestedException.Message).Append(ExceptionDelimiter);
+                exceptionSb.Append(nestedException.Message).Append(DefaultExceptionDelimiter);
                 if (nestedException.StackTrace != null)
                 {
-                    stackSb.AppendLine(nestedException.StackTrace).AppendLine(StackTraceDelimiter);
+                    stackSb.AppendLine(nestedException.StackTrace).AppendLine(DefaultStackTraceDelimiter);
                 }
                 nestedException = nestedException.InnerException;
                 counter++;
             }
             while (nestedException != null && counter < Options.StackTraceDepth);
 
-            string exceptionDetail = exceptionSb.ToString().Substring(0, exceptionSb.Length - ExceptionDelimiter.Length).Trim();
+            string exceptionDetail = exceptionSb.ToString().Substring(0, exceptionSb.Length - DefaultExceptionDelimiter.Length).Trim();
 
             if (stackSb.Length > 0)
             {
-                stackDetail = stackSb.ToString().Substring(0, stackSb.Length - StackTraceDelimiter.Length - 2).Trim();
+                stackDetail = stackSb.ToString().Substring(0, stackSb.Length - DefaultStackTraceDelimiter.Length - 2).Trim();
             }
 
             return new Tuple<string, string>(exceptionDetail, stackDetail);

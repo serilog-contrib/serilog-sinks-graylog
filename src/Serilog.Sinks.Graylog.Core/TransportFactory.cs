@@ -8,6 +8,7 @@ using Serilog.Sinks.Graylog.Core.Helpers;
 using Serilog.Sinks.Graylog.Core.MessageBuilders;
 using Serilog.Sinks.Graylog.Core.Transport;
 using Serilog.Sinks.Graylog.Core.Transport.Http;
+using Serilog.Sinks.Graylog.Core.Transport.Tcp;
 using Serilog.Sinks.Graylog.Core.Transport.Udp;
 using SinkTransportType = Serilog.Sinks.Graylog.Core.Transport.TransportType;
 
@@ -48,29 +49,46 @@ namespace Serilog.Sinks.Graylog.Core
             switch (_options.TransportType)
             {
                 case SinkTransportType.Udp:
-
-                    IDnsInfoProvider dns = new DnsWrapper();
-                    IPAddress[] ipAddreses = Task.Run(() => dns.GetHostAddresses(_options.HostnameOrAddress)).Result;
-                    IPAddress ipAddress = ipAddreses.FirstOrDefault(c => c.AddressFamily == AddressFamily.InterNetwork);
-
+                {
+                    var ipAddress = Task.Run(() => GetIpAddress(_options.HostnameOrAddress)).GetAwaiter().GetResult();
                     var ipEndpoint = new IPEndPoint(ipAddress ?? throw new InvalidOperationException(), _options.Port);
 
 
                     var chunkSettings = new ChunkSettings(_options.MessageGeneratorType, _options.MaxMessageSizeInUdp);
-                    IDataToChunkConverter chunkConverter = new DataToChunkConverter(chunkSettings, new MessageIdGeneratorResolver());
+                    IDataToChunkConverter chunkConverter =
+                        new DataToChunkConverter(chunkSettings, new MessageIdGeneratorResolver());
 
                     var udpClient = new UdpTransportClient(ipEndpoint);
                     var udpTransport = new UdpTransport(udpClient, chunkConverter);
                     return udpTransport;
-
+                }
                 case SinkTransportType.Http:
+                {
                     var httpClient = new HttpTransportClient($"{_options.HostnameOrAddress}:{_options.Port}/gelf");
+
                     var httpTransport = new HttpTransport(httpClient);
                     return httpTransport;
+                }
+                case SinkTransportType.Tcp:
+                {
+                    var ipAddress = Task.Run(() => GetIpAddress(_options.HostnameOrAddress)).GetAwaiter().GetResult();
+                    var tcpClient = new TcpTransportClient(ipAddress, _options.Port);
+                    Task.Run(() => tcpClient.Connect()).GetAwaiter().GetResult();
+                    var transport = new TcpTransport(tcpClient);
+                    return transport;
+                }
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(_options), _options.TransportType, null);
             }
+        }
+
+        private async Task<IPAddress> GetIpAddress(string hostnameOrAddress)
+        {
+            IDnsInfoProvider dns = new DnsWrapper();
+            IPAddress[] ipAddreses = await dns.GetHostAddresses(hostnameOrAddress).ConfigureAwait(false);
+            IPAddress ipAddress = ipAddreses.FirstOrDefault(c => c.AddressFamily == AddressFamily.InterNetwork);
+            return ipAddress;
         }
 
         public IGelfConverter MakeGelfConverter()
