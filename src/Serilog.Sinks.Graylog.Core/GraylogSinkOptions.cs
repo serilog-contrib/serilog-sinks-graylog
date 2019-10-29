@@ -14,7 +14,7 @@ namespace Serilog.Sinks.Graylog.Core
         public const int DefaultShortMessageMaxLength = 500;
         public const LogEventLevel DefaultMinimumLogEventLevel = LevelAlias.Minimum;
         public const int DefaultStackTraceDepth = 10;
-        public const MessageIdGeneratortype DefaultMessageGeneratorType = MessageIdGeneratortype.Timestamp;
+        public const MessageIdGeneratorType DefaultMessageGeneratorType = MessageIdGeneratorType.Timestamp;
 
         public const int DefaultMaxMessageSizeInUdp = 8192;
         /// <summary>
@@ -27,7 +27,7 @@ namespace Serilog.Sinks.Graylog.Core
         // ReSharper disable once PublicConstructorInAbstractClass
         public GraylogSinkOptionsBase()
         {
-            MessageGeneratorType = MessageIdGeneratortype.Timestamp;
+            MessageGeneratorType = MessageIdGeneratorType.Timestamp;
             ShortMessageMaxLength = DefaultShortMessageMaxLength;
             MinimumLogEventLevel = DefaultMinimumLogEventLevel;
             //Spec says: facility must be set by the client to "GELF" if empty
@@ -128,7 +128,7 @@ namespace Serilog.Sinks.Graylog.Core
         /// <remarks>
         /// its timestamp or first 8 bytes of md5 hash
         /// </remarks>
-        public MessageIdGeneratortype MessageGeneratorType { get; set; }
+        public MessageIdGeneratorType MessageGeneratorType { get; set; }
 
         /// <summary>
         /// Gets or sets the stack trace depth.

@@ -114,7 +114,7 @@ namespace Serilog.Sinks.Graylog.Tests
             loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
             {
                 MinimumLogEventLevel = LogEventLevel.Information,
-                MessageGeneratorType = MessageIdGeneratortype.Md5,
+                MessageGeneratorType = MessageIdGeneratorType.Md5,
                 Facility = "VolkovTestFacility",
                 HostnameOrAddress = "logs.aeroclub.int",
                 Port = 12201
@@ -145,7 +145,7 @@ namespace Serilog.Sinks.Graylog.Tests
             loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
             {
                 MinimumLogEventLevel = LogEventLevel.Information,
-                MessageGeneratorType = MessageIdGeneratortype.Timestamp,
+                MessageGeneratorType = MessageIdGeneratorType.Timestamp,
                 Facility = "VolkovTestFacility",
                 HostnameOrAddress = "logs.aeroclub.int",
                 Port = 12201
@@ -170,7 +170,7 @@ namespace Serilog.Sinks.Graylog.Tests
             loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
             {
                 MinimumLogEventLevel = LogEventLevel.Information,
-                MessageGeneratorType = MessageIdGeneratortype.Timestamp,
+                MessageGeneratorType = MessageIdGeneratorType.Timestamp,
                 Facility = "VolkovTestFacility",
                 HostnameOrAddress = "logs.aeroclub.int",
                 Port = 12201,
@@ -191,7 +191,7 @@ namespace Serilog.Sinks.Graylog.Tests
             loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
             {
                 MinimumLogEventLevel = LogEventLevel.Information,
-                MessageGeneratorType = MessageIdGeneratortype.Timestamp,
+                MessageGeneratorType = MessageIdGeneratorType.Timestamp,
                 TransportType = TransportType.Udp,
                 Facility = "VolkovTestFacility",
                 HostnameOrAddress = "logs.aeroclub.int",
@@ -240,7 +240,7 @@ namespace Serilog.Sinks.Graylog.Tests
             loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
             {
                 MinimumLogEventLevel = LogEventLevel.Information,
-                MessageGeneratorType = MessageIdGeneratortype.Timestamp,
+                MessageGeneratorType = MessageIdGeneratorType.Timestamp,
                 TransportType = TransportType.Udp,
                 Facility = "VolkovTestFacility",
                 HostnameOrAddress = "logs.aeroclub.int",
