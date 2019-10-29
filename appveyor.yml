@@ -55,6 +55,10 @@
 
   image: Visual Studio 2019
 
+  build:
+    publish_nuget_symbols: true
+    use_snupkg_format: true
+
   build_script:
     - cmd: dotnet restore -v n  ./src/serilog-sinks-graylogvs2017.sln
     - cmd: dotnet build  -v n -c Release ./src/serilog-sinks-graylogvs2017.sln
@@ -72,5 +76,4 @@
     provider: NuGet
     api_key:
       secure: Nu7tXoU7+zOS71RJaH0nzqb3Ae3l5y6N+UnwgsvDP3rZ/zWaQDtQ9bp9rpxcS/ZK
-      skip_symbols: true
       artifact: /.*\.nupkg
