@@ -46,7 +46,7 @@ namespace Serilog.Sinks.Graylog
                                                   int port,
                                                   TransportType transportType,
                                                   LogEventLevel minimumLogEventLevel = LevelAlias.Minimum,
-                                                  MessageIdGeneratortype messageIdGeneratorType = GraylogSinkOptionsBase.DefaultMessageGeneratorType,
+                                                  MessageIdGeneratorType messageIdGeneratorType = GraylogSinkOptionsBase.DefaultMessageGeneratorType,
                                                   int shortMessageMaxLength = GraylogSinkOptionsBase.DefaultShortMessageMaxLength,
                                                   int stackTraceDepth = GraylogSinkOptionsBase.DefaultStackTraceDepth,
                                                   string facility = GraylogSinkOptionsBase.DefaultFacility,

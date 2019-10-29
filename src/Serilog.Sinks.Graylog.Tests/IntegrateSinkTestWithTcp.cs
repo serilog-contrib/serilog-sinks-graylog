@@ -11,7 +11,7 @@ using Serilog.Sinks.Graylog.Tests.ComplexIntegrationTest;
 namespace Serilog.Sinks.Graylog.Tests
 {
     [Trait("Category", "Integration")]
-    public class IntegrateSinkTestWithUdp
+    public class IntegrateSinkTestWithTcp
     {
         [Fact]
         [Trait("Category", "Integration")]
@@ -25,7 +25,9 @@ namespace Serilog.Sinks.Graylog.Tests
                 MinimumLogEventLevel = LogEventLevel.Fatal,
                 Facility = "VolkovTestFacility",
                 HostnameOrAddress = "logs.aeroclub.int",
-                Port = 12201
+                Port = 12202,
+                TransportType = TransportType.Tcp
+                
             });
 
             var logger = loggerConfig.CreateLogger();
@@ -67,9 +69,10 @@ namespace Serilog.Sinks.Graylog.Tests
             {
                 ShortMessageMaxLength = 50,
                 MinimumLogEventLevel = LogEventLevel.Information,
+                TransportType = TransportType.Tcp,
                 Facility = "VolkovTestFacility",
                 HostnameOrAddress = "logs.aeroclub.int",
-                Port = 12201
+                Port = 12202
             });
 
             var logger = loggerConfig.CreateLogger();
@@ -77,7 +80,7 @@ namespace Serilog.Sinks.Graylog.Tests
             var test = new TestClass
             {
                 Id = 1,
-                Type = "UDP",
+                Type = "TCP",
                 SomeTestDateTime = DateTime.UtcNow,
                 Bar = new Bar
                 {
@@ -106,7 +109,7 @@ namespace Serilog.Sinks.Graylog.Tests
 
             foreach (var profile in profiles)
             {
-                profile.Type = "UDP";
+                profile.Type = "TCP";
             }
 
             var loggerConfig = new LoggerConfiguration();
@@ -115,9 +118,10 @@ namespace Serilog.Sinks.Graylog.Tests
             {
                 MinimumLogEventLevel = LogEventLevel.Information,
                 MessageGeneratorType = MessageIdGeneratorType.Md5,
+                TransportType = TransportType.Tcp,
                 Facility = "VolkovTestFacility",
                 HostnameOrAddress = "logs.aeroclub.int",
-                Port = 12201
+                Port = 12202
             });
 
             var logger = loggerConfig.CreateLogger();
@@ -146,9 +150,10 @@ namespace Serilog.Sinks.Graylog.Tests
             {
                 MinimumLogEventLevel = LogEventLevel.Information,
                 MessageGeneratorType = MessageIdGeneratorType.Timestamp,
+                TransportType = TransportType.Tcp,
                 Facility = "VolkovTestFacility",
                 HostnameOrAddress = "logs.aeroclub.int",
-                Port = 12201
+                Port = 12202
             });
 
             var logger = loggerConfig.CreateLogger();
@@ -171,9 +176,10 @@ namespace Serilog.Sinks.Graylog.Tests
             {
                 MinimumLogEventLevel = LogEventLevel.Information,
                 MessageGeneratorType = MessageIdGeneratorType.Timestamp,
+                TransportType = TransportType.Tcp,
                 Facility = "VolkovTestFacility",
                 HostnameOrAddress = "logs.aeroclub.int",
-                Port = 12201,
+                Port = 12202,
                 IncludeMessageTemplate = true
             });
 
@@ -192,10 +198,10 @@ namespace Serilog.Sinks.Graylog.Tests
             {
                 MinimumLogEventLevel = LogEventLevel.Information,
                 MessageGeneratorType = MessageIdGeneratorType.Timestamp,
-                TransportType = TransportType.Udp,
+                TransportType = TransportType.Tcp,
                 Facility = "VolkovTestFacility",
                 HostnameOrAddress = "logs.aeroclub.int",
-                Port = 12201
+                Port = 12202
             });
 
             var test = new TestClass
@@ -241,55 +247,17 @@ namespace Serilog.Sinks.Graylog.Tests
             {
                 MinimumLogEventLevel = LogEventLevel.Information,
                 MessageGeneratorType = MessageIdGeneratorType.Timestamp,
-                TransportType = TransportType.Udp,
+                TransportType = TransportType.Tcp,
                 Facility = "VolkovTestFacility",
                 HostnameOrAddress = "logs.aeroclub.int",
-                Port = 12201
+                Port = 12202
             });
 
             var payload = new Event("123");
 
             var logger = loggerConfig.CreateLogger();
 
-            logger.Information("test event {@payload}", payload);
+            logger.Information("test event {@payload}, type:{type}", payload, "TCP");
         }
-    }
-
-    public class Event
-    {
-        public Event(string eventId)
-        {
-            EventId = eventId;
-            Timestamp = DateTime.UtcNow;
-        }
-
-        public DateTime Timestamp { get; set; }
-
-        public string EventId { get; set; }
-    }
-
-    public class Bar
-    {
-        public int Id { get; set; }
-        public string Prop { get; set; }
-
-        public bool TestBarBooleanProperty { get; set; }
-    }
-
-    public class TestClass
-    {
-        public int Id { get; set; }
-
-        public bool TestClassBooleanProperty { get; set; }
-
-        public string TestPropertyOne { get; set; }
-
-        public Bar Bar { get; set; }
-
-        public string TestPropertyTwo { get; set; }
-
-        public string TestPropertyThree { get; set; }
-        public DateTime SomeTestDateTime { get; set; }
-        public string Type { get; set; }
     }
 }

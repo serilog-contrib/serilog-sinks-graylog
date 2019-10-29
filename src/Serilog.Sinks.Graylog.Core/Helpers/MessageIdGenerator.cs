@@ -14,7 +14,7 @@ namespace Serilog.Sinks.Graylog.Core.Helpers
         byte[] GenerateMessageId(byte[] message);
     }
 
-    public enum MessageIdGeneratortype
+    public enum MessageIdGeneratorType
     {
         Timestamp,
         Md5
@@ -50,19 +50,19 @@ namespace Serilog.Sinks.Graylog.Core.Helpers
 
     public interface IMessageIdGeneratorResolver
     {
-        IMessageIdGenerator Resolve(MessageIdGeneratortype generatorType);
+        IMessageIdGenerator Resolve(MessageIdGeneratorType generatorType);
     }
 
     public sealed class MessageIdGeneratorResolver : IMessageIdGeneratorResolver
     {
-        private Dictionary<MessageIdGeneratortype, Lazy<IMessageIdGenerator>> _messageGenerators = new Dictionary<MessageIdGeneratortype, Lazy<IMessageIdGenerator>>
+        private readonly Dictionary<MessageIdGeneratorType, Lazy<IMessageIdGenerator>> _messageGenerators = new Dictionary<MessageIdGeneratorType, Lazy<IMessageIdGenerator>>
         {
-            [MessageIdGeneratortype.Timestamp] = new Lazy<IMessageIdGenerator>(() => new TimestampMessageIdGenerator()),
-            [MessageIdGeneratortype.Md5] = new Lazy<IMessageIdGenerator>(() => new Md5MessageIdGenerator())
+            [MessageIdGeneratorType.Timestamp] = new Lazy<IMessageIdGenerator>(() => new TimestampMessageIdGenerator()),
+            [MessageIdGeneratorType.Md5] = new Lazy<IMessageIdGenerator>(() => new Md5MessageIdGenerator())
         };
 
         /// <exception cref="System.ArgumentOutOfRangeException">Condition.</exception>
-        public IMessageIdGenerator Resolve(MessageIdGeneratortype generatorType)
+        public IMessageIdGenerator Resolve(MessageIdGeneratorType generatorType)
         {
             return _messageGenerators[generatorType].Value;
         }

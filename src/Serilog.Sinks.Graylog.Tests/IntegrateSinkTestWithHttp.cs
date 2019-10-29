@@ -94,7 +94,7 @@ namespace Serilog.Sinks.Graylog.Tests
             loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
             {
                 MinimumLogEventLevel = LogEventLevel.Error,
-                MessageGeneratorType = MessageIdGeneratortype.Timestamp,
+                MessageGeneratorType = MessageIdGeneratorType.Timestamp,
                 TransportType = TransportType.Http,
                 Facility = "VolkovTestFacility",
                 HostnameOrAddress = "http://logs.aeroclub.int",
@@ -121,7 +121,7 @@ namespace Serilog.Sinks.Graylog.Tests
             loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
             {
                 MinimumLogEventLevel = LogEventLevel.Information,
-                MessageGeneratorType = MessageIdGeneratortype.Timestamp,
+                MessageGeneratorType = MessageIdGeneratorType.Timestamp,
                 TransportType = TransportType.Http,
                 Facility = "VolkovTestFacility",
                 HostnameOrAddress = "http://logs.aeroclub.int",
@@ -147,7 +147,7 @@ namespace Serilog.Sinks.Graylog.Tests
             loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
             {
                 MinimumLogEventLevel = LogEventLevel.Information,
-                MessageGeneratorType = MessageIdGeneratortype.Timestamp,
+                MessageGeneratorType = MessageIdGeneratorType.Timestamp,
                 TransportType = TransportType.Http,
                 Facility = "VolkovTestFacility",
                 HostnameOrAddress = "http://logs.aeroclub.int",
@@ -173,7 +173,7 @@ namespace Serilog.Sinks.Graylog.Tests
                 .WriteTo.Graylog(new GraylogSinkOptions
             {
                 MinimumLogEventLevel = LogEventLevel.Information,
-                MessageGeneratorType = MessageIdGeneratortype.Timestamp,
+                MessageGeneratorType = MessageIdGeneratorType.Timestamp,
                 TransportType = TransportType.Http,
                 Facility = "VolkovTestFacility",
                 HostnameOrAddress = "http://logs.aeroclub.int",
