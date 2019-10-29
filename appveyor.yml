@@ -26,8 +26,8 @@
   build_script:
     - cmd: dotnet restore -v n  ./src/serilog-sinks-graylogvs2017.sln
     - cmd: dotnet build  -v n -c Debug ./src/serilog-sinks-graylogvs2017.sln
-    - cmd: dotnet pack -v n --include-symbols --include-source -o "../../artifacts" --version-suffix Beta -p:SymbolPackageFormat=snupkg ./src/Serilog.Sinks.Graylog/Serilog.Sinks.Graylog.csproj
-    - cmd: dotnet pack -v n --include-symbols --include-source -o "../../artifacts" --version-suffix Beta -p:SymbolPackageFormat=snupkg ./src/Serilog.Sinks.Graylog.Batching/Serilog.Sinks.Graylog.Batching.csproj
+    - cmd: dotnet pack -v n --include-symbols --include-source -o "./artifacts" --version-suffix Beta -p:SymbolPackageFormat=snupkg ./src/Serilog.Sinks.Graylog/Serilog.Sinks.Graylog.csproj
+    - cmd: dotnet pack -v n --include-symbols --include-source -o "./artifacts" --version-suffix Beta -p:SymbolPackageFormat=snupkg ./src/Serilog.Sinks.Graylog.Batching/Serilog.Sinks.Graylog.Batching.csproj
 
   test:
     categories:
@@ -45,7 +45,7 @@
     - codecov -f "./src/Serilog.Sinks.Graylog.Tests/coverage.xml" -t cd3f1ab1-60c6-4848-824b-466b93321d96
   
   artifacts:
-    - path: "../artifacts/*.*"
+    - path: "./artifacts/*.*"
 -
   branches:
     only:
@@ -65,15 +65,15 @@
   build_script:
     - cmd: dotnet restore -v n  ./src/serilog-sinks-graylogvs2017.sln
     - cmd: dotnet build  -v n -c Release ./src/serilog-sinks-graylogvs2017.sln
-    - cmd: dotnet pack -v n --include-symbols --include-source -o "../../artifacts" -p:SymbolPackageFormat=snupkg ./src/Serilog.Sinks.Graylog/Serilog.Sinks.Graylog.csproj
-    - cmd: dotnet pack -v n --include-symbols --include-source -o "../../artifacts" -p:SymbolPackageFormat=snupkg ./src/Serilog.Sinks.Graylog.Batching/Serilog.Sinks.Graylog.Batching.csproj
+    - cmd: dotnet pack -v n --include-symbols --include-source -o "./artifacts" -p:SymbolPackageFormat=snupkg ./src/Serilog.Sinks.Graylog/Serilog.Sinks.Graylog.csproj
+    - cmd: dotnet pack -v n --include-symbols --include-source -o "./artifacts" -p:SymbolPackageFormat=snupkg ./src/Serilog.Sinks.Graylog.Batching/Serilog.Sinks.Graylog.Batching.csproj
   test:
     categories:
       except:
         - Integration
   
   artifacts:
-    - path: "../artifacts/*.*"
+    - path: "./artifacts/*.*"
 
   deploy:
     provider: NuGet
