@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.IO;
+using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 
@@ -9,6 +10,7 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Tcp
         private readonly IPAddress _address;
         private readonly TcpClient _client;
         private readonly int _port;
+        private NetworkStream _stream;
 
         /// <inheritdoc />
         public TcpTransportClient(IPAddress address, int port)
@@ -18,23 +20,17 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Tcp
             _client = new TcpClient();
         }
 
-        public Task Connect()
+        public async Task Connect()
         {
-            return _client.ConnectAsync(_address, _port);
+            await _client.ConnectAsync(_address, _port).ConfigureAwait(false);
+            _stream = _client.GetStream();
         }
 
         /// <inheritdoc />
         public async Task Send(byte[] payload)
         {
-            if (!_client.Connected)
-            {
-                await _client.ConnectAsync(_address, _port).ConfigureAwait(false);
-            }
-
-            using (var stream = _client.GetStream())
-            {
-                await stream.WriteAsync(payload, 0, payload.Length).ConfigureAwait(false);
-            }
+            await _stream.WriteAsync(payload, 0, payload.Length).ConfigureAwait(false);
+            await _stream.FlushAsync().ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -43,8 +39,10 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Tcp
             #if NETFRAMEWORK
             _client.Close();
             #else
-            _client.Dispose();
+            _client?.Dispose();
+            
             #endif
+            _stream?.Dispose();
         }
     }
 }

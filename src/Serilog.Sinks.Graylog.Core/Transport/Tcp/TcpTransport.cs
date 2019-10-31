@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Serilog.Sinks.Graylog.Core.Transport.Tcp
 {
@@ -20,10 +23,12 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Tcp
         /// <inheritdoc />
         public Task Send(string message)
         {
-            var payloadMessage = $"{message}{DefaultGelfMagicLineEnding}";
-
             //Not support chunking and compressed payloads ='(
-            var payload = System.Text.Encoding.UTF8.GetBytes(payloadMessage);
+            var payload = System.Text.Encoding.UTF8.GetBytes(message);
+
+            Array.Resize(ref payload, payload.Length + 1);
+            payload[payload.Length - 1] = 0x00;
+
             return _tcpClient.Send(payload);
         }
 

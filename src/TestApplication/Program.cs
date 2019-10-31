@@ -18,10 +18,11 @@ namespace TestApplication
                             .ReadFrom.Configuration(configuration)
                 .CreateLogger();
 
-            logger.Warning("some warning: {test}", "test message");
-
-
-            await Task.Delay(TimeSpan.FromMinutes(1));
+            while (true)
+            {
+                var line = Console.ReadLine();
+                logger.Warning("some warning: {test}", line);
+            }
         }
     }
 }
