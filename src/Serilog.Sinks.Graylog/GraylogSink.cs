@@ -27,11 +27,13 @@ namespace Serilog.Sinks.Graylog
             _transport.Value.Dispose();
         }
 
-        public async void Emit(LogEvent logEvent)
+        public void Emit(LogEvent logEvent)
         {
             try
             {
-                await EmitAsync(logEvent).ConfigureAwait(false);
+                EmitAsync(logEvent).ConfigureAwait(false)
+                                   .GetAwaiter()
+                                   .GetResult();
             }
             catch (Exception exc)
             {
