@@ -73,7 +73,6 @@ namespace Serilog.Sinks.Graylog.Core
                 {
                     var ipAddress = Task.Run(() => GetIpAddress(_options.HostnameOrAddress)).GetAwaiter().GetResult();
                     var tcpClient = new TcpTransportClient(ipAddress, _options.Port);
-                    Task.Run(() => tcpClient.Connect()).GetAwaiter().GetResult();
                     var transport = new TcpTransport(tcpClient);
                     return transport;
                 }
