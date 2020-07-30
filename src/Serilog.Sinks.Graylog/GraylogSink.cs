@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Serilog.Core;
 using Serilog.Debugging;
@@ -13,11 +17,13 @@ namespace Serilog.Sinks.Graylog
     {
         private readonly Lazy<IGelfConverter> _converter;
         private readonly Lazy<ITransport> _transport;
+        private readonly JsonSerializer _serializer;
 
-        
+
         public GraylogSink(GraylogSinkOptions options)
         {
             ISinkComponentsBuilder sinkComponentsBuilder = new SinkComponentsBuilder(options);
+            _serializer = JsonSerializer.Create(options.SerializerSettings);
             _transport = new Lazy<ITransport>(() => sinkComponentsBuilder.MakeTransport());
             _converter = new Lazy<IGelfConverter>(() => sinkComponentsBuilder.MakeGelfConverter());
         }
@@ -44,8 +50,16 @@ namespace Serilog.Sinks.Graylog
         private Task EmitAsync(LogEvent logEvent)
         {
             JObject json = _converter.Value.GetGelfJson(logEvent);
-            string payload = json.ToString(Newtonsoft.Json.Formatting.None);
-            return _transport.Value.Send(payload);
+
+            using (var textWriter = new StringWriter())
+            {
+                _serializer.Serialize(textWriter, json);
+                var payload = textWriter.ToString();
+                return _transport.Value.Send(payload);
+            }
+            //string payload = json.ToString(settings.Formatting, settings.Converters.ToArray());
+            //string payload = json.ToString(settings.Formatting, settings.Converters.ToArray());
+            //return _transport.Value.Send(payload);
         }
     }
 }

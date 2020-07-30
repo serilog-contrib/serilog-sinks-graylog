@@ -10,12 +10,12 @@ namespace Serilog.Sinks.Graylog.Tests
     {
         [Fact]
         [Trait("Category", "Integration")]
-        public void WhenUseSerilogExceptions_ThneExceptionDetailsShouldBeSent()
+        public void WhenUseSerilogExceptions_ThenExceptionDetailsShouldBeSent()
         {
             var loggerConfig = new LoggerConfiguration();
 
             loggerConfig
-                .Enrich.WithExceptionDetails()
+                //.Enrich.WithExceptionDetails()
                 .WriteTo.Graylog(new GraylogSinkOptions
             {
                 ShortMessageMaxLength = 50,

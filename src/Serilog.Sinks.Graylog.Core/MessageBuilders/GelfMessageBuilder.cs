@@ -99,7 +99,9 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
                     }
 
                     var shouldCallToString = ShouldCallToString(scalarValue.Value.GetType());
-                
+
+
+
                     JToken value = JToken.FromObject(shouldCallToString ? scalarValue.Value.ToString() : scalarValue.Value);
                 
                     jObject.Add(key, value);
@@ -112,8 +114,8 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
                     foreach (LogEventProperty logEventProperty in structureValue.Properties)
                     {
                         AddAdditionalField(jObject,
-                                           new KeyValuePair<string, LogEventPropertyValue>(logEventProperty.Name, logEventProperty.Value)
-                                           , key);
+                                           new KeyValuePair<string, LogEventPropertyValue>(logEventProperty.Name, logEventProperty.Value),
+                                           key);
                     }
                     break;
                 case DictionaryValue dictionaryValue:
@@ -129,10 +131,22 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
         private bool ShouldCallToString(Type type)
         {
             bool isNumeric = type.IsNumericType();
-            if (type == typeof(DateTime) || isNumeric)
+
+            if (type == typeof(DateTime))
             {
                 return false;
             }
+
+            if (type.IsEnum)
+            {
+                return true;
+            }
+
+            if (isNumeric)
+            {
+                return false;
+            }
+
             return true;
         }
 

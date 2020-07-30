@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using Serilog.Events;
 using Serilog.Sinks.Graylog.Core.Helpers;
 using Serilog.Sinks.Graylog.Core.Transport;
@@ -24,6 +26,12 @@ namespace Serilog.Sinks.Graylog.Core
 
         public const string DefaultMessageTemplateFieldName = "message_template";
 
+        public static readonly JsonSerializerSettings DefaultSerializerSettings = new JsonSerializerSettings
+        {
+            Formatting = Newtonsoft.Json.Formatting.None,
+            Converters = new List<JsonConverter>()
+        };
+
         // ReSharper disable once PublicConstructorInAbstractClass
         public GraylogSinkOptionsBase()
         {
@@ -37,7 +45,10 @@ namespace Serilog.Sinks.Graylog.Core
             Host = DefaultHost;
             IncludeMessageTemplate = false;
             MessageTemplateFieldName = DefaultMessageTemplateFieldName;
+            SerializerSettings = DefaultSerializerSettings;
         }
+
+        
 
         /// <summary>
         /// Gets or sets the name of the message template field.
@@ -150,5 +161,7 @@ namespace Serilog.Sinks.Graylog.Core
         /// Gets or sets the host property required by the GELF format. If set to null, DNS hostname will be used instead.
         /// </summary>
         public string Host { get; set; }
+
+        public JsonSerializerSettings SerializerSettings { get; set; }
     }
 }
