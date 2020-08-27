@@ -1,7 +1,9 @@
-﻿using Serilog.Sinks.Graylog.Core.Extensions;
+﻿using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Net.Security;
 using System.Net.Sockets;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace Serilog.Sinks.Graylog.Core.Transport.Tcp
@@ -10,14 +12,16 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Tcp
     {
         private readonly IPAddress _address;
         private readonly int _port;
+        private readonly string _sslHost;
         private TcpClient _client;
-        private NetworkStream _stream;
+        private Stream _stream;
 
         /// <inheritdoc />
-        public TcpTransportClient(IPAddress address, int port)
+        public TcpTransportClient(IPAddress address, int port, string sslHost)
         {
             _address = address;
             _port = port;
+            _sslHost = sslHost;
         }
 
         /// <inheritdoc />
@@ -47,6 +51,28 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Tcp
         {
             await _client.ConnectAsync(_address, _port).ConfigureAwait(false);
             _stream = _client.GetStream();
+
+            if (!string.IsNullOrWhiteSpace(_sslHost))
+            {
+                var _sslStream = new SslStream(_stream, false);
+
+                await _sslStream.AuthenticateAsClientAsync(_sslHost);
+
+                X509Certificate remoteCertificate = _sslStream.RemoteCertificate;
+                if (_sslStream.RemoteCertificate != null)
+                {
+                    Debug.WriteLine("Remote cert was issued to {0} and is valid from {1} until {2}.",
+                        remoteCertificate.Subject,
+                        remoteCertificate.GetEffectiveDateString(),
+                        remoteCertificate.GetExpirationDateString());
+
+                    _stream = _sslStream;
+                }
+                else
+                {
+                    Debug.Fail("Remote certificate is null.");
+                }
+            }
         }
 
         private void CloseClient()

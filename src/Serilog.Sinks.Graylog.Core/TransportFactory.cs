@@ -72,7 +72,7 @@ namespace Serilog.Sinks.Graylog.Core
                 case SinkTransportType.Tcp:
                 {
                     var ipAddress = Task.Run(() => GetIpAddress(_options.HostnameOrAddress)).GetAwaiter().GetResult();
-                    var tcpClient = new TcpTransportClient(ipAddress, _options.Port);
+                    var tcpClient = new TcpTransportClient(ipAddress, _options.Port, _options.UseSsl ? _options.HostnameOrAddress : null);
                     var transport = new TcpTransport(tcpClient);
                     return transport;
                 }
