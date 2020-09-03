@@ -87,7 +87,7 @@ namespace Serilog.Sinks.Graylog.Core
         /// <value>
         /// The port.
         /// </value>
-        public int Port { get; set; }
+        public int? Port { get; set; }
 
         /// <summary>
         /// Gets or sets the transport.
