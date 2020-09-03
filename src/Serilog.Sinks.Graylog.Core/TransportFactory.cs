@@ -65,7 +65,7 @@ namespace Serilog.Sinks.Graylog.Core
                 case SinkTransportType.Http: {
                     var builder = new UriBuilder {
                         Host = _options.HostnameOrAddress,
-                        Port = _options.Port ?? -1,
+                        Port = _options.Port.GetValueOrDefault(12201),
                         Path = "gelf"
                     };
                     
