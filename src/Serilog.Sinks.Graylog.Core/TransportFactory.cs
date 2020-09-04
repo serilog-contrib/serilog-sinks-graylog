@@ -51,7 +51,7 @@ namespace Serilog.Sinks.Graylog.Core
                 case SinkTransportType.Udp:
                 {
                     var ipAddress = Task.Run(() => GetIpAddress(_options.HostnameOrAddress)).GetAwaiter().GetResult();
-                    var ipEndpoint = new IPEndPoint(ipAddress ?? throw new InvalidOperationException(), _options.Port);
+                    var ipEndpoint = new IPEndPoint(ipAddress ?? throw new InvalidOperationException(), _options.Port.GetValueOrDefault(12201));
 
 
                     var chunkSettings = new ChunkSettings(_options.MessageGeneratorType, _options.MaxMessageSizeInUdp);
@@ -62,9 +62,13 @@ namespace Serilog.Sinks.Graylog.Core
                     var udpTransport = new UdpTransport(udpClient, chunkConverter);
                     return udpTransport;
                 }
-                case SinkTransportType.Http:
-                {
-                    var httpClient = new HttpTransportClient($"{_options.HostnameOrAddress}:{_options.Port}/gelf");
+                case SinkTransportType.Http: {
+                    var builder = new UriBuilder(_options.HostnameOrAddress) {
+                        Port = _options.Port.GetValueOrDefault(12201),
+                        Path = "gelf"
+                    };
+                    
+                    var httpClient = new HttpTransportClient(builder.Uri.ToString());
 
                     var httpTransport = new HttpTransport(httpClient);
                     return httpTransport;
@@ -72,7 +76,7 @@ namespace Serilog.Sinks.Graylog.Core
                 case SinkTransportType.Tcp:
                 {
                     var ipAddress = Task.Run(() => GetIpAddress(_options.HostnameOrAddress)).GetAwaiter().GetResult();
-                    var tcpClient = new TcpTransportClient(ipAddress, _options.Port);
+                    var tcpClient = new TcpTransportClient(ipAddress, _options.Port.GetValueOrDefault(12201));
                     var transport = new TcpTransport(tcpClient);
                     return transport;
                 }
