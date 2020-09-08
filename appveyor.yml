@@ -24,8 +24,8 @@
   image: Visual Studio 2019
 
   build_script:
-    - cmd: dotnet restore -v n  ./src/serilog-sinks-graylogvs2017.sln
-    - cmd: dotnet build  -v n -c Debug ./src/serilog-sinks-graylogvs2017.sln
+    - cmd: dotnet restore -v n  ./src/serilog-sinks-graylog.sln
+    - cmd: dotnet build  -v n -c Debug ./src/serilog-sinks-graylog.sln
     - cmd: dotnet pack -v n --include-symbols --include-source -o "./artifacts" --version-suffix Beta -p:SymbolPackageFormat=snupkg ./src/Serilog.Sinks.Graylog/Serilog.Sinks.Graylog.csproj
     - cmd: dotnet pack -v n --include-symbols --include-source -o "./artifacts" --version-suffix Beta -p:SymbolPackageFormat=snupkg ./src/Serilog.Sinks.Graylog.Batching/Serilog.Sinks.Graylog.Batching.csproj
 
@@ -60,8 +60,8 @@
     use_snupkg_format: true
 
   build_script:
-    - cmd: dotnet restore -v n  ./src/serilog-sinks-graylogvs2017.sln
-    - cmd: dotnet build  -v n -c Release ./src/serilog-sinks-graylogvs2017.sln
+    - cmd: dotnet restore -v n  ./src/serilog-sinks-graylog.sln
+    - cmd: dotnet build  -v n -c Release ./src/serilog-sinks-graylog.sln
     - cmd: dotnet pack -v n --include-symbols --include-source -o "./artifacts" -p:SymbolPackageFormat=snupkg ./src/Serilog.Sinks.Graylog/Serilog.Sinks.Graylog.csproj
     - cmd: dotnet pack -v n --include-symbols --include-source -o "./artifacts" -p:SymbolPackageFormat=snupkg ./src/Serilog.Sinks.Graylog.Batching/Serilog.Sinks.Graylog.Batching.csproj
   test:
