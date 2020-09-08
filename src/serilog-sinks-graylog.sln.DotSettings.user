@@ -1,4 +1,16 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=7570c40d_002D7a7c_002D40a8_002Dae99_002D696df73984da/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="TestComplex" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::3C61B1BA-FCC8-4589-90BA-08FBF1CCE68B::.NETCoreApp,Version=v2.0::Serilog.Sinks.Graylog.Tests.IntegrateSinkTestWithHttp.TestComplex&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::3C61B1BA-FCC8-4589-90BA-08FBF1CCE68B::.NETCoreApp,Version=v2.0::Serilog.Sinks.Graylog.Tests.IntegrateSinkTestWithHttp.WhenHostIsWrong_ThenLoggerCreationShouldNotBeFail&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::3C61B1BA-FCC8-4589-90BA-08FBF1CCE68B::.NETCoreApp,Version=v2.0::Serilog.Sinks.Graylog.Tests.IntegrateSinkTestWithUdp.VerifyLoggerVerbocity&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=a85b88ad_002D5d30_002D4108_002D9c45_002D4d6118d10823/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="VerifyLoggerVerbocity" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::3C61B1BA-FCC8-4589-90BA-08FBF1CCE68B::.NETCoreApp,Version=v2.0::Serilog.Sinks.Graylog.Tests.IntegrateSinkTestWithUdp&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b6000f8d_002D072e_002D432d_002D9b77_002D7155ac70367a/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="WhenUseSerilogExceptions_ThneExceptionDetailsShouldBeSent" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::3C61B1BA-FCC8-4589-90BA-08FBF1CCE68B::.NETCoreApp,Version=v2.0::Serilog.Sinks.Graylog.Tests.SerilogExceptionsFixture.WhenUseSerilogExceptions_ThenExceptionDetailsShouldBeSent&lt;/TestId&gt;&#xD;

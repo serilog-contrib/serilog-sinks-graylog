@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using AutoFixture;
+using Newtonsoft.Json;
 using Serilog.Events;
 using Serilog.Exceptions;
 using Xunit;
@@ -59,7 +60,8 @@ namespace Serilog.Sinks.Graylog.Tests
                 TransportType = TransportType.Http,
                 Facility = "VolkovTestFacility",
                 HostnameOrAddress = "abracadabra",
-                Port = 12201
+                Port = 12201,
+                SerializerSettings = new JsonSerializerSettings()
             });
 
             var logger = loggerConfig.CreateLogger();
@@ -74,7 +76,11 @@ namespace Serilog.Sinks.Graylog.Tests
                 },
                 TestPropertyOne = "1",
                 TestPropertyThree = "3",
-                TestPropertyTwo = "2"
+                TestPropertyTwo = "2",
+                EnumVal = TestEnumOne.Three,
+                SomeTestDateTime = DateTime.Now
+                    
+                
             };
 
             logger.Information("SomeComplexTestEntry {@test}", test);
