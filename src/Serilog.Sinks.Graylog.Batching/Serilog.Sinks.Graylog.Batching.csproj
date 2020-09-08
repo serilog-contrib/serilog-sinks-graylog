@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.6;netstandard2.0;net461;net46;</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1;netstandard2.0;net461;net46;</TargetFrameworks>
     <!--Hack to include referenced project as content dll -->
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
 
@@ -50,7 +50,7 @@
     <ProjectReference Include="..\Serilog.Sinks.Graylog.Core\Serilog.Sinks.Graylog.Core.csproj" PrivateAssets="all" />
   </ItemGroup>
 
-  <ItemGroup Condition="('$(TargetFramework)'=='netstandard1.6') Or ('$(TargetFramework)'=='netstandard2.0')">
+  <ItemGroup Condition="('$(TargetFramework)'=='netstandard2.1') Or ('$(TargetFramework)'=='netstandard2.0')">
     <PackageReference Include="System.Net.NameResolution" Version="4.3.*" />
   </ItemGroup>
   

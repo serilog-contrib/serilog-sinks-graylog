@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoFixture;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Serilog.Events;
 using Xunit;
 using Serilog.Sinks.Graylog.Core.Helpers;
@@ -10,6 +13,12 @@ using Serilog.Sinks.Graylog.Tests.ComplexIntegrationTest;
 
 namespace Serilog.Sinks.Graylog.Tests
 {
+
+    public enum TestEnumOne
+    {
+        One, Two, Three
+    }
+
     [Trait("Category", "Integration")]
     public class IntegrateSinkTestWithUdp
     {
@@ -25,7 +34,15 @@ namespace Serilog.Sinks.Graylog.Tests
                 MinimumLogEventLevel = LogEventLevel.Fatal,
                 Facility = "VolkovTestFacility",
                 HostnameOrAddress = "logs.aeroclub.int",
-                Port = 12201
+                Port = 12201,
+                SerializerSettings = new JsonSerializerSettings
+                {
+                    Converters = new List<JsonConverter>
+                    {
+                        new StringEnumConverter()
+                    },
+                    Formatting = Newtonsoft.Json.Formatting.Indented
+                }
             });
 
             var logger = loggerConfig.CreateLogger();
@@ -44,7 +61,8 @@ namespace Serilog.Sinks.Graylog.Tests
                 TestClassBooleanProperty = true,
                 TestPropertyOne = "1",
                 TestPropertyThree = "3",
-                TestPropertyTwo = "2"
+                TestPropertyTwo = "2",
+                EnumVal = TestEnumOne.Three
             };
 
             logger.Information("SomeComplexTestEntry {@test}", test);
@@ -291,5 +309,6 @@ namespace Serilog.Sinks.Graylog.Tests
         public string TestPropertyThree { get; set; }
         public DateTime SomeTestDateTime { get; set; }
         public string Type { get; set; }
+        public TestEnumOne EnumVal { get; set; }
     }
 }

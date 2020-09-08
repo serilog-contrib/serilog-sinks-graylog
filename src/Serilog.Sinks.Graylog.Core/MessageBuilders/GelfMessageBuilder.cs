@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Serilog.Events;
 using Serilog.Sinks.Graylog.Core.Extensions;
@@ -16,6 +17,7 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
     {
         
         private readonly string _hostName;
+        private JsonSerializer _serializer;
         private const string DefaultGelfVersion = "1.1";
         protected GraylogSinkOptionsBase Options { get; }
 
@@ -27,6 +29,7 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
         public GelfMessageBuilder(string hostName, GraylogSinkOptionsBase options)
         {
             _hostName = hostName;
+            _serializer = JsonSerializer.Create(options.SerializerSettings);
             Options = options;
         }
 
@@ -99,8 +102,8 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
                     }
 
                     var shouldCallToString = ShouldCallToString(scalarValue.Value.GetType());
-                
-                    JToken value = JToken.FromObject(shouldCallToString ? scalarValue.Value.ToString() : scalarValue.Value);
+
+                    JToken value = JToken.FromObject(shouldCallToString ? scalarValue.Value.ToString() : scalarValue.Value, _serializer);
                 
                     jObject.Add(key, value);
                     break;
@@ -112,8 +115,8 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
                     foreach (LogEventProperty logEventProperty in structureValue.Properties)
                     {
                         AddAdditionalField(jObject,
-                                           new KeyValuePair<string, LogEventPropertyValue>(logEventProperty.Name, logEventProperty.Value)
-                                           , key);
+                                           new KeyValuePair<string, LogEventPropertyValue>(logEventProperty.Name, logEventProperty.Value),
+                                           key);
                     }
                     break;
                 case DictionaryValue dictionaryValue:
@@ -129,10 +132,22 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
         private bool ShouldCallToString(Type type)
         {
             bool isNumeric = type.IsNumericType();
-            if (type == typeof(DateTime) || isNumeric)
+
+            if (type == typeof(DateTime))
             {
                 return false;
             }
+
+            if (type.IsEnum)
+            {
+                return false;
+            }
+
+            if (isNumeric)
+            {
+                return false;
+            }
+
             return true;
         }
 
