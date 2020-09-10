@@ -48,6 +48,8 @@ namespace Serilog.Sinks.Graylog.Core
             SerializerSettings = DefaultSerializerSettings;
         }
 
+        
+
         /// <summary>
         /// Gets or sets the name of the message template field.
         /// </summary>
@@ -160,13 +162,11 @@ namespace Serilog.Sinks.Graylog.Core
         /// </summary>
         public string Host { get; set; }
 
-
         /// <summary>
         /// Is this a secure connection (SSL)? If so, it gets validated with the host <see cref="HostnameOrAddress"/>
         /// </summary>
         public bool UseSsl { get; set; }
 
         public JsonSerializerSettings SerializerSettings { get; set; }
-
     }
 }
