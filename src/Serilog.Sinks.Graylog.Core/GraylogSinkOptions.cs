@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using Serilog.Events;
 using Serilog.Sinks.Graylog.Core.Helpers;
 using Serilog.Sinks.Graylog.Core.Transport;
@@ -24,6 +26,12 @@ namespace Serilog.Sinks.Graylog.Core
 
         public const string DefaultMessageTemplateFieldName = "message_template";
 
+        public static readonly JsonSerializerSettings DefaultSerializerSettings = new JsonSerializerSettings
+        {
+            Formatting = Newtonsoft.Json.Formatting.None,
+            Converters = new List<JsonConverter>()
+        };
+
         // ReSharper disable once PublicConstructorInAbstractClass
         public GraylogSinkOptionsBase()
         {
@@ -37,6 +45,7 @@ namespace Serilog.Sinks.Graylog.Core
             Host = DefaultHost;
             IncludeMessageTemplate = false;
             MessageTemplateFieldName = DefaultMessageTemplateFieldName;
+            SerializerSettings = DefaultSerializerSettings;
         }
 
         /// <summary>
@@ -87,7 +96,7 @@ namespace Serilog.Sinks.Graylog.Core
         /// <value>
         /// The port.
         /// </value>
-        public int Port { get; set; }
+        public int? Port { get; set; }
 
         /// <summary>
         /// Gets or sets the transport.
@@ -151,9 +160,13 @@ namespace Serilog.Sinks.Graylog.Core
         /// </summary>
         public string Host { get; set; }
 
+
         /// <summary>
         /// Is this a secure connection (SSL)? If so, it gets validated with the host <see cref="HostnameOrAddress"/>
         /// </summary>
         public bool UseSsl { get; set; }
+
+        public JsonSerializerSettings SerializerSettings { get; set; }
+
     }
 }

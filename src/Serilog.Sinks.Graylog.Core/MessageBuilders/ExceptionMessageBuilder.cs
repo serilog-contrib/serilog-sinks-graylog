@@ -30,6 +30,7 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
             string stackTrace = excMessageTuple.Item2;
 
             logEvent.AddOrUpdateProperty(new LogEventProperty("ExceptionSource", new ScalarValue(logEvent.Exception.Source)));
+            logEvent.AddOrUpdateProperty(new LogEventProperty("ExceptionType", new ScalarValue(logEvent.Exception.GetType())));
             logEvent.AddOrUpdateProperty(new LogEventProperty("ExceptionMessage", new ScalarValue(exceptionDetail)));
             logEvent.AddOrUpdateProperty(new LogEventProperty("StackTrace", new ScalarValue(stackTrace)));
 
