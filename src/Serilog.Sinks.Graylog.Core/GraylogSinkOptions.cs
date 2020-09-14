@@ -109,8 +109,8 @@ namespace Serilog.Sinks.Graylog.Core
         /// <remarks>
         /// You can implement another one or use default udp transport
         /// </remarks>
-
         public TransportType TransportType { get; set; }
+
         /// <summary>
         /// Gets or sets the gelf converter.
         /// </summary>
@@ -161,6 +161,11 @@ namespace Serilog.Sinks.Graylog.Core
         /// Gets or sets the host property required by the GELF format. If set to null, DNS hostname will be used instead.
         /// </summary>
         public string Host { get; set; }
+
+        /// <summary>
+        /// Is this a secure connection (SSL)? If so, it gets validated with the host <see cref="HostnameOrAddress"/>
+        /// </summary>
+        public bool UseSsl { get; set; }
 
         public JsonSerializerSettings SerializerSettings { get; set; }
     }
