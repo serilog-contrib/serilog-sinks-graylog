@@ -42,9 +42,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Serilog" Version="2.8.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-    <PackageReference Include="Serilog.Sinks.PeriodicBatching" Version="2.2.0" />
+    <PackageReference Include="Serilog" Version="2.10.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Serilog.Sinks.PeriodicBatching" Version="2.3.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Serilog.Sinks.Graylog.Core\Serilog.Sinks.Graylog.Core.csproj" PrivateAssets="all" />

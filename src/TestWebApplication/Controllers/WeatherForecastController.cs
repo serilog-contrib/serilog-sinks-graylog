@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using Serilog;
+
 
 namespace TestWebApplication.Controllers
 {
@@ -16,11 +17,11 @@ namespace TestWebApplication.Controllers
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
-        private readonly ILogger<WeatherForecastController> _logger;
+        private readonly ILogger _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController()
         {
-            _logger = logger;
+            _logger = Log.ForContext<WeatherForecastController>();
         }
 
         [HttpGet]
@@ -35,5 +36,32 @@ namespace TestWebApplication.Controllers
             })
             .ToArray();
         }
+
+        [HttpGet("burn")]
+        public IEnumerable<BurnStat> LetsBurn()
+        {
+            var result = new List<BurnStat>();
+
+            for (int i=0; i < 1000; i++)
+            {
+                var item = new BurnStat
+                {
+                    Today = DateTime.Now,
+                    RandomPayload = Guid.NewGuid().ToString()
+                };
+                result.Add(item);
+                
+                _logger.Information("BurnInfo: {@Info}", item);
+            }
+
+            return result;
+        }
+    }
+
+    public class BurnStat
+    {
+        public DateTime Today { get; set; }
+
+        public string RandomPayload { get; set; }
     }
 }

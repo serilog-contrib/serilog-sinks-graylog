@@ -13,9 +13,16 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
+    <PackageReference Include="Serilog" Version="2.10.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="3.4.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="5.6.3" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="5.6.3" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="5.6.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Serilog.Sinks.Graylog.Core\Serilog.Sinks.Graylog.Core.csproj" />
+    <ProjectReference Include="..\Serilog.Sinks.Graylog\Serilog.Sinks.Graylog.csproj" />
   </ItemGroup>
 
 
