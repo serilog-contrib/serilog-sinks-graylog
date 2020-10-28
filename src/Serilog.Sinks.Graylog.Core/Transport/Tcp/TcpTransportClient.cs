@@ -27,7 +27,7 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Tcp
         /// <inheritdoc />
         public async Task Send(byte[] payload)
         {
-            await CheckSocketConnection();
+            await CheckSocketConnection().ConfigureAwait(false);
 
             await _stream.WriteAsync(payload, 0, payload.Length).ConfigureAwait(false);
             await _stream.FlushAsync().ConfigureAwait(false);
@@ -44,7 +44,7 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Tcp
             }
 
             _client = new TcpClient();
-            await Connect();
+            await Connect().ConfigureAwait(false);
         }
 
         private async Task Connect()
@@ -56,7 +56,7 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Tcp
             {
                 var _sslStream = new SslStream(_stream, false);
 
-                await _sslStream.AuthenticateAsClientAsync(_sslHost);
+                await _sslStream.AuthenticateAsClientAsync(_sslHost).ConfigureAwait(false);
 
                 X509Certificate remoteCertificate = _sslStream.RemoteCertificate;
                 if (_sslStream.RemoteCertificate != null)
