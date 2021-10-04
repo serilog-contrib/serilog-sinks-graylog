@@ -49,10 +49,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Serilog.Sinks.Graylog.Core\Serilog.Sinks.Graylog.Core.csproj" PrivateAssets="all" />
   </ItemGroup>
-
-  <ItemGroup Condition="('$(TargetFramework)'=='netstandard2.1') Or ('$(TargetFramework)'=='netstandard2.0')">
-    <PackageReference Include="System.Net.NameResolution" Version="4.3.*" />
-  </ItemGroup>
   
   <ItemGroup Condition="('$(TargetFramework)'=='net45') Or ('$(TargetFramework)'=='net46') Or ('$(TargetFramework)'=='net461')">
     <Reference Include="System" />
