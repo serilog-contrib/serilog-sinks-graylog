@@ -67,8 +67,8 @@ namespace Serilog.Sinks.Graylog.Core
                         Port = _options.Port.GetValueOrDefault(12201),
                         Path = "gelf"
                     };
-                    
-                    var httpClient = new HttpTransportClient(builder.Uri.ToString());
+
+                    var httpClient = new HttpTransportClient(builder.Uri.ToString(), new HttpBasicAuthenticationGenerator(_options.UsernameInHttp, _options.PasswordInHttp).Generate());
 
                     var httpTransport = new HttpTransport(httpClient);
                     return httpTransport;

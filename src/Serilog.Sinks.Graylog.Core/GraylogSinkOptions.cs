@@ -168,5 +168,15 @@ namespace Serilog.Sinks.Graylog.Core
         public bool UseSsl { get; set; }
 
         public JsonSerializerSettings SerializerSettings { get; set; }
+
+        /// <summary>
+        /// Gets or sets the username in http
+        /// </summary>
+        public string UsernameInHttp { get; set; }
+
+        /// <summary>
+        /// Gets or sets the password in http
+        /// </summary>
+        public string PasswordInHttp { get; set; }
     }
 }

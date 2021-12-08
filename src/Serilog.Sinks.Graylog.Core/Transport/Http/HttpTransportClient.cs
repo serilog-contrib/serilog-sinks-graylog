@@ -11,12 +11,15 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Http
         private readonly string _graylogUrl;
         private readonly HttpClient _httpClient;
 
-        public HttpTransportClient(string graylogUrl)
+        public HttpTransportClient(string graylogUrl, AuthenticationHeaderValue authorization = null)
         {
             _graylogUrl = graylogUrl;
             _httpClient = new HttpClient();
             _httpClient.DefaultRequestHeaders.ExpectContinue = false;
             _httpClient.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
+
+            if (authorization != null)
+                _httpClient.DefaultRequestHeaders.Authorization = authorization;
         }
 
         public async Task Send(string message)
