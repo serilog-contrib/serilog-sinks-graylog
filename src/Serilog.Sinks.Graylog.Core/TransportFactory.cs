@@ -22,6 +22,8 @@ namespace Serilog.Sinks.Graylog.Core
 
     public class SinkComponentsBuilder : ISinkComponentsBuilder
     {
+        private const string _emptyHttpUriPath = "/";
+        private const string _defaultHttpUriPath = "/gelf";
         private readonly GraylogSinkOptionsBase _options;
         private readonly Dictionary<BuilderType, Lazy<IMessageBuilder>> _builders;
 
@@ -62,12 +64,9 @@ namespace Serilog.Sinks.Graylog.Core
                     var udpTransport = new UdpTransport(udpClient, chunkConverter);
                     return udpTransport;
                 }
-                case SinkTransportType.Http: {
-                    var builder = new UriBuilder(_options.HostnameOrAddress) {
-                        Port = _options.Port.GetValueOrDefault(12201),
-                        Path = "gelf"
-                    };
-
+                case SinkTransportType.Http: 
+                {
+                    var builder = GetUriBuilder(_options.HostnameOrAddress);
                     var httpClient = new HttpTransportClient(builder.Uri.ToString(), new HttpBasicAuthenticationGenerator(_options.UsernameInHttp, _options.PasswordInHttp).Generate());
 
                     var httpTransport = new HttpTransport(httpClient);
@@ -92,6 +91,19 @@ namespace Serilog.Sinks.Graylog.Core
             IPAddress[] ipAddreses = await dns.GetHostAddresses(hostnameOrAddress).ConfigureAwait(false);
             IPAddress ipAddress = ipAddreses.FirstOrDefault(c => c.AddressFamily == AddressFamily.InterNetwork);
             return ipAddress;
+        }
+
+        private UriBuilder GetUriBuilder(string hostnameOrAddress)
+        {
+            var builder = new UriBuilder(hostnameOrAddress)
+            {
+                Port = _options.Port.GetValueOrDefault(443)
+            };
+
+            if (builder.Path == _emptyHttpUriPath)
+                builder.Path = _defaultHttpUriPath;
+
+            return builder;
         }
 
         public IGelfConverter MakeGelfConverter()

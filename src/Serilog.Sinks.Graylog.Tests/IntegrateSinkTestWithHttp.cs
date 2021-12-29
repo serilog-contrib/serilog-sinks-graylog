@@ -198,6 +198,84 @@ namespace Serilog.Sinks.Graylog.Tests
 
         [Fact]
         [Trait("Category", "Integration")]
+        public void LogInformationWithHostnameOrAddressEndsWithoutPath()
+        {
+            var fixture = new Fixture();
+            fixture.Behaviors.Clear();
+            fixture.Behaviors.Add(new OmitOnRecursionBehavior(1));
+            var profile = fixture.Create<Profile>();
+
+            var loggerConfig = new LoggerConfiguration();
+
+            loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
+            {
+                MinimumLogEventLevel = LogEventLevel.Information,
+                MessageGeneratorType = MessageIdGeneratorType.Timestamp,
+                TransportType = TransportType.Http,
+                Facility = "VolkovTestFacility",
+                HostnameOrAddress = "http://logs.aeroclub.int",
+                Port = 12201
+            });
+
+            var logger = loggerConfig.CreateLogger();
+
+            logger.Information("battle profile:  {@BattleProfile}", profile);
+        }
+
+        [Fact]
+        [Trait("Category", "Integration")]
+        public void LogInformationWithHostnameOrAddressEndsWithSlash()
+        {
+            var fixture = new Fixture();
+            fixture.Behaviors.Clear();
+            fixture.Behaviors.Add(new OmitOnRecursionBehavior(1));
+            var profile = fixture.Create<Profile>();
+
+            var loggerConfig = new LoggerConfiguration();
+
+            loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
+            {
+                MinimumLogEventLevel = LogEventLevel.Information,
+                MessageGeneratorType = MessageIdGeneratorType.Timestamp,
+                TransportType = TransportType.Http,
+                Facility = "VolkovTestFacility",
+                HostnameOrAddress = "http://logs.aeroclub.int/",
+                Port = 12201
+            });
+
+            var logger = loggerConfig.CreateLogger();
+
+            logger.Information("battle profile:  {@BattleProfile}", profile);
+        }
+
+        [Fact]
+        [Trait("Category", "Integration")]
+        public void LogInformationWithHostnameOrAddressEndsWithPath()
+        {
+            var fixture = new Fixture();
+            fixture.Behaviors.Clear();
+            fixture.Behaviors.Add(new OmitOnRecursionBehavior(1));
+            var profile = fixture.Create<Profile>();
+
+            var loggerConfig = new LoggerConfiguration();
+
+            loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
+            {
+                MinimumLogEventLevel = LogEventLevel.Information,
+                MessageGeneratorType = MessageIdGeneratorType.Timestamp,
+                TransportType = TransportType.Http,
+                Facility = "VolkovTestFacility",
+                HostnameOrAddress = "http://logs.aeroclub.int/testgelf",
+                Port = 12201
+            });
+
+            var logger = loggerConfig.CreateLogger();
+
+            logger.Information("battle profile:  {@BattleProfile}", profile);
+        }
+
+        [Fact]
+        [Trait("Category", "Integration")]
         public void TestException()
         {
             var loggerConfig = new LoggerConfiguration();
