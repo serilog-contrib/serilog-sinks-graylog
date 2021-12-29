@@ -29,7 +29,7 @@ namespace Serilog.Sinks.Graylog.Core.Tests.Helpers
             var actticks = BitConverter.ToInt64(actual, 0);
             var actdate = DateTime.FromBinary(actticks);
 
-            actdate.Should().BeCloseTo(time, 200);
+            actdate.Should().BeCloseTo(time, TimeSpan.FromMilliseconds(200));
         }
 
         [Fact]
