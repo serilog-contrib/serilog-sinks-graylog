@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Serilog.Events;
+using Serilog.Parsing;
 using Serilog.Sinks.Graylog.Core.Extensions;
 using Serilog.Sinks.Graylog.Core.Helpers;
 
@@ -62,6 +64,15 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
             JObject jsonObject = JObject.FromObject(gelfMessage);
             foreach (KeyValuePair<string, LogEventPropertyValue> property in logEvent.Properties)
             {
+                if (Options.ExcludeMessageTemplateProperties)
+                {
+                    var propertyTokens = Enumerable.OfType<PropertyToken>(logEvent.MessageTemplate.Tokens);
+                    if (propertyTokens.Any(x => x.PropertyName == property.Key))
+                    {
+                        continue;
+                    }
+                }
+
                 AddAdditionalField(jsonObject, property);
             }
 
