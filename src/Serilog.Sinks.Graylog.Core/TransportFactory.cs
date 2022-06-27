@@ -66,7 +66,7 @@ namespace Serilog.Sinks.Graylog.Core
                 }
                 case SinkTransportType.Http: 
                 {
-                    var builder = GetUriBuilder(_options.HostnameOrAddress);
+                    var builder = GetUriBuilder(_options.HostnameOrAddress, _options.UseSsl);
                     var httpClient = new HttpTransportClient(builder.Uri.ToString(), new HttpBasicAuthenticationGenerator(_options.UsernameInHttp, _options.PasswordInHttp).Generate());
 
                     var httpTransport = new HttpTransport(httpClient);
@@ -93,11 +93,12 @@ namespace Serilog.Sinks.Graylog.Core
             return ipAddress;
         }
 
-        private UriBuilder GetUriBuilder(string hostnameOrAddress)
+        private UriBuilder GetUriBuilder(string hostnameOrAddress, bool useSsl)
         {
             var builder = new UriBuilder(hostnameOrAddress)
             {
-                Port = _options.Port.GetValueOrDefault(443)
+                Port = _options.Port.GetValueOrDefault(443),
+                Scheme = useSsl ? "https" : "http"
             };
 
             if (builder.Path == _emptyHttpUriPath)
