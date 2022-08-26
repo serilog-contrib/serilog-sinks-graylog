@@ -31,6 +31,7 @@ namespace Serilog.Sinks.Graylog
         /// <param name="hostnameOrAddress">The hostname or address.</param>
         /// <param name="port">The port.</param>
         /// <param name="transportType">Type of the transport.</param>
+        /// <param name="useSsl">Use SSL in Tcp and Http</param>
         /// <param name="minimumLogEventLevel">The minimum log event level.</param>
         /// <param name="messageIdGeneratorType">Type of the message identifier generator.</param>
         /// <param name="shortMessageMaxLength">Short length of the message maximum.</param>
@@ -47,6 +48,7 @@ namespace Serilog.Sinks.Graylog
                                                   string hostnameOrAddress,
                                                   int port,
                                                   TransportType transportType,
+                                                  bool useSsl,
                                                   LogEventLevel minimumLogEventLevel = LevelAlias.Minimum,
                                                   MessageIdGeneratorType messageIdGeneratorType = GraylogSinkOptionsBase.DefaultMessageGeneratorType,
                                                   int shortMessageMaxLength = GraylogSinkOptionsBase.DefaultShortMessageMaxLength,
@@ -65,6 +67,7 @@ namespace Serilog.Sinks.Graylog
             options.HostnameOrAddress = hostnameOrAddress.Expand();
             options.Port = port;
             options.TransportType = transportType;
+            options.UseSsl = useSsl;
             options.MinimumLogEventLevel = minimumLogEventLevel;
             options.MessageGeneratorType = messageIdGeneratorType;
             options.ShortMessageMaxLength = shortMessageMaxLength;

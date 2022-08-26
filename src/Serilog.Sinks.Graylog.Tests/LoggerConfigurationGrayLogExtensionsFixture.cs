@@ -33,7 +33,7 @@ namespace Serilog.Sinks.Graylog.Tests
         {
             var loggerConfig = new LoggerConfiguration();
 
-            loggerConfig.WriteTo.Graylog("localhost", 12201, TransportType.Udp,
+            loggerConfig.WriteTo.Graylog("localhost", 12201, TransportType.Udp, false,
                 LogEventLevel.Information);
 
             var logger = loggerConfig.CreateLogger();
