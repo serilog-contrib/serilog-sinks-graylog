@@ -53,7 +53,7 @@
 
   configuration: Release
 
-  image: Visual Studio 2019
+  image: Visual Studio 2022
 
   build:
     publish_nuget_symbols: true
