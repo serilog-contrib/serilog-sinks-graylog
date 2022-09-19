@@ -67,6 +67,10 @@ namespace Serilog.Sinks.Graylog.Core
                 case SinkTransportType.Http: 
                 {
                     var builder = GetUriBuilder(_options.HostnameOrAddress);
+                    if (_options.UseSsl)
+                    {
+                        builder.Scheme = "https";
+                    }
                     var httpClient = new HttpTransportClient(builder.Uri.ToString(), new HttpBasicAuthenticationGenerator(_options.UsernameInHttp, _options.PasswordInHttp).Generate());
 
                     var httpTransport = new HttpTransport(httpClient);
