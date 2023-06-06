@@ -16,17 +16,19 @@ namespace Serilog.Sinks.Graylog.Core.Tests.Transport.Udp
         {
             var transportClient = new Mock<ITransportClient<byte[]>>();
             var dataToChunkConverter = new Mock<IDataToChunkConverter>();
+            var options = new GraylogSinkOptions();
+            
             var fixture = new Fixture();
 
             var stringData = fixture.Create<string>();
 
-            byte[] data = stringData.Compress();
+            byte[] data = stringData.ToGzip();
 
             List<byte[]> chunks = fixture.CreateMany<byte[]>(3).ToList();
 
             dataToChunkConverter.Setup(c => c.ConvertToChunks(data)).Returns(chunks);
 
-            UdpTransport target = new UdpTransport(transportClient.Object, dataToChunkConverter.Object);
+            UdpTransport target = new UdpTransport(transportClient.Object, dataToChunkConverter.Object, options);
 
             target.Send(stringData);
 

@@ -7,7 +7,7 @@ namespace Serilog.Sinks.Graylog.Core.Extensions
 {
     public static class StringExtensions
     {
-        public static byte[] Compress(this string source)
+        public static byte[] ToGzip(this string source)
         {
             var resultStream = new MemoryStream();
             using (var gzipStream = new GZipStream(resultStream, CompressionMode.Compress))
@@ -17,6 +17,8 @@ namespace Serilog.Sinks.Graylog.Core.Extensions
             }
             return resultStream.ToArray();
         }
+
+        public static byte[] ToByteArray(this string source) => System.Text.Encoding.UTF8.GetBytes(source); 
 
         /// <summary>
         /// Truncates the specified maximum length.

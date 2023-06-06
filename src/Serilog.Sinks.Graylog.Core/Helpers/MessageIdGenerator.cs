@@ -40,11 +40,10 @@ namespace Serilog.Sinks.Graylog.Core.Helpers
     {
         public byte[] GenerateMessageId(byte[] message)
         {
-            using (MD5 md5 = MD5.Create())
-            {
-                byte[] messageHash = md5.ComputeHash(message);
-                return messageHash.Take(8).ToArray();
-            }
+            using MD5 md5 = MD5.Create();
+            
+            byte[] messageHash = md5.ComputeHash(message);
+            return messageHash.Take(8).ToArray();
         }
     }
 

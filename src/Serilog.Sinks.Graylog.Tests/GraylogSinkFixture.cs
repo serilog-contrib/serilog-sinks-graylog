@@ -37,7 +37,7 @@ namespace Serilog.Sinks.Graylog.Tests
             transport.Setup(c => c.Send(jObject.ToString(Newtonsoft.Json.Formatting.None))).Returns(Task.CompletedTask);
 
 
-            gelfConverter.Setup(c => c.GetGelfJson(logEvent)).Returns(jObject);
+            //gelfConverter.Setup(c => c.GetGelfJson(logEvent)).Returns(jObject);
 
             target.Emit(logEvent);
 

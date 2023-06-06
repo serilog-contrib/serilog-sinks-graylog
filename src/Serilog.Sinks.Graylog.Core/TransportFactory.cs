@@ -61,7 +61,7 @@ namespace Serilog.Sinks.Graylog.Core
                         new DataToChunkConverter(chunkSettings, new MessageIdGeneratorResolver());
 
                     var udpClient = new UdpTransportClient(ipEndpoint);
-                    var udpTransport = new UdpTransport(udpClient, chunkConverter);
+                    var udpTransport = new UdpTransport(udpClient, chunkConverter, _options);
                     return udpTransport;
                 }
                 case SinkTransportType.Http: 
@@ -81,6 +81,11 @@ namespace Serilog.Sinks.Graylog.Core
                     var ipAddress = Task.Run(() => GetIpAddress(_options.HostnameOrAddress)).GetAwaiter().GetResult();
                     var tcpClient = new TcpTransportClient(ipAddress, _options.Port.GetValueOrDefault(12201), _options.UseSsl ? _options.HostnameOrAddress : null);
                     var transport = new TcpTransport(tcpClient);
+                    return transport;
+                }
+                case TransportType.Custom:
+                {
+                    var transport = _options.TransportFactory();
                     return transport;
                 }
 

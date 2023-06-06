@@ -59,7 +59,8 @@ namespace Serilog.Sinks.Graylog
                                                   bool includeMessageTemplate = false,
                                                   string messageTemplateFieldName = GraylogSinkOptionsBase.DefaultMessageTemplateFieldName,
                                                   string usernameInHttp = null,
-                                                  string passwordInHttp = null
+                                                  string passwordInHttp = null,
+                                                  bool parseArrayValues = false
                                                   )
         {
             // ReSharper disable once UseObjectOrCollectionInitializer
@@ -74,11 +75,12 @@ namespace Serilog.Sinks.Graylog
             options.StackTraceDepth = stackTraceDepth;
             options.Facility = facility.Expand();
             options.MaxMessageSizeInUdp = maxMessageSizeInUdp;
-            options.Host = host;
+            options.HostnameOverride = host;
             options.IncludeMessageTemplate = includeMessageTemplate;
             options.MessageTemplateFieldName = messageTemplateFieldName;
             options.UsernameInHttp = usernameInHttp;
             options.PasswordInHttp = passwordInHttp;
+            options.ParseArrayValues = parseArrayValues;
             return loggerSinkConfiguration.Graylog(options);
         }
     }

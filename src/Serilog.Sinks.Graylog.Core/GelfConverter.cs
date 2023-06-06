@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
+using System.Text.Json.Nodes;
 using Serilog.Events;
 using Serilog.Sinks.Graylog.Core.MessageBuilders;
 
@@ -8,7 +8,7 @@ namespace Serilog.Sinks.Graylog.Core
 {
     public interface IGelfConverter
     {
-        JObject GetGelfJson(LogEvent logEvent);
+        JsonObject GetGelfJson(LogEvent logEvent);
     }
 
     public class GelfConverter : IGelfConverter
@@ -20,7 +20,7 @@ namespace Serilog.Sinks.Graylog.Core
             _messageBuilders = messageBuilders;
         }
 
-        public JObject GetGelfJson(LogEvent logEvent)
+        public JsonObject GetGelfJson(LogEvent logEvent)
         {
             IMessageBuilder builder = logEvent.Exception != null
                 ? _messageBuilders[BuilderType.Exception].Value

@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Serilog.Events;
 using Serilog.Parsing;
 using Serilog.Sinks.Graylog.Core.Extensions;
 using Serilog.Sinks.Graylog.Core.Helpers;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace Serilog.Sinks.Graylog.Core.MessageBuilders
 {
+    using System.ComponentModel.Design;
+
     /// <summary>
     /// Message builder
     /// </summary>
@@ -19,7 +21,6 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
     {
         
         private readonly string _hostName;
-        private JsonSerializer _serializer;
         private const string DefaultGelfVersion = "1.1";
         protected GraylogSinkOptionsBase Options { get; }
 
@@ -31,7 +32,6 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
         public GelfMessageBuilder(string hostName, GraylogSinkOptionsBase options)
         {
             _hostName = hostName;
-            _serializer = JsonSerializer.Create(options.SerializerSettings);
             Options = options;
         }
 
@@ -40,33 +40,32 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
         /// </summary>
         /// <param name="logEvent">The log event.</param>
         /// <returns></returns>
-        public virtual JObject Build(LogEvent logEvent)
+        public virtual JsonObject Build(LogEvent logEvent)
         {
             string message = logEvent.RenderMessage();
             string shortMessage = message.Truncate(Options.ShortMessageMaxLength);
 
-            var gelfMessage = new GelfMessage
+            var jsonObject = new JsonObject
             {
-                Version = DefaultGelfVersion,
-                Host = Options.Host ?? _hostName,
-                ShortMessage = shortMessage,
-                Timestamp = logEvent.Timestamp.ConvertToNix(),
-                Level = LogLevelMapper.GetMappedLevel(logEvent.Level),
-                StringLevel = logEvent.Level.ToString(),
-                Facility = Options.Facility
+                ["version"] = DefaultGelfVersion,
+                ["host"] = Options.HostnameOverride ?? _hostName,
+                ["short_message"] = shortMessage,
+                ["timestamp"] = logEvent.Timestamp.ConvertToNix(),
+                ["level"] = LogLevelMapper.GetMappedLevel(logEvent.Level),
+                ["_stringLevel"] = logEvent.Level.ToString(),
+                ["_facility"] = Options?.Facility
             };
-
+            
             if (message.Length > Options.ShortMessageMaxLength)
             {
-                gelfMessage.FullMessage = message;
+                jsonObject.Add("full_message", message);
             }
 
-            JObject jsonObject = JObject.FromObject(gelfMessage);
             foreach (KeyValuePair<string, LogEventPropertyValue> property in logEvent.Properties)
             {
                 if (Options.ExcludeMessageTemplateProperties)
                 {
-                    var propertyTokens = Enumerable.OfType<PropertyToken>(logEvent.MessageTemplate.Tokens);
+                    var propertyTokens = logEvent.MessageTemplate.Tokens.OfType<PropertyToken>();
                     if (propertyTokens.Any(x => x.PropertyName == property.Key))
                     {
                         continue;
@@ -85,7 +84,7 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
             return jsonObject;
         }
 
-        private void AddAdditionalField(IDictionary<string, JToken> jObject,
+        private void AddAdditionalField(JsonObject jObject,
                                         KeyValuePair<string, LogEventPropertyValue> property,
                                         string memberPath = "" )
         {
@@ -103,7 +102,7 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
 
                     if (!key.StartsWith("_", StringComparison.OrdinalIgnoreCase))
                     {
-                        key = "_" + key;
+                        key = $"_{key}";
                     }
 
                     if (scalarValue.Value == null)
@@ -112,15 +111,21 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
                         break;
                     }
 
-                    var shouldCallToString = ShouldCallToString(scalarValue.Value.GetType());
-
-                    JToken value = JToken.FromObject(shouldCallToString ? scalarValue.Value.ToString() : scalarValue.Value, _serializer);
-                
-                    jObject.Add(key, value);
+                    var node = JsonSerializer.SerializeToNode(scalarValue.Value, Options.JsonSerializerOptions);
+                    jObject.Add(key, node);
                     break;
                 case SequenceValue sequenceValue:
                     var sequenceValueString = RenderPropertyValue(sequenceValue);
                     jObject.Add(key, sequenceValueString);
+                    if (Options.ParseArrayValues)
+                    {
+                        int counter = 0;
+                        foreach (var sequenceElement in sequenceValue.Elements)
+                        {
+                            AddAdditionalField(jObject, new KeyValuePair<string, LogEventPropertyValue>(counter.ToString(), sequenceElement), key);
+                            counter++;
+                        }
+                    }
                     break;
                 case StructureValue structureValue:
                     foreach (LogEventProperty logEventProperty in structureValue.Properties)
@@ -131,35 +136,22 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
                     }
                     break;
                 case DictionaryValue dictionaryValue:
-                    foreach (KeyValuePair<ScalarValue, LogEventPropertyValue> dictionaryValueElement in dictionaryValue.Elements)
+                    if (Options.ParseArrayValues)
                     {
-                        var renderedKey = RenderPropertyValue(dictionaryValueElement.Key);
-                        AddAdditionalField(jObject, new KeyValuePair<string, LogEventPropertyValue>(renderedKey, dictionaryValueElement.Value), key);
+                        foreach (KeyValuePair<ScalarValue, LogEventPropertyValue> dictionaryValueElement in dictionaryValue.Elements)
+                        {
+                            var renderedKey = RenderPropertyValue(dictionaryValueElement.Key);
+                            AddAdditionalField(jObject, new KeyValuePair<string, LogEventPropertyValue>(renderedKey, dictionaryValueElement.Value), key);
+                        }
+                    }
+                    else
+                    {
+                        var dict = dictionaryValue.Elements.ToDictionary(k => k.Key.Value, v => RenderPropertyValue(v.Value));
+                        var stringDictionary = JsonSerializer.SerializeToNode(dict, Options.JsonSerializerOptions);
+                        jObject.Add(key, stringDictionary);
                     }
                     break;
             }
-        }
-
-        private bool ShouldCallToString(Type type)
-        {
-            bool isNumeric = type.IsNumericType();
-
-            if (type == typeof(DateTime))
-            {
-                return false;
-            }
-
-            if (type.IsEnum)
-            {
-                return false;
-            }
-
-            if (isNumeric)
-            {
-                return false;
-            }
-
-            return true;
         }
 
         private string RenderPropertyValue(LogEventPropertyValue propertyValue)

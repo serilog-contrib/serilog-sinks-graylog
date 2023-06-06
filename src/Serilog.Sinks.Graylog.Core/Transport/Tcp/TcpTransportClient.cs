@@ -8,12 +8,14 @@ using System.Threading.Tasks;
 
 namespace Serilog.Sinks.Graylog.Core.Transport.Tcp
 {
+    using Debugging;
+
     public class TcpTransportClient : ITransportClient<byte[]>
     {
         private readonly IPAddress _address;
         private readonly int _port;
         private readonly string _sslHost;
-        private TcpClient _client;
+        private readonly TcpClient _client;
         private Stream _stream;
 
         /// <inheritdoc />
@@ -22,29 +24,24 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Tcp
             _address = address;
             _port = port;
             _sslHost = sslHost;
+            _client = new TcpClient();
         }
 
         /// <inheritdoc />
         public async Task Send(byte[] payload)
         {
-            await CheckSocketConnection().ConfigureAwait(false);
+            await EnsureConnection().ConfigureAwait(false);
 
             await _stream.WriteAsync(payload, 0, payload.Length).ConfigureAwait(false);
             await _stream.FlushAsync().ConfigureAwait(false);
         }
 
-        private async Task CheckSocketConnection()
+        private async Task EnsureConnection()
         {
-            if (_client != null)
+            if (!_client.Connected)
             {
-                if (_client.Connected)
-                    return;
-                else
-                    CloseClient();
+                await Connect().ConfigureAwait(false);                
             }
-
-            _client = new TcpClient();
-            await Connect().ConfigureAwait(false);
         }
 
         private async Task Connect()
@@ -61,35 +58,25 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Tcp
                 X509Certificate remoteCertificate = _sslStream.RemoteCertificate;
                 if (_sslStream.RemoteCertificate != null)
                 {
-                    Debug.WriteLine("Remote cert was issued to {0} and is valid from {1} until {2}.",
+                    SelfLog.WriteLine("Remote cert was issued to {0} and is valid from {1} until {2}.", 
                         remoteCertificate.Subject,
-                        remoteCertificate.GetEffectiveDateString(),
+                        remoteCertificate.GetEffectiveDateString(), 
                         remoteCertificate.GetExpirationDateString());
-
+                    
                     _stream = _sslStream;
                 }
                 else
                 {
-                    Debug.Fail("Remote certificate is null.");
+                    SelfLog.WriteLine("Remote certificate is null.");
                 }
             }
-        }
-
-        private void CloseClient()
-        {
-#if NETFRAMEWORK
-            _client?.Close();
-#else
-            _client?.Dispose();
-#endif
-            _stream?.Dispose();
         }
 
         /// <inheritdoc />
         public void Dispose()
         {
-            CloseClient();
+            _stream?.Dispose();
+            _client?.Dispose();
         }
-
     }
 }

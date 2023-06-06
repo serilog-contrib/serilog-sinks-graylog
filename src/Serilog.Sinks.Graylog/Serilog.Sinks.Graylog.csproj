@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <PropertyGroup>
-    <TargetFrameworks>net46;net461;net6.0;netstandard2.0;netstandard2.1</TargetFrameworks>
+<!--    <TargetFrameworks>netstandard2.1;netstandard2.0;net5.0;net6.0;net7.0</TargetFrameworks>-->
+    <TargetFrameworks>net7.0</TargetFrameworks>
     <!--Hack to include referenced project as content dll -->
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
     <RestorePackages>true</RestorePackages>
@@ -18,7 +19,7 @@
 
     <RepositoryType>git</RepositoryType>
     <PackageTags>Serilog Sink Graylog</PackageTags>
-    <Copyright>Anton Volkov Copyright © 2019</Copyright>
+    <Copyright>Anton Volkov Copyright © 2022</Copyright>
     <NeutralLanguage>en</NeutralLanguage>
     
     <Version>2.3.0</Version>
@@ -42,15 +43,10 @@
     <None Include="sign.snk" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Serilog" Version="2.10.0" />
+    <PackageReference Include="Serilog" Version="2.12.0" />
   </ItemGroup>
   
-  <ItemGroup Condition="('$(TargetFramework)'=='net45') Or ('$(TargetFramework)'=='net46') Or ('$(TargetFramework)'=='net461')">
-    <Reference Include="System" />
-    <Reference Include="System.Net.Http" />
-  </ItemGroup>
-  
+ 
   <ItemGroup>
     <ProjectReference Include="..\Serilog.Sinks.Graylog.Core\Serilog.Sinks.Graylog.Core.csproj" PrivateAssets="all" />
   </ItemGroup>

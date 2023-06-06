@@ -80,7 +80,7 @@ namespace Serilog.Sinks.Graylog.Batching
             options.MaxMessageSizeInUdp = maxMessageSizeInUdp;
             options.IncludeMessageTemplate = includeMessageTemplate;
             options.MessageTemplateFieldName = messageTemplateFieldName;
-
+            options.TransportType = TransportType.Udp;
             return loggerSinkConfiguration.Graylog(options);
         }
     }

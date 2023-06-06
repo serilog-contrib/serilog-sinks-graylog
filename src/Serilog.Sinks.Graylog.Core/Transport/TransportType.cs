@@ -4,6 +4,8 @@
     {
         Udp,
         Http,
-        Tcp
+        Tcp,
+        // Custom implementations of transports
+        Custom
     }
 }
