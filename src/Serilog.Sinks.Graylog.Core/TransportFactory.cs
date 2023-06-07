@@ -83,7 +83,7 @@ namespace Serilog.Sinks.Graylog.Core
                     var transport = new TcpTransport(tcpClient);
                     return transport;
                 }
-                case TransportType.Custom:
+                case SinkTransportType.Custom:
                 {
                     var transport = _options.TransportFactory();
                     return transport;

@@ -1,28 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <LangVersion>11.0</LangVersion>
+    </PropertyGroup>
+    <PropertyGroup>
+        <TargetFrameworks>net7.0;net6.0;netstandard2.0</TargetFrameworks>
+        <RestorePackages>true</RestorePackages>
+        <DebugType>full</DebugType>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <WarningsAsErrors/>
+        <SignAssembly>true</SignAssembly>
+        <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
+    </PropertyGroup>
 
-  <PropertyGroup>
-<!--    <TargetFrameworks>netstandard2.1;netstandard2.0;net5.0;net6.0;net7.0</TargetFrameworks>-->
-    <TargetFrameworks>net7.0</TargetFrameworks>
-    <RestorePackages>true</RestorePackages>
-    <DebugType>full</DebugType>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
+    <ItemGroup>
+        <Folder Include="MessageBuilders\"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="MessageBuilders\" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Serilog" Version="2.11.0"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Serilog" Version="2.11.0" />
-  </ItemGroup>
-
-  <ItemGroup Condition="('$(TargetFramework)'=='net45') Or ('$(TargetFramework)'=='net46') Or ('$(TargetFramework)'=='net461')">
-    <Reference Include="System" />
-    <Reference Include="System.Net.Http" />
-  </ItemGroup>
-
+    <ItemGroup Condition="('$(TargetFramework)'=='netstandard2.0') Or ('$(TargetFramework)'=='net462')">
+        <PackageReference Include="System.Text.Json" Version="7.0.2"/>
+        <PackageReference Include="System.Memory" Version="4.5.5"/>
+        <PackageReference Include="System.Text.Encoding" Version="4.3.0"/>
+    </ItemGroup>
 
 </Project>

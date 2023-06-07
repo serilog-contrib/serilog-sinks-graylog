@@ -11,8 +11,6 @@ using System.Text.Json.Nodes;
 
 namespace Serilog.Sinks.Graylog.Core.MessageBuilders
 {
-    using System.ComponentModel.Design;
-
     /// <summary>
     /// Message builder
     /// </summary>

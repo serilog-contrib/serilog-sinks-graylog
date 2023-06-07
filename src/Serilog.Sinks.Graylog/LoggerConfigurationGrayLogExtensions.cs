@@ -73,7 +73,7 @@ namespace Serilog.Sinks.Graylog
             options.MessageGeneratorType = messageIdGeneratorType;
             options.ShortMessageMaxLength = shortMessageMaxLength;
             options.StackTraceDepth = stackTraceDepth;
-            options.Facility = facility.Expand();
+            options.Facility = facility?.Expand();
             options.MaxMessageSizeInUdp = maxMessageSizeInUdp;
             options.HostnameOverride = host;
             options.IncludeMessageTemplate = includeMessageTemplate;
