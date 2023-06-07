@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Text;
-using Newtonsoft.Json.Linq;
 using Serilog.Events;
+using System.Text.Json.Nodes;
 
 namespace Serilog.Sinks.Graylog.Core.MessageBuilders
 {
+    
+
     /// <summary>
     /// Exception builder
     /// </summary>
@@ -23,7 +25,7 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
         {
         }
 
-        public override JObject Build(LogEvent logEvent)
+        public override JsonObject Build(LogEvent logEvent)
         {
             Tuple<string, string> excMessageTuple = GetExceptionMessages(logEvent.Exception);
             string exceptionDetail = excMessageTuple.Item1;

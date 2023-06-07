@@ -19,7 +19,9 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Http
             _httpClient.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
 
             if (authorization != null)
+            {
                 _httpClient.DefaultRequestHeaders.Authorization = authorization;
+            }
         }
 
         public async Task Send(string message)
@@ -31,7 +33,7 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Http
 
             if (!result.IsSuccessStatusCode)
             {
-                throw new LoggingFailedException("Unable send log message to graylog via HTTP transport");
+                SelfLog.WriteLine("Unable send log message to graylog via HTTP transport");
             }
         }
 

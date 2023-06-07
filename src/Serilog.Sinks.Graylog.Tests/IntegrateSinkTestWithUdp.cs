@@ -13,6 +13,8 @@ using Serilog.Sinks.Graylog.Tests.ComplexIntegrationTest;
 
 namespace Serilog.Sinks.Graylog.Tests
 {
+    using System.Text.Json;
+    using System.Text.Json.Serialization;
 
     public enum TestEnumOne
     {
@@ -31,18 +33,17 @@ namespace Serilog.Sinks.Graylog.Tests
             loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
             {
                 ShortMessageMaxLength = 50,
-                MinimumLogEventLevel = LogEventLevel.Fatal,
-                Facility = "VolkovTestFacility",
-                HostnameOrAddress = "logs.aeroclub.int",
-                Port = 12201,
-                SerializerSettings = new JsonSerializerSettings
+                MinimumLogEventLevel = LogEventLevel.Information,
+                Facility = "edox-accounts",
+                HostnameOrAddress = "msa-edor02-lg01",
+                Port = 12209,
+                UseGzip = false,
+                JsonSerializerOptions = new JsonSerializerOptions
                 {
-                    Converters = new List<JsonConverter>
-                    {
-                        new StringEnumConverter()
-                    },
-                    Formatting = Newtonsoft.Json.Formatting.Indented
-                }
+                    WriteIndented = true,
+                    Converters = { new JsonStringEnumConverter() }
+                },
+                TransportType = TransportType.Udp
             });
 
             var logger = loggerConfig.CreateLogger();
@@ -54,9 +55,9 @@ namespace Serilog.Sinks.Graylog.Tests
                 Bar = new Bar
                 {
                     Id = 2,
-                    Prop = "123",
-                    TestBarBooleanProperty = false
-
+                    Prop = "whirlwind",
+                    TestBarBooleanProperty = false,
+                    EnumVal = TestEnumOne.Three
                 },
                 TestClassBooleanProperty = true,
                 TestPropertyOne = "1",
@@ -64,17 +65,170 @@ namespace Serilog.Sinks.Graylog.Tests
                 TestPropertyTwo = "2",
                 EnumVal = TestEnumOne.Three
             };
-
-            logger.Information("SomeComplexTestEntry {@test}", test);
-
-            logger.Debug("SomeComplexTestEntry {@test}", test);
-
-            logger.Fatal("SomeComplexTestEntry {@test}", test);
-
             logger.Error("SomeComplexTestEntry {@test}", test);
-
+            logger.Information("SomeComplexTestEntry {@test}", test);
+            logger.Fatal("SomeComplexTestEntry {@test}", test);
         }
 
+        [Fact]
+        [Trait("Category", "Integration")]
+        public void TestArrays()
+        {
+            var loggerConfig = new LoggerConfiguration();
+
+            loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
+            {
+                ShortMessageMaxLength = 50,
+                MinimumLogEventLevel = LogEventLevel.Information,
+                Facility = "edox-accounts",
+                HostnameOrAddress = "msa-edor02-lg01",
+                Port = 12209,
+                UseGzip = false,
+                ParseArrayValues = true,
+                JsonSerializerOptions = new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                    Converters = { new JsonStringEnumConverter() }
+                },
+                TransportType = TransportType.Udp
+            });
+
+            var logValue = new
+            {
+                Bars = new List<Bar>
+                {
+                    new Bar
+                    {
+                        Id = 1,
+                        Prop = "1",
+                        TestBarBooleanProperty = true
+                    },
+                    new Bar
+                    {
+                        Id = 2,
+                        Prop = "2",
+                        TestBarBooleanProperty = false
+                    },
+                    new Bar
+                    {
+                        Id = 3,
+                        Prop = "3",
+                        TestBarBooleanProperty = true
+                    }
+                }
+            };
+            
+            var logger = loggerConfig.CreateLogger();
+            
+            logger.Error("SomeComplexTestEntry {@test}", logValue);
+
+        }
+        
+        [Fact]
+        [Trait("Category", "Integration")]
+        public void TestArrays2()
+        {
+            var loggerConfig = new LoggerConfiguration();
+
+            loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
+            {
+                ShortMessageMaxLength = 50,
+                MinimumLogEventLevel = LogEventLevel.Information,
+                Facility = "edox-accounts",
+                HostnameOrAddress = "msa-edor02-lg01",
+                Port = 12209,
+                UseGzip = false,
+                ParseArrayValues = true,
+                IncludeMessageTemplate = true,
+                JsonSerializerOptions = new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                    Converters = { new JsonStringEnumConverter() }
+                },
+                TransportType = TransportType.Udp
+            });
+
+            var test = new[]
+            {
+                new Bar
+                {
+                    Id = 1,
+                    Prop = "1",
+                    TestBarBooleanProperty = true
+                },
+                new Bar
+                {
+                    Id = 2,
+                    Prop = "2",
+                    TestBarBooleanProperty = false
+                },
+                new Bar
+                {
+                    Id = 3,
+                    Prop = "3",
+                    TestBarBooleanProperty = true
+                }
+            };
+            
+            var logger = loggerConfig.CreateLogger();
+            
+            logger.Error("SomeComplexTestEntry {@test}", test);
+
+        }        
+        
+        [Fact]
+        [Trait("Category", "Integration")]
+        public void TestDictionary()
+        {
+            var loggerConfig = new LoggerConfiguration();
+
+            loggerConfig.WriteTo.Graylog(new GraylogSinkOptions
+            {
+                ShortMessageMaxLength = 50,
+                MinimumLogEventLevel = LogEventLevel.Information,
+                HostnameOrAddress = "msa-edor02-lg01",
+                Port = 12209,
+                UseGzip = false,
+                ParseArrayValues = false,
+                IncludeMessageTemplate = true,
+                JsonSerializerOptions = new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                },
+                TransportType = TransportType.Udp
+            });
+
+            var response = new Dictionary<int, Bar>()
+            {
+                [0] = new Bar
+                {
+                    
+                    Id = 1,
+                    Prop = "1",
+                    TestBarBooleanProperty = true,
+                    EnumVal = TestEnumOne.One
+                },
+                [1] = new Bar
+                {
+                    Id = 2,
+                    Prop = "2",
+                    TestBarBooleanProperty = false,
+                    EnumVal = TestEnumOne.Two
+                },
+                [2] = new Bar
+                {
+                    Id = 3,
+                    Prop = "3",
+                    TestBarBooleanProperty = true,
+                    EnumVal = TestEnumOne.Three
+                }
+            };
+            
+            var logger = loggerConfig.CreateLogger();
+            
+            logger.Information("Ответ: {@CommandResponse}", (object) response);
+        }      
+        
         [Fact]
         [Trait("Category", "Integration")]
         public void TestComplex()
@@ -292,6 +446,7 @@ namespace Serilog.Sinks.Graylog.Tests
         public string Prop { get; set; }
 
         public bool TestBarBooleanProperty { get; set; }
+        public TestEnumOne EnumVal { get; set; }
     }
 
     public class TestClass

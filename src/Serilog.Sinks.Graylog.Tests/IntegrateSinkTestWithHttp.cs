@@ -61,7 +61,7 @@ namespace Serilog.Sinks.Graylog.Tests
                 Facility = "VolkovTestFacility",
                 HostnameOrAddress = "abracadabra",
                 Port = 12201,
-                SerializerSettings = new JsonSerializerSettings()
+                //SerializerSettings = new JsonSerializerSettings()
             });
 
             var logger = loggerConfig.CreateLogger();

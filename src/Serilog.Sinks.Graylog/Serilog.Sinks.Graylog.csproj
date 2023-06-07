@@ -1,65 +1,73 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
-  <PropertyGroup>
-    <TargetFrameworks>net46;net461;net6.0;netstandard2.0;netstandard2.1</TargetFrameworks>
-    <!--Hack to include referenced project as content dll -->
-    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
-    <RestorePackages>true</RestorePackages>
-    <DebugType>full</DebugType>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-    <PackageId>Serilog.Sinks.Graylog</PackageId>
-    <Title>Serilog.Sinks.Graylog</Title>
-    <Authors>Anton Volkov</Authors>
-    <Description>The Serilog Graylog Sink project is a sink (basically a writer) for the Serilog logging framework. Structured log events are written to sinks and each sink is responsible for writing it to its own backend, database, store etc. This sink delivers the data to Graylog2, a NoSQL search engine.</Description>
-    
-    <PackageProjectUrl>https://github.com/whir1/serilog-sinks-graylog</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/whir1/serilog-sinks-graylog</RepositoryUrl>
-    <PackageIcon>serilog-sink-nuget.png</PackageIcon>
+    <PropertyGroup>
+        <LangVersion>11.0</LangVersion>
+    </PropertyGroup>
+    <PropertyGroup>
+        <TargetFrameworks>net7.0;net6.0;netstandard2.0</TargetFrameworks>
+        <!--Hack to include referenced project as content dll -->
+        <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
+        <RestorePackages>true</RestorePackages>
+        <DebugType>full</DebugType>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <WarningsAsErrors/>
+        <PackageId>Serilog.Sinks.Graylog</PackageId>
+        <Title>Serilog.Sinks.Graylog</Title>
+        <Authors>Anton Volkov</Authors>
+        <Description>The Serilog Graylog Sink project is a sink (basically a writer) for the Serilog logging framework. Structured log events are written to sinks and each sink is responsible for writing it to its own backend, database, store etc. This sink delivers the data to Graylog2, a NoSQL search engine.</Description>
 
-    <RepositoryType>git</RepositoryType>
-    <PackageTags>Serilog Sink Graylog</PackageTags>
-    <Copyright>Anton Volkov Copyright © 2019</Copyright>
-    <NeutralLanguage>en</NeutralLanguage>
-    
-    <Version>2.3.0</Version>
-    <AssemblyVersion>2.3.0.0</AssemblyVersion>
-    <FileVersion>2.3.0.0</FileVersion>
-    <SignAssembly>true</SignAssembly>
+        <PackageProjectUrl>https://github.com/whir1/serilog-sinks-graylog</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/whir1/serilog-sinks-graylog</RepositoryUrl>
+        <PackageIcon>serilog-sink-nuget.png</PackageIcon>
 
-    <AssemblyOriginatorKeyFile>sign.snk</AssemblyOriginatorKeyFile>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>Serilog Sink Graylog</PackageTags>
+        <Copyright>Anton Volkov Copyright © 2023</Copyright>
+        <NeutralLanguage>en</NeutralLanguage>
 
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <Version>3.0.0</Version>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <FileVersion>3.0.0.0</FileVersion>
+        <SignAssembly>true</SignAssembly>
 
-    <PackageReleaseNotes>Update package dependencies</PackageReleaseNotes>
+        <AssemblyOriginatorKeyFile>sign.snk</AssemblyOriginatorKeyFile>
 
-    
-  </PropertyGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="**\*.resx" />
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
-    <None Include="..\serilog-sink-nuget.png" Pack="true" Visible="false" PackagePath="" />
-    <None Remove="*.ncrunchproject" />
-    <None Include="sign.snk" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Serilog" Version="2.10.0" />
-  </ItemGroup>
-  
-  <ItemGroup Condition="('$(TargetFramework)'=='net45') Or ('$(TargetFramework)'=='net46') Or ('$(TargetFramework)'=='net461')">
-    <Reference Include="System" />
-    <Reference Include="System.Net.Http" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <ProjectReference Include="..\Serilog.Sinks.Graylog.Core\Serilog.Sinks.Graylog.Core.csproj" PrivateAssets="all" />
-  </ItemGroup>
+        <PackageReleaseNotes>Delete newtonsoft.json dependency and refactoring</PackageReleaseNotes>
 
-  <!--Hack to include referenced project as content dll -->
-  <Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
+
+    </PropertyGroup>
     <ItemGroup>
-      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))" />
+        <EmbeddedResource Include="**\*.resx"/>
+
+        <None Include="..\serilog-sink-nuget.png" Pack="true" Visible="false" PackagePath=""/>
+        <None Remove="*.ncrunchproject"/>
+        <None Include="sign.snk"/>
     </ItemGroup>
-  </Target>
+    <ItemGroup>
+        <PackageReference Include="Serilog" Version="2.12.0"/>
+    </ItemGroup>
+
+
+    <ItemGroup>
+        <ProjectReference Include="..\Serilog.Sinks.Graylog.Core\Serilog.Sinks.Graylog.Core.csproj" PrivateAssets="all"/>
+    </ItemGroup>
+
+    <ItemGroup Condition="('$(TargetFramework)'=='netstandard2.0')">
+        <PackageReference Include="System.Text.Json" Version="7.0.2"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="..\..\README.md">
+            <Link>README.md</Link>
+        </Content>
+    </ItemGroup>
+
+    <!--Hack to include referenced project as content dll -->
+    <Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
+        <ItemGroup>
+            <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))"/>
+        </ItemGroup>
+    </Target>
 
 </Project>

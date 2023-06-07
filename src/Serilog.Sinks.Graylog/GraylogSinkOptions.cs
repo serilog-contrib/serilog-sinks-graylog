@@ -4,6 +4,5 @@ namespace Serilog.Sinks.Graylog
 {
     public class GraylogSinkOptions : GraylogSinkOptionsBase
     {
-        
     }
 }

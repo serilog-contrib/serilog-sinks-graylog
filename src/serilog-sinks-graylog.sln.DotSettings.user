@@ -1,9 +1,15 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;&#xD;
+  &lt;Assembly Path="C:\Program Files\dotnet\shared\Microsoft.NETCore.App\7.0.3\System.Private.CoreLib.dll" /&gt;&#xD;
+&lt;/AssemblyExplorer&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=36109eaa_002Da81e_002D4051_002D82dc_002Dcde923feb06e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="VerifyLoggerVerbocity #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::3C61B1BA-FCC8-4589-90BA-08FBF1CCE68B::net7.0::Serilog.Sinks.Graylog.Tests.IntegrateSinkTestWithUdp.VerifyLoggerVerbocity&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=7570c40d_002D7a7c_002D40a8_002Dae99_002D696df73984da/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="TestComplex" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::3C61B1BA-FCC8-4589-90BA-08FBF1CCE68B::.NETCoreApp,Version=v2.0::Serilog.Sinks.Graylog.Tests.IntegrateSinkTestWithHttp.TestComplex&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::3C61B1BA-FCC8-4589-90BA-08FBF1CCE68B::.NETCoreApp,Version=v2.0::Serilog.Sinks.Graylog.Tests.IntegrateSinkTestWithHttp.WhenHostIsWrong_ThenLoggerCreationShouldNotBeFail&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::3C61B1BA-FCC8-4589-90BA-08FBF1CCE68B::.NETCoreApp,Version=v2.0::Serilog.Sinks.Graylog.Tests.IntegrateSinkTestWithUdp.VerifyLoggerVerbocity&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::3C61B1BA-FCC8-4589-90BA-08FBF1CCE68B::net7.0::Serilog.Sinks.Graylog.Tests.IntegrateSinkTestWithUdp.VerifyLoggerVerbocity&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=a85b88ad_002D5d30_002D4108_002D9c45_002D4d6118d10823/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="VerifyLoggerVerbocity" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
@@ -16,4 +22,7 @@
     &lt;TestId&gt;xUnit::3C61B1BA-FCC8-4589-90BA-08FBF1CCE68B::.NETCoreApp,Version=v2.0::Serilog.Sinks.Graylog.Tests.SerilogExceptionsFixture.WhenUseSerilogExceptions_ThenExceptionDetailsShouldBeSent&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::3C61B1BA-FCC8-4589-90BA-08FBF1CCE68B::.NETCoreApp,Version=v2.0::Serilog.Sinks.Graylog.Tests.IntegrateSinkTestWithUdp.VerifyLoggerVerbocity&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=db1c428b_002D0713_002D445b_002D9125_002D1d5ac9c886e9/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="VerifyLoggerVerbocity" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Solution /&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

@@ -1,8 +1,11 @@
-﻿using Newtonsoft.Json.Linq;
-using Serilog.Events;
+﻿using Serilog.Events;
+using System.Text.Json.Nodes;
 
 namespace Serilog.Sinks.Graylog.Core.MessageBuilders
 {
+    
+
+
     /// <summary>
     /// Build json message for graylog
     /// </summary>
@@ -13,7 +16,7 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
         /// </summary>
         /// <param name="logEvent">The log event.</param>
         /// <returns></returns>
-        JObject Build(LogEvent logEvent);
+        JsonObject Build(LogEvent logEvent);
     }
 
     /// <summary>
