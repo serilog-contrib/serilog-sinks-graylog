@@ -48,7 +48,7 @@ namespace Serilog.Sinks.Graylog
                                                   string hostnameOrAddress,
                                                   int port,
                                                   TransportType transportType,
-                                                  bool useSsl,
+                                                  bool useSsl = false,
                                                   LogEventLevel minimumLogEventLevel = LevelAlias.Minimum,
                                                   MessageIdGeneratorType messageIdGeneratorType = GraylogSinkOptionsBase.DefaultMessageGeneratorType,
                                                   int shortMessageMaxLength = GraylogSinkOptionsBase.DefaultShortMessageMaxLength,
@@ -60,7 +60,8 @@ namespace Serilog.Sinks.Graylog
                                                   string messageTemplateFieldName = GraylogSinkOptionsBase.DefaultMessageTemplateFieldName,
                                                   string usernameInHttp = null,
                                                   string passwordInHttp = null,
-                                                  bool parseArrayValues = false
+                                                  bool parseArrayValues = false,
+                                                  bool useGzip = true
                                                   )
         {
             // ReSharper disable once UseObjectOrCollectionInitializer
@@ -81,6 +82,8 @@ namespace Serilog.Sinks.Graylog
             options.UsernameInHttp = usernameInHttp;
             options.PasswordInHttp = passwordInHttp;
             options.ParseArrayValues = parseArrayValues;
+            options.UseGzip = useGzip;
+
             return loggerSinkConfiguration.Graylog(options);
         }
     }

@@ -21,3 +21,4 @@ src/.vs/serilog-sinks-graylogvs2017/DesignTimeBuild/.dtbcache
 /.vs/slnx.sqlite
 .ionide/symbolCache.db
 src/.idea/
+*.DotSettings
