@@ -24,7 +24,7 @@
         <Copyright>Anton Volkov Copyright © 2023</Copyright>
         <NeutralLanguage>en</NeutralLanguage>
 
-        <Version>3.0.0</Version>
+        <Version>3.0.1</Version>
         <AssemblyVersion>3.0.0.0</AssemblyVersion>
         <FileVersion>3.0.0.0</FileVersion>
         <SignAssembly>true</SignAssembly>
