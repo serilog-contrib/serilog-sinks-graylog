@@ -1,11 +1,8 @@
-﻿using Serilog.Events;
+using Serilog.Events;
 using System.Text.Json.Nodes;
 
 namespace Serilog.Sinks.Graylog.Core.MessageBuilders
 {
-    
-
-
     /// <summary>
     /// Build json message for graylog
     /// </summary>

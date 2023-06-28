@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoFixture;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using Serilog.Events;
-using Xunit;
 using Serilog.Sinks.Graylog.Core.Helpers;
 using Serilog.Sinks.Graylog.Core.Transport;
 using Serilog.Sinks.Graylog.Tests.ComplexIntegrationTest;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace Serilog.Sinks.Graylog.Tests
 {
-    using System.Text.Json;
-    using System.Text.Json.Serialization;
-
     public enum TestEnumOne
     {
         One, Two, Three
@@ -117,13 +114,13 @@ namespace Serilog.Sinks.Graylog.Tests
                     }
                 }
             };
-            
+
             var logger = loggerConfig.CreateLogger();
-            
+
             logger.Error("SomeComplexTestEntry {@test}", logValue);
 
         }
-        
+
         [Fact]
         [Trait("Category", "Integration")]
         public void TestArrays2()
@@ -169,13 +166,13 @@ namespace Serilog.Sinks.Graylog.Tests
                     TestBarBooleanProperty = true
                 }
             };
-            
+
             var logger = loggerConfig.CreateLogger();
-            
+
             logger.Error("SomeComplexTestEntry {@test}", test);
 
-        }        
-        
+        }
+
         [Fact]
         [Trait("Category", "Integration")]
         public void TestDictionary()
@@ -202,7 +199,7 @@ namespace Serilog.Sinks.Graylog.Tests
             {
                 [0] = new Bar
                 {
-                    
+
                     Id = 1,
                     Prop = "1",
                     TestBarBooleanProperty = true,
@@ -223,12 +220,12 @@ namespace Serilog.Sinks.Graylog.Tests
                     EnumVal = TestEnumOne.Three
                 }
             };
-            
+
             var logger = loggerConfig.CreateLogger();
-            
-            logger.Information("Ответ: {@CommandResponse}", (object) response);
-        }      
-        
+
+            logger.Information("Ответ: {@CommandResponse}", (object)response);
+        }
+
         [Fact]
         [Trait("Category", "Integration")]
         public void TestComplex()
@@ -256,7 +253,7 @@ namespace Serilog.Sinks.Graylog.Tests
                     Id = 2,
                     Prop = "123",
                     TestBarBooleanProperty = false
-                    
+
                 },
                 TestClassBooleanProperty = true,
                 TestPropertyOne = "1",
@@ -294,7 +291,7 @@ namespace Serilog.Sinks.Graylog.Tests
 
             var logger = loggerConfig.CreateLogger();
 
-            var tasks = profiles.Select(c => 
+            var tasks = profiles.Select(c =>
             {
                 return Task.Run(() => logger.Information("TestSend {@BattleProfile}", c));
             });
@@ -391,13 +388,11 @@ namespace Serilog.Sinks.Graylog.Tests
                 try
                 {
                     throw new InvalidOperationException("Level One exception");
-                }
-                catch (Exception exc)
+                } catch (Exception exc)
                 {
                     throw new NotImplementedException("Nested Exception", exc);
                 }
-            }
-            catch (Exception exc)
+            } catch (Exception exc)
             {
                 logger.Error(exc, "test exception with object {@test}", test);
             }

@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
 using Serilog.Events;
 using Serilog.Parsing;
 using Serilog.Sinks.Graylog.Core.MessageBuilders;
 using Serilog.Sinks.Graylog.Tests;
+using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace Serilog.Sinks.Graylog.Core.Tests.MessageBuilders
 {
-    using System.Text.Json;
-    using FluentAssertions;
-
     public class GelfMessageBuilderFixture
     {
         [Fact]
@@ -31,14 +28,14 @@ namespace Serilog.Sinks.Graylog.Core.Tests.MessageBuilders
         public void GetSimpleLogEvent_GraylogSinkOptionsContainsHost_ReturnsOptionsHost()
         {
             //arrange
-            GraylogSinkOptions options = new GraylogSinkOptions()
+            GraylogSinkOptions options = new()
             {
                 HostnameOverride = "my_host"
             };
-            GelfMessageBuilder messageBuilder = new GelfMessageBuilder("localhost", options);
+            GelfMessageBuilder messageBuilder = new("localhost", options);
             DateTime date = DateTime.UtcNow;
             string expectedHost = "my_host";
-            
+
             //act
             LogEvent logEvent = LogEventSource.GetSimpleLogEvent(date);
             var actual = messageBuilder.Build(logEvent);

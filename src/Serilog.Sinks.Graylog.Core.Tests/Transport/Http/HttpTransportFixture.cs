@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
-using Moq;
 using AutoFixture;
+using Moq;
 using Serilog.Sinks.Graylog.Core.Transport;
 using Serilog.Sinks.Graylog.Core.Transport.Http;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Serilog.Sinks.Graylog.Core.Tests.Transport.Http

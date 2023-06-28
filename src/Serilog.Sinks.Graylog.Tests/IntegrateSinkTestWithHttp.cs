@@ -1,13 +1,12 @@
-﻿using System;
-using System.Linq;
 using AutoFixture;
-using Newtonsoft.Json;
 using Serilog.Events;
 using Serilog.Exceptions;
-using Xunit;
 using Serilog.Sinks.Graylog.Core.Helpers;
 using Serilog.Sinks.Graylog.Core.Transport;
 using Serilog.Sinks.Graylog.Tests.ComplexIntegrationTest;
+using System;
+using System.Linq;
+using Xunit;
 
 namespace Serilog.Sinks.Graylog.Tests
 {
@@ -79,8 +78,8 @@ namespace Serilog.Sinks.Graylog.Tests
                 TestPropertyTwo = "2",
                 EnumVal = TestEnumOne.Three,
                 SomeTestDateTime = DateTime.Now
-                    
-                
+
+
             };
 
             logger.Information("SomeComplexTestEntry {@test}", test);
@@ -187,8 +186,8 @@ namespace Serilog.Sinks.Graylog.Tests
                 Facility = "VolkovTestFacility",
                 HostnameOrAddress = "http://logs.aeroclub.int",
                 Port = 12201,
-                UsernameInHttp ="username",
-                PasswordInHttp ="password"
+                UsernameInHttp = "username",
+                PasswordInHttp = "password"
             });
 
             var logger = loggerConfig.CreateLogger();
@@ -283,14 +282,14 @@ namespace Serilog.Sinks.Graylog.Tests
             loggerConfig
                 .Enrich.WithExceptionDetails()
                 .WriteTo.Graylog(new GraylogSinkOptions
-            {
-                MinimumLogEventLevel = LogEventLevel.Information,
-                MessageGeneratorType = MessageIdGeneratorType.Timestamp,
-                TransportType = TransportType.Http,
-                Facility = "VolkovTestFacility",
-                HostnameOrAddress = "http://logs.aeroclub.int",
-                Port = 12201
-            });
+                {
+                    MinimumLogEventLevel = LogEventLevel.Information,
+                    MessageGeneratorType = MessageIdGeneratorType.Timestamp,
+                    TransportType = TransportType.Http,
+                    Facility = "VolkovTestFacility",
+                    HostnameOrAddress = "http://logs.aeroclub.int",
+                    Port = 12201
+                });
 
             var test = new TestClass
             {
@@ -313,17 +312,14 @@ namespace Serilog.Sinks.Graylog.Tests
                 try
                 {
                     throw new InvalidOperationException("Level One exception");
-                }
-                catch (Exception exc)
+                } catch (Exception exc)
                 {
                     throw new NotImplementedException("Nested Exception", exc);
                 }
-            }
-            catch (Exception exc)
+            } catch (Exception exc)
             {
                 logger.Error(exc, "test exception with object {@test}", test);
             }
         }
-
     }
 }

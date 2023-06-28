@@ -1,4 +1,4 @@
-﻿using Serilog.Events;
+using Serilog.Events;
 using Serilog.Sinks.Graylog.Core.Helpers;
 using Serilog.Sinks.Graylog.Core.Transport;
 using System.Text.Json;
@@ -30,7 +30,7 @@ namespace Serilog.Sinks.Graylog.Core
         public const string DefaultHost = null;
 
         public const string DefaultMessageTemplateFieldName = "message_template";
-        
+
         // ReSharper disable once MemberCanBePrivate.Global
         public static readonly JsonSerializerOptions DefaultSerializerSettings = new()
         {
@@ -54,12 +54,11 @@ namespace Serilog.Sinks.Graylog.Core
             //use gzip by default
             UseGzip = true;
         }
-        
+
         /// <summary>
         /// Should parse values in arrays 
         /// </summary>
         public bool ParseArrayValues { get; set; }
-
 
         /// <summary>
         /// Gets or sets the name of the message template field.
@@ -100,7 +99,7 @@ namespace Serilog.Sinks.Graylog.Core
         /// <value>
         /// The hostname or address.
         /// </value>
-        public string HostnameOrAddress { get; set; }
+        public string? HostnameOrAddress { get; set; }
 
         /// <summary>
         /// Gets or sets the facility name.
@@ -108,7 +107,7 @@ namespace Serilog.Sinks.Graylog.Core
         /// <value>
         /// The facility.
         /// </value>
-        public string Facility { get; set; }
+        public string? Facility { get; set; }
 
         /// <summary>
         /// Gets or sets the server port.
@@ -138,7 +137,7 @@ namespace Serilog.Sinks.Graylog.Core
         /// <remarks>
         /// You can implement another one for customize fields or use default
         /// </remarks>
-        public IGelfConverter GelfConverter { get; set; }
+        public IGelfConverter? GelfConverter { get; set; }
 
         /// <summary>
         /// Gets or sets the maximal length of the ShortMessage
@@ -194,13 +193,12 @@ namespace Serilog.Sinks.Graylog.Core
         /// <summary>
         /// Gets or sets the username in http
         /// </summary>
-        public string UsernameInHttp { get; set; }
+        public string? UsernameInHttp { get; set; }
 
         /// <summary>
         /// Gets or sets the password in http
         /// </summary>
-        public string PasswordInHttp { get; set; }
-
+        public string? PasswordInHttp { get; set; }
 
         /// <summary>
         /// For custom implementations of ITransport
@@ -208,7 +206,7 @@ namespace Serilog.Sinks.Graylog.Core
         /// <remarks>
         /// <see cref="TransportType"/> should be set to <see cref="Transport.TransportType.Custom"/>
         /// </remarks>
-        public Func<ITransport> TransportFactory { get; set; }
+        public Func<ITransport>? TransportFactory { get; set; }
 
         /// <summary>
         /// Should use gzip for sending logs

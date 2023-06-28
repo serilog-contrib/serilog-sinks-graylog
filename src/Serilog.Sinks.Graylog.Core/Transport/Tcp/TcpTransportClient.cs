@@ -1,29 +1,26 @@
-﻿using System.Diagnostics;
+using Serilog.Debugging;
+using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Security;
 using System.Net.Sockets;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace Serilog.Sinks.Graylog.Core.Transport.Tcp
 {
-    using Debugging;
-
     public class TcpTransportClient : ITransportClient<byte[]>
     {
-        private readonly IPAddress _address;
-        private readonly int _port;
-        private readonly string _sslHost;
+        private Stream? _stream;
+
+        private readonly GraylogSinkOptionsBase _options;
         private readonly TcpClient _client;
-        private Stream _stream;
 
         /// <inheritdoc />
-        public TcpTransportClient(IPAddress address, int port, string sslHost)
+        public TcpTransportClient(GraylogSinkOptionsBase options)
         {
-            _address = address;
-            _port = port;
-            _sslHost = sslHost;
+            _options = options;
+
             _client = new TcpClient();
         }
 
@@ -32,40 +29,61 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Tcp
         {
             await EnsureConnection().ConfigureAwait(false);
 
-            await _stream.WriteAsync(payload, 0, payload.Length).ConfigureAwait(false);
+#if NETSTANDARD2_0
+            await _stream!.WriteAsync(payload, 0, payload.Length).ConfigureAwait(false);
+#else
+            await _stream!.WriteAsync(payload).ConfigureAwait(false);
+#endif
+
             await _stream.FlushAsync().ConfigureAwait(false);
+        }
+
+        private static async Task<IPAddress?> GetIpAddress(string? hostnameOrAddress)
+        {
+            if (string.IsNullOrEmpty(hostnameOrAddress))
+            {
+                return null;
+            }
+
+            IDnsInfoProvider dns = new DnsWrapper();
+            IPAddress[] ipAddresses = await dns.GetHostAddresses(hostnameOrAddress!).ConfigureAwait(false);
+
+            return ipAddresses.FirstOrDefault(c => c.AddressFamily == AddressFamily.InterNetwork);
         }
 
         private async Task EnsureConnection()
         {
             if (!_client.Connected)
             {
-                await Connect().ConfigureAwait(false);                
+                await Connect().ConfigureAwait(false);
             }
         }
 
         private async Task Connect()
         {
-            await _client.ConnectAsync(_address, _port).ConfigureAwait(false);
+            IPAddress _address = await GetIpAddress(_options.HostnameOrAddress) ?? throw new InvalidOperationException("IP address could not be resolved.");
+            int port = _options.Port.GetValueOrDefault(12201);
+            string? sslHost = _options.UseSsl ? _options.HostnameOrAddress : null;
+
+            await _client.ConnectAsync(_address, port).ConfigureAwait(false);
+
             _stream = _client.GetStream();
 
-            if (!string.IsNullOrWhiteSpace(_sslHost))
+            if (!string.IsNullOrWhiteSpace(sslHost))
             {
                 var _sslStream = new SslStream(_stream, false);
 
-                await _sslStream.AuthenticateAsClientAsync(_sslHost).ConfigureAwait(false);
+                await _sslStream.AuthenticateAsClientAsync(sslHost).ConfigureAwait(false);
 
-                X509Certificate remoteCertificate = _sslStream.RemoteCertificate;
                 if (_sslStream.RemoteCertificate != null)
                 {
-                    SelfLog.WriteLine("Remote cert was issued to {0} and is valid from {1} until {2}.", 
-                        remoteCertificate.Subject,
-                        remoteCertificate.GetEffectiveDateString(), 
-                        remoteCertificate.GetExpirationDateString());
-                    
+                    SelfLog.WriteLine("Remote cert was issued to {0} and is valid from {1} until {2}.",
+                        _sslStream.RemoteCertificate.Subject,
+                        _sslStream.RemoteCertificate.GetEffectiveDateString(),
+                        _sslStream.RemoteCertificate.GetExpirationDateString());
+
                     _stream = _sslStream;
-                }
-                else
+                } else
                 {
                     SelfLog.WriteLine("Remote certificate is null.");
                 }
@@ -75,8 +93,17 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Tcp
         /// <inheritdoc />
         public void Dispose()
         {
-            _stream?.Dispose();
-            _client?.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _stream?.Dispose();
+                _client.Dispose();
+            }
         }
     }
 }

@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Serilog.Debugging;
 using Serilog.Events;
 using Serilog.Sinks.Graylog.Core;
 using Serilog.Sinks.Graylog.Core.Transport;
 using Serilog.Sinks.PeriodicBatching;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json.Nodes;
+using System.Threading.Tasks;
 
 namespace Serilog.Sinks.Graylog.Batching
 {
-    using System.Text.Json.Nodes;
-
     public class PeriodicBatchingGraylogSink : IBatchedLogEventSink
     {
         private readonly Lazy<ITransport> _transport;
@@ -20,8 +19,8 @@ namespace Serilog.Sinks.Graylog.Batching
         public PeriodicBatchingGraylogSink(BatchingGraylogSinkOptions options)
         {
             ISinkComponentsBuilder sinkComponentsBuilder = new SinkComponentsBuilder(options);
-            _transport = new Lazy<ITransport>(() => sinkComponentsBuilder.MakeTransport());
-            _converter = new Lazy<IGelfConverter>(() => sinkComponentsBuilder.MakeGelfConverter());
+            _transport = new Lazy<ITransport>(sinkComponentsBuilder.MakeTransport);
+            _converter = new Lazy<IGelfConverter>(sinkComponentsBuilder.MakeGelfConverter);
         }
 
         public Task OnEmptyBatchAsync()
@@ -33,16 +32,15 @@ namespace Serilog.Sinks.Graylog.Batching
         {
             try
             {
-                IEnumerable<Task> sendTasks = batch.Select(logEvent =>
+                IEnumerable<Task> sendTasks = batch.Select(async logEvent =>
                 {
                     JsonObject json = _converter.Value.GetGelfJson(logEvent);
-                    Task resultTask = _transport.Value.Send(json.ToString());
-                    return resultTask;
+
+                    await _transport.Value.Send(json.ToString());
                 });
 
                 return Task.WhenAll(sendTasks);
-            }
-            catch (Exception exc)
+            } catch (Exception exc)
             {
                 SelfLog.WriteLine("Oops something going wrong {0}", exc);
                 return Task.CompletedTask;

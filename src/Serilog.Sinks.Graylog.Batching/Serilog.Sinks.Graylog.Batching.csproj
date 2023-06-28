@@ -1,4 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+
+    <PropertyGroup>
+        <LangVersion>11.0</LangVersion>
+    </PropertyGroup>
 
     <PropertyGroup>
         <TargetFrameworks>net7.0;net6.0;netstandard2.0</TargetFrameworks>
@@ -7,6 +11,7 @@
 
         <RestorePackages>true</RestorePackages>
         <DebugType>full</DebugType>
+        <Nullable>enable</Nullable>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <WarningsAsErrors/>
         <PackageId>Serilog.Sinks.Graylog.Batching</PackageId>
@@ -42,15 +47,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Serilog" Version="2.11.0"/>
         <PackageReference Include="Serilog.Sinks.PeriodicBatching" Version="2.3.1"/>
     </ItemGroup>
+  
     <ItemGroup>
         <ProjectReference Include="..\Serilog.Sinks.Graylog.Core\Serilog.Sinks.Graylog.Core.csproj" PrivateAssets="all"/>
-    </ItemGroup>
-
-    <ItemGroup Condition="('$(TargetFramework)'=='netstandard2.0')">
-        <PackageReference Include="System.Text.Json" Version="7.0.2"/>
     </ItemGroup>
 
     <!--Hack to include referenced project as content dll -->

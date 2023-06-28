@@ -1,12 +1,12 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoFixture;
 using Serilog.Events;
-using Xunit;
 using Serilog.Sinks.Graylog.Core.Helpers;
 using Serilog.Sinks.Graylog.Core.Transport;
 using Serilog.Sinks.Graylog.Tests.ComplexIntegrationTest;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace Serilog.Sinks.Graylog.Tests
 {
@@ -27,7 +27,7 @@ namespace Serilog.Sinks.Graylog.Tests
                 HostnameOrAddress = "logs.aeroclub.int",
                 Port = 12202,
                 TransportType = TransportType.Tcp
-                
+
             });
 
             var logger = loggerConfig.CreateLogger();
@@ -87,7 +87,7 @@ namespace Serilog.Sinks.Graylog.Tests
                     Id = 2,
                     Prop = "123",
                     TestBarBooleanProperty = false
-                    
+
                 },
                 TestClassBooleanProperty = true,
                 TestPropertyOne = "1",
@@ -126,7 +126,7 @@ namespace Serilog.Sinks.Graylog.Tests
 
             var logger = loggerConfig.CreateLogger();
 
-            var tasks = profiles.Select(c => 
+            var tasks = profiles.Select(c =>
             {
                 return Task.Run(() => logger.Information("TestSend {@BattleProfile}", c));
             });
@@ -225,13 +225,11 @@ namespace Serilog.Sinks.Graylog.Tests
                 try
                 {
                     throw new InvalidOperationException("Level One exception");
-                }
-                catch (Exception exc)
+                } catch (Exception exc)
                 {
                     throw new NotImplementedException("Nested Exception", exc);
                 }
-            }
-            catch (Exception exc)
+            } catch (Exception exc)
             {
                 logger.Error(exc, "test exception with object {@test}", test);
             }

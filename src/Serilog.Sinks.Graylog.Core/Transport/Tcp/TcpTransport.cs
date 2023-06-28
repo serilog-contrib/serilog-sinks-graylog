@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 
 namespace Serilog.Sinks.Graylog.Core.Transport.Tcp
@@ -17,7 +17,6 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Tcp
         public Task Send(string message)
         {
 #if NET
-            
             var payload = new byte[message.Length + 1];
             System.Text.Encoding.UTF8.GetBytes(message.AsSpan(), payload.AsSpan());
             payload[^1] = 0x00;
@@ -36,7 +35,16 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Tcp
         /// <inheritdoc />
         public void Dispose()
         {
-            _tcpClient?.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _tcpClient?.Dispose();
+            }
         }
     }
 }

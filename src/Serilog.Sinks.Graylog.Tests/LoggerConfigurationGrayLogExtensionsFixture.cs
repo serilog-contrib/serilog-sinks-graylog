@@ -1,10 +1,9 @@
-﻿using System.IO;
-using System.Reflection;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Serilog.Events;
-using Serilog.Sinks.Graylog.Core;
 using Serilog.Sinks.Graylog.Core.Transport;
+using System.IO;
+using System.Reflection;
 using Xunit;
 
 namespace Serilog.Sinks.Graylog.Tests
@@ -40,7 +39,6 @@ namespace Serilog.Sinks.Graylog.Tests
             logger.Should().NotBeNull();
         }
 
-
         //[Fact(Skip="Integration test")]
         [Fact]
         public void CanReadHostPropertyConfiguration()
@@ -55,7 +53,7 @@ namespace Serilog.Sinks.Graylog.Tests
                     .Build();
             }
             Log.Logger = new LoggerConfiguration()
-                .ReadFrom.Configuration(configuration, "Serilog")
+                .ReadFrom.Configuration(configuration)
                 .CreateLogger();
 
             //act
@@ -63,6 +61,5 @@ namespace Serilog.Sinks.Graylog.Tests
 
             //assert
         }
-
     }
 }

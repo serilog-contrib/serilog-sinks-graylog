@@ -1,4 +1,4 @@
-﻿using Serilog.Sinks.Graylog.Core.Helpers;
+using Serilog.Sinks.Graylog.Core.Helpers;
 
 namespace Serilog.Sinks.Graylog.Core.Transport.Udp
 {
@@ -33,8 +33,8 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Udp
         /// </summary>
         public int MaxMessageSizeInUdp { get; }
 
+        public static readonly byte[] GelfMagicBytes = { 0x1e, 0x0f };
 
-        public static readonly byte[] GelfMagicBytes = {0x1e, 0x0f};
         /// <summary>
         /// The maximum message size in chunk
         /// </summary>

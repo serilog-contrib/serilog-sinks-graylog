@@ -1,4 +1,4 @@
-﻿using Serilog.Sinks.Graylog.Core;
+using Serilog.Sinks.Graylog.Core;
 
 namespace Serilog.Sinks.Graylog
 {
