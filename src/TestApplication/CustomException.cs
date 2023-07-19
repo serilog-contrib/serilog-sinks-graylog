@@ -2,5 +2,5 @@
 
 public class CustomException : Exception
 {
-    public string CustomExceptionValue { get; set; }
+    public string? CustomExceptionValue { get; set; }
 }

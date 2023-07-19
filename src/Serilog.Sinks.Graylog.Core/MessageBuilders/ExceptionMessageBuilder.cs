@@ -27,9 +27,9 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
         {
             Tuple<string, string?> excMessageTuple = GetExceptionMessages(logEvent.Exception);
             string exceptionDetail = excMessageTuple.Item1;
-            string stackTrace = excMessageTuple.Item2;
-            string source = logEvent.Exception.Source;
-            string type = logEvent.Exception.GetType().FullName;
+            string stackTrace = excMessageTuple.Item2!;
+            string source = logEvent.Exception.Source!;
+            string type = logEvent.Exception.GetType().FullName!;
 
             logEvent.AddOrUpdateProperty(new LogEventProperty("ExceptionSource", new ScalarValue(source)));
             logEvent.AddOrUpdateProperty(new LogEventProperty("ExceptionType", new ScalarValue(type)));
