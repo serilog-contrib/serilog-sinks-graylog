@@ -1,5 +1,7 @@
 using Serilog;
 using Serilog.Debugging;
+using Serilog.Exceptions;
+using TestApplication;
 
 var builder = WebApplication.CreateBuilder(args);
 SelfLog.Enable(Console.WriteLine);
@@ -27,7 +29,7 @@ var summaries = new[]
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
 };
 
-app.MapGet("/weatherforecast", () =>
+app.MapPost("/simple_send", () =>
    {
        var seriloglogger = Log.ForContext<Program>();
 
@@ -39,9 +41,44 @@ app.MapGet("/weatherforecast", () =>
                                         summaries[Random.Shared.Next(summaries.Length)]
                                     ))
                                 .ToArray();
+       seriloglogger.Information("SomeInf {@Forecast}", forecast);
+       
        return forecast;
    })
-   .WithName("GetWeatherForecast");
+   .WithName("simple_send");
+
+app.MapPost("simple_exception", () =>
+{
+    var seriloglogger = Log.ForContext<Program>();
+    try
+    {
+        throw new Exception("test");
+    }
+    catch (Exception ex)
+    {
+        seriloglogger.Error(ex, ex.Message);
+    }
+
+}).WithName("simple_exception");
+
+app.MapPost("custom_exception", () =>
+{
+    var seriloglogger = Log.ForContext<Program>();
+    try
+    {
+        throw new CustomException()
+        {
+            CustomExceptionValue = "test_custom_exception_value",
+            Data = { ["SomeData"] = "SomeValue" }
+        };
+    }
+    catch (Exception ex)
+    {
+        seriloglogger.Error(ex, ex.Message);
+    }
+
+}).WithName("custom_exception");
+
 
 app.Run();
 
