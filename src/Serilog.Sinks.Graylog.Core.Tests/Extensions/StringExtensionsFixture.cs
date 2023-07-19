@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using Serilog.Sinks.Graylog.Core.Extensions;
 using Xunit;
 

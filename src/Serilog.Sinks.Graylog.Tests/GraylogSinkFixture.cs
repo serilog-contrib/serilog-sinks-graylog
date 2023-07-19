@@ -1,21 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Moq;
 using Newtonsoft.Json.Linq;
 using Serilog.Events;
 using Serilog.Parsing;
 using Serilog.Sinks.Graylog.Core;
 using Serilog.Sinks.Graylog.Core.Transport;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Serilog.Sinks.Graylog.Tests
 {
     public class GraylogSinkFixture
     {
-
         [Fact(Skip = "This test not work anymore because IMessageBuilder gets from internal dictionary")]
-        
         public void WhenEmit_ThenSendData()
         {
             var gelfConverter = new Mock<IGelfConverter>();
@@ -28,7 +26,7 @@ namespace Serilog.Sinks.Graylog.Tests
                 HostnameOrAddress = "localhost"
             };
 
-            GraylogSink target = new GraylogSink(options);
+            GraylogSink target = new(options);
 
             var logEvent = new LogEvent(DateTimeOffset.Now, LogEventLevel.Fatal, null,
                 new MessageTemplate("O_o", new List<MessageTemplateToken>()), new List<LogEventProperty>());

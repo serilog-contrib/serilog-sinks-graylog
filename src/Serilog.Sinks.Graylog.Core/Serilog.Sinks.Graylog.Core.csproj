@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <LangVersion>11.0</LangVersion>
     </PropertyGroup>
@@ -6,15 +6,12 @@
         <TargetFrameworks>net7.0;net6.0;netstandard2.0</TargetFrameworks>
         <RestorePackages>true</RestorePackages>
         <DebugType>full</DebugType>
+        <Nullable>enable</Nullable>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <WarningsAsErrors/>
         <SignAssembly>true</SignAssembly>
         <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
-
-    <ItemGroup>
-        <Folder Include="MessageBuilders\"/>
-    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Serilog" Version="2.11.0"/>

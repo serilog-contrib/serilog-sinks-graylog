@@ -1,10 +1,10 @@
-﻿using System;
 using Serilog.Configuration;
 using Serilog.Core;
 using Serilog.Events;
 using Serilog.Sinks.Graylog.Core;
 using Serilog.Sinks.Graylog.Core.Helpers;
 using Serilog.Sinks.Graylog.Core.Transport;
+using System;
 
 namespace Serilog.Sinks.Graylog.Batching
 {
@@ -65,21 +65,23 @@ namespace Serilog.Sinks.Graylog.Batching
             }
 
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var options = new BatchingGraylogSinkOptions();
-            options.HostnameOrAddress = hostnameOrAddress;
-            options.Port = port;
-            options.TransportType = transportType;
-            options.MinimumLogEventLevel = minimumLogEventLevel;
-            options.MessageGeneratorType = messageIdGeneratorType;
-            options.ShortMessageMaxLength = shortMessageMaxLength;
-            options.StackTraceDepth = stackTraceDepth;
-            options.Facility = facility;
-            options.BatchSizeLimit = batchSizeLimit;
-            options.Period = period;
-            options.QueueLimit = queueLimit;
-            options.MaxMessageSizeInUdp = maxMessageSizeInUdp;
-            options.IncludeMessageTemplate = includeMessageTemplate;
-            options.MessageTemplateFieldName = messageTemplateFieldName;
+            var options = new BatchingGraylogSinkOptions
+            {
+                HostnameOrAddress = hostnameOrAddress,
+                Port = port,
+                TransportType = transportType,
+                MinimumLogEventLevel = minimumLogEventLevel,
+                MessageGeneratorType = messageIdGeneratorType,
+                ShortMessageMaxLength = shortMessageMaxLength,
+                StackTraceDepth = stackTraceDepth,
+                Facility = facility,
+                BatchSizeLimit = batchSizeLimit,
+                Period = period,
+                QueueLimit = queueLimit,
+                MaxMessageSizeInUdp = maxMessageSizeInUdp,
+                IncludeMessageTemplate = includeMessageTemplate,
+                MessageTemplateFieldName = messageTemplateFieldName
+            };
             options.TransportType = TransportType.Udp;
             return loggerSinkConfiguration.Graylog(options);
         }

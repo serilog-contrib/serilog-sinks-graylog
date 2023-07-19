@@ -1,9 +1,7 @@
-﻿using System;
-using FluentAssertions;
-using Newtonsoft.Json.Linq;
 using Serilog.Events;
 using Serilog.Sinks.Graylog.Core.MessageBuilders;
 using Serilog.Sinks.Graylog.Tests;
+using System;
 using Xunit;
 
 namespace Serilog.Sinks.Graylog.Core.Tests.MessageBuilders
@@ -15,7 +13,7 @@ namespace Serilog.Sinks.Graylog.Core.Tests.MessageBuilders
         {
             var options = new GraylogSinkOptions();
 
-            ExceptionMessageBuilder exceptionBuilder = new ExceptionMessageBuilder("localhost", options);
+            ExceptionMessageBuilder exceptionBuilder = new("localhost", options);
 
             Exception testExc = null;
 
@@ -24,13 +22,11 @@ namespace Serilog.Sinks.Graylog.Core.Tests.MessageBuilders
                 try
                 {
                     throw new InvalidOperationException("Level One exception");
-                }
-                catch (Exception exc)
+                } catch (Exception exc)
                 {
                     throw new NotImplementedException("Nested Exception", exc);
                 }
-            }
-            catch (Exception exc)
+            } catch (Exception exc)
             {
                 testExc = exc;
             }
@@ -38,7 +34,7 @@ namespace Serilog.Sinks.Graylog.Core.Tests.MessageBuilders
 
             DateTimeOffset date = DateTimeOffset.Now;
             LogEvent logEvent = LogEventSource.GetExceptionLogEvent(date, testExc);
-            
+
             //JObject obj = exceptionBuilder.Build(logEvent);
 
             //obj.Should().NotBeNull();

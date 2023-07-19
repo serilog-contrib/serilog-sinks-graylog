@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Moq;
 using AutoFixture;
+using Moq;
 using Serilog.Sinks.Graylog.Core.Extensions;
 using Serilog.Sinks.Graylog.Core.Transport;
 using Serilog.Sinks.Graylog.Core.Transport.Udp;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace Serilog.Sinks.Graylog.Core.Tests.Transport.Udp
@@ -17,7 +17,7 @@ namespace Serilog.Sinks.Graylog.Core.Tests.Transport.Udp
             var transportClient = new Mock<ITransportClient<byte[]>>();
             var dataToChunkConverter = new Mock<IDataToChunkConverter>();
             var options = new GraylogSinkOptions();
-            
+
             var fixture = new Fixture();
 
             var stringData = fixture.Create<string>();
@@ -28,7 +28,7 @@ namespace Serilog.Sinks.Graylog.Core.Tests.Transport.Udp
 
             dataToChunkConverter.Setup(c => c.ConvertToChunks(data)).Returns(chunks);
 
-            UdpTransport target = new UdpTransport(transportClient.Object, dataToChunkConverter.Object, options);
+            UdpTransport target = new(transportClient.Object, dataToChunkConverter.Object, options);
 
             target.Send(stringData);
 
@@ -38,7 +38,7 @@ namespace Serilog.Sinks.Graylog.Core.Tests.Transport.Udp
             {
                 transportClient.Verify(c => c.Send(chunk), Times.Once);
             }
-            
+
         }
     }
 }

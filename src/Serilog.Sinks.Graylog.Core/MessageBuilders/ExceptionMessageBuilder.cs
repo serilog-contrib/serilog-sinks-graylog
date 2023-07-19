@@ -1,12 +1,10 @@
-﻿using System;
-using System.Text;
 using Serilog.Events;
+using System;
+using System.Text;
 using System.Text.Json.Nodes;
 
 namespace Serilog.Sinks.Graylog.Core.MessageBuilders
 {
-    
-
     /// <summary>
     /// Exception builder
     /// </summary>
@@ -27,9 +25,9 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
 
         public override JsonObject Build(LogEvent logEvent)
         {
-            Tuple<string, string> excMessageTuple = GetExceptionMessages(logEvent.Exception);
+            Tuple<string, string?> excMessageTuple = GetExceptionMessages(logEvent.Exception);
             string exceptionDetail = excMessageTuple.Item1;
-            string stackTrace = excMessageTuple.Item2;
+            string? stackTrace = excMessageTuple.Item2;
 
             logEvent.AddOrUpdateProperty(new LogEventProperty("ExceptionSource", new ScalarValue(logEvent.Exception.Source)));
             logEvent.AddOrUpdateProperty(new LogEventProperty("ExceptionType", new ScalarValue(logEvent.Exception.GetType())));
@@ -43,12 +41,12 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
         /// Get the message details from all nested exceptions, up to 10 in depth.
         /// </summary>
         /// <param name="ex">Exception to get details for</param>
-        private Tuple<string, string> GetExceptionMessages(Exception ex)
+        private Tuple<string, string?> GetExceptionMessages(Exception ex)
         {
             var exceptionSb = new StringBuilder();
             var stackSb = new StringBuilder();
-            Exception nestedException = ex;
-            string stackDetail = null;
+            Exception? nestedException = ex;
+            string? stackDetail = null;
 
             var counter = 0;
             do
@@ -70,8 +68,7 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
                 stackDetail = stackSb.ToString().Substring(0, stackSb.Length - DefaultStackTraceDelimiter.Length - 2).Trim();
             }
 
-            return new Tuple<string, string>(exceptionDetail, stackDetail);
+            return new Tuple<string, string?>(exceptionDetail, stackDetail);
         }
-
     }
 }

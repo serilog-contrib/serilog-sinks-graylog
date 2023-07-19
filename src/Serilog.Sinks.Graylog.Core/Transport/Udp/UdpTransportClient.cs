@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
@@ -11,31 +12,52 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Udp
     /// <seealso cref="byte" />
     public sealed class UdpTransportClient : ITransportClient<byte[]>
     {
-        private readonly IPEndPoint _target;
+        private IPEndPoint? _ipEndPoint;
+
+        private readonly GraylogSinkOptionsBase _options;
         private readonly UdpClient _client;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UdpTransportClient"/> class.
-        /// </summary>
-        /// <param name="target">The target.</param>
-        public UdpTransportClient(IPEndPoint target)
+        public UdpTransportClient(GraylogSinkOptionsBase options)
         {
-            _target = target;
+            _options = options;
+
             _client = new UdpClient();
+        }
+
+        private static async Task<IPAddress?> GetIpAddress(string? hostnameOrAddress)
+        {
+            if (string.IsNullOrEmpty(hostnameOrAddress))
+            {
+                return null;
+            }
+
+            IDnsInfoProvider dns = new DnsWrapper();
+            IPAddress[] ipAddresses = await dns.GetHostAddresses(hostnameOrAddress!).ConfigureAwait(false);
+
+            return ipAddresses.FirstOrDefault(c => c.AddressFamily == AddressFamily.InterNetwork);
+        }
+
+        private async Task EnsureTarget()
+        {
+            if (_ipEndPoint == null)
+            {
+                var ipAddress = await GetIpAddress(_options.HostnameOrAddress) ?? throw new InvalidOperationException("IP address could not be resolved.");
+
+                _ipEndPoint = new IPEndPoint(ipAddress, _options.Port.GetValueOrDefault(12201));
+            }
         }
 
         /// <summary>
         /// Sends the specified payload.
         /// </summary>
         /// <param name="payload">The payload.</param>
-        public Task Send(byte[] payload)
+        public async Task Send(byte[] payload)
         {
-            return _client.SendAsync(payload, payload.Length, _target);
+            await EnsureTarget();
+
+            await _client.SendAsync(payload, payload.Length, _ipEndPoint);
         }
 
-        public void Dispose()
-        {
-            (_client as IDisposable)?.Dispose();
-        }
+        public void Dispose() => _client.Dispose();
     }
 }

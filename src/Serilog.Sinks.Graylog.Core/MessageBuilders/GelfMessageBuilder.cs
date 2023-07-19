@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Serilog.Events;
 using Serilog.Parsing;
 using Serilog.Sinks.Graylog.Core.Extensions;
 using Serilog.Sinks.Graylog.Core.Helpers;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
@@ -17,10 +17,12 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
     /// <seealso cref="IMessageBuilder" />
     public class GelfMessageBuilder : IMessageBuilder
     {
-        
-        private readonly string _hostName;
         private const string DefaultGelfVersion = "1.1";
-        protected GraylogSinkOptionsBase Options { get; }
+
+        protected GraylogSinkOptionsBase Options => _options;
+
+        private readonly string _hostName;
+        private readonly GraylogSinkOptionsBase _options;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GelfMessageBuilder"/> class.
@@ -30,7 +32,7 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
         public GelfMessageBuilder(string hostName, GraylogSinkOptionsBase options)
         {
             _hostName = hostName;
-            Options = options;
+            _options = options;
         }
 
         /// <summary>
@@ -51,9 +53,9 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
                 ["timestamp"] = logEvent.Timestamp.ConvertToNix(),
                 ["level"] = LogLevelMapper.GetMappedLevel(logEvent.Level),
                 ["_stringLevel"] = logEvent.Level.ToString(),
-                ["_facility"] = Options?.Facility
+                ["_facility"] = Options.Facility
             };
-            
+
             if (message.Length > Options.ShortMessageMaxLength)
             {
                 jsonObject.Add("full_message", message);
@@ -64,6 +66,7 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
                 if (Options.ExcludeMessageTemplateProperties)
                 {
                     var propertyTokens = logEvent.MessageTemplate.Tokens.OfType<PropertyToken>();
+
                     if (propertyTokens.Any(x => x.PropertyName == property.Key))
                     {
                         continue;
@@ -76,6 +79,7 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
             if (Options.IncludeMessageTemplate)
             {
                 string messageTemplate = logEvent.MessageTemplate.Text;
+
                 jsonObject.Add($"_{Options.MessageTemplateFieldName}", messageTemplate);
             }
 
@@ -84,7 +88,7 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
 
         private void AddAdditionalField(JsonObject jObject,
                                         KeyValuePair<string, LogEventPropertyValue> property,
-                                        string memberPath = "" )
+                                        string memberPath = "")
         {
             string key = string.IsNullOrEmpty(memberPath)
                 ? property.Key
@@ -106,24 +110,32 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
                     if (scalarValue.Value == null)
                     {
                         jObject.Add(key, null);
+
                         break;
                     }
 
                     var node = JsonSerializer.SerializeToNode(scalarValue.Value, Options.JsonSerializerOptions);
+
                     jObject.Add(key, node);
+
                     break;
                 case SequenceValue sequenceValue:
                     var sequenceValueString = RenderPropertyValue(sequenceValue);
+
                     jObject.Add(key, sequenceValueString);
+
                     if (Options.ParseArrayValues)
                     {
                         int counter = 0;
+
                         foreach (var sequenceElement in sequenceValue.Elements)
                         {
                             AddAdditionalField(jObject, new KeyValuePair<string, LogEventPropertyValue>(counter.ToString(), sequenceElement), key);
+
                             counter++;
                         }
                     }
+
                     break;
                 case StructureValue structureValue:
                     foreach (LogEventProperty logEventProperty in structureValue.Properties)
@@ -132,6 +144,7 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
                                            new KeyValuePair<string, LogEventPropertyValue>(logEventProperty.Name, logEventProperty.Value),
                                            key);
                     }
+
                     break;
                 case DictionaryValue dictionaryValue:
                     if (Options.ParseArrayValues)
@@ -139,28 +152,31 @@ namespace Serilog.Sinks.Graylog.Core.MessageBuilders
                         foreach (KeyValuePair<ScalarValue, LogEventPropertyValue> dictionaryValueElement in dictionaryValue.Elements)
                         {
                             var renderedKey = RenderPropertyValue(dictionaryValueElement.Key);
+
                             AddAdditionalField(jObject, new KeyValuePair<string, LogEventPropertyValue>(renderedKey, dictionaryValueElement.Value), key);
                         }
-                    }
-                    else
+                    } else
                     {
                         var dict = dictionaryValue.Elements.ToDictionary(k => k.Key.Value, v => RenderPropertyValue(v.Value));
                         var stringDictionary = JsonSerializer.SerializeToNode(dict, Options.JsonSerializerOptions);
+
                         jObject.Add(key, stringDictionary);
                     }
+
                     break;
             }
         }
 
-        private string RenderPropertyValue(LogEventPropertyValue propertyValue)
+        private static string RenderPropertyValue(LogEventPropertyValue propertyValue)
         {
-            using (TextWriter tw = new StringWriter())
-            {
-                propertyValue.Render(tw);
-                string result = tw.ToString();
-                result = result.Trim('"');
-                return result;
-            }
+            using TextWriter tw = new StringWriter();
+
+            propertyValue.Render(tw);
+
+            string result = tw.ToString()!;
+            result = result.Trim('"');
+
+            return result;
         }
     }
 }

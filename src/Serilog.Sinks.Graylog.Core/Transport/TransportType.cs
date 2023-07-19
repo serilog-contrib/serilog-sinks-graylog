@@ -1,4 +1,4 @@
-﻿namespace Serilog.Sinks.Graylog.Core.Transport
+namespace Serilog.Sinks.Graylog.Core.Transport
 {
     public enum TransportType
     {

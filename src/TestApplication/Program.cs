@@ -1,4 +1,4 @@
-﻿using Serilog;
+using Serilog;
 using Serilog.Debugging;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,7 +8,6 @@ builder.Services.AddSwaggerGen();
 
 builder.Host.UseSerilog((context, config) =>
 {
-
     var serilogSection = context.Configuration.GetSection("Serilog");
     config.ReadFrom.Configuration(context.Configuration);
 });
@@ -31,7 +30,7 @@ var summaries = new[]
 app.MapGet("/weatherforecast", () =>
    {
        var seriloglogger = Log.ForContext<Program>();
-       
+
        var forecast = Enumerable.Range(1, 5).Select(index =>
                                     new WeatherForecast
                                     (

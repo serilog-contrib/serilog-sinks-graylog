@@ -1,8 +1,8 @@
-﻿using System;
+using Serilog.Sinks.Graylog.Core.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Serilog.Sinks.Graylog.Core.Extensions;
 
 namespace Serilog.Sinks.Graylog.Core.Transport.Udp
 {
@@ -24,12 +24,11 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Udp
             _options = options;
         }
 
-
         /// <summary>
         /// Sends the specified target.
         /// </summary>
         /// <param name="message">The message.</param>
-        /// <exception cref="System.ArgumentException">message was too long</exception>
+        /// <exception cref="ArgumentException">message was too long</exception>
         public Task Send(string message)
         {
             var payload = _options.UseGzip ? message.ToGzip() : message.ToByteArray();
@@ -41,7 +40,16 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Udp
 
         public void Dispose()
         {
-            _transportClient?.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _transportClient.Dispose();
+            }
         }
     }
 }

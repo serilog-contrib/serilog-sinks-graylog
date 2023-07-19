@@ -1,4 +1,3 @@
-﻿using System;
 using Serilog.Configuration;
 using Serilog.Core;
 using Serilog.Events;
@@ -6,7 +5,6 @@ using Serilog.Sinks.Graylog.Core;
 using Serilog.Sinks.Graylog.Core.Extensions;
 using Serilog.Sinks.Graylog.Core.Helpers;
 using Serilog.Sinks.Graylog.Core.Transport;
-
 
 namespace Serilog.Sinks.Graylog
 {
@@ -20,7 +18,7 @@ namespace Serilog.Sinks.Graylog
         /// <returns></returns>
         public static LoggerConfiguration Graylog(this LoggerSinkConfiguration loggerSinkConfiguration, GraylogSinkOptions options)
         {
-            var sink = (ILogEventSink) new GraylogSink(options);
+            var sink = (ILogEventSink)new GraylogSink(options);
             return loggerSinkConfiguration.Sink(sink, options.MinimumLogEventLevel);
         }
 
@@ -53,36 +51,38 @@ namespace Serilog.Sinks.Graylog
                                                   MessageIdGeneratorType messageIdGeneratorType = GraylogSinkOptionsBase.DefaultMessageGeneratorType,
                                                   int shortMessageMaxLength = GraylogSinkOptionsBase.DefaultShortMessageMaxLength,
                                                   int stackTraceDepth = GraylogSinkOptionsBase.DefaultStackTraceDepth,
-                                                  string facility = GraylogSinkOptionsBase.DefaultFacility,
+                                                  string? facility = GraylogSinkOptionsBase.DefaultFacility,
                                                   int maxMessageSizeInUdp = GraylogSinkOptionsBase.DefaultMaxMessageSizeInUdp,
                                                   string host = GraylogSinkOptionsBase.DefaultHost,
                                                   bool includeMessageTemplate = false,
                                                   string messageTemplateFieldName = GraylogSinkOptionsBase.DefaultMessageTemplateFieldName,
-                                                  string usernameInHttp = null,
-                                                  string passwordInHttp = null,
+                                                  string? usernameInHttp = null,
+                                                  string? passwordInHttp = null,
                                                   bool parseArrayValues = false,
                                                   bool useGzip = true
                                                   )
         {
             // ReSharper disable once UseObjectOrCollectionInitializer
-            var options = new GraylogSinkOptions();
-            options.HostnameOrAddress = hostnameOrAddress.Expand();
-            options.Port = port;
-            options.TransportType = transportType;
-            options.UseSsl = useSsl;
-            options.MinimumLogEventLevel = minimumLogEventLevel;
-            options.MessageGeneratorType = messageIdGeneratorType;
-            options.ShortMessageMaxLength = shortMessageMaxLength;
-            options.StackTraceDepth = stackTraceDepth;
-            options.Facility = facility?.Expand();
-            options.MaxMessageSizeInUdp = maxMessageSizeInUdp;
-            options.HostnameOverride = host;
-            options.IncludeMessageTemplate = includeMessageTemplate;
-            options.MessageTemplateFieldName = messageTemplateFieldName;
-            options.UsernameInHttp = usernameInHttp;
-            options.PasswordInHttp = passwordInHttp;
-            options.ParseArrayValues = parseArrayValues;
-            options.UseGzip = useGzip;
+            var options = new GraylogSinkOptions
+            {
+                HostnameOrAddress = hostnameOrAddress.Expand(),
+                Port = port,
+                TransportType = transportType,
+                UseSsl = useSsl,
+                MinimumLogEventLevel = minimumLogEventLevel,
+                MessageGeneratorType = messageIdGeneratorType,
+                ShortMessageMaxLength = shortMessageMaxLength,
+                StackTraceDepth = stackTraceDepth,
+                Facility = facility?.Expand(),
+                MaxMessageSizeInUdp = maxMessageSizeInUdp,
+                HostnameOverride = host,
+                IncludeMessageTemplate = includeMessageTemplate,
+                MessageTemplateFieldName = messageTemplateFieldName,
+                UsernameInHttp = usernameInHttp,
+                PasswordInHttp = passwordInHttp,
+                ParseArrayValues = parseArrayValues,
+                UseGzip = useGzip
+            };
 
             return loggerSinkConfiguration.Graylog(options);
         }

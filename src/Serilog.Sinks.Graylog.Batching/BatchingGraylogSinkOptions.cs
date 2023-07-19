@@ -1,5 +1,5 @@
-﻿using System;
 using Serilog.Sinks.Graylog.Core;
+using System;
 
 namespace Serilog.Sinks.Graylog.Batching
 {
@@ -8,7 +8,7 @@ namespace Serilog.Sinks.Graylog.Batching
         public BatchingGraylogSinkOptions()
         {
             BatchSizeLimit = 10;
-            Period  = TimeSpan.FromSeconds(1);
+            Period = TimeSpan.FromSeconds(1);
             QueueLimit = 10;
         }
 

@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
 using Serilog.Events;
+using System.Collections.Generic;
 
 namespace Serilog.Sinks.Graylog.Core.Helpers
 {
     public static class LogLevelMapper
     {
-        private static readonly Dictionary<LogEventLevel, int> LogLevelMap = new Dictionary<LogEventLevel, int>
+        private static readonly Dictionary<LogEventLevel, int> LogLevelMap = new()
         {
             [LogEventLevel.Verbose] = 7,
             [LogEventLevel.Debug] = 7,

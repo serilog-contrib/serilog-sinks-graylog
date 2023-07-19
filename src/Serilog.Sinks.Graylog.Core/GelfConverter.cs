@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text.Json.Nodes;
 using Serilog.Events;
 using Serilog.Sinks.Graylog.Core.MessageBuilders;
+using System;
+using System.Collections.Generic;
+using System.Text.Json.Nodes;
 
 namespace Serilog.Sinks.Graylog.Core
 {

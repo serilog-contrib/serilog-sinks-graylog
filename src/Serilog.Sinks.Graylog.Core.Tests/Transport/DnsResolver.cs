@@ -1,6 +1,6 @@
-﻿using System.Net;
-using System.Threading.Tasks;
 using Serilog.Sinks.Graylog.Core.Transport;
+using System.Net;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Serilog.Sinks.Graylog.Core.Tests.Transport

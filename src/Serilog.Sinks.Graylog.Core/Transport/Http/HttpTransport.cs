@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 
 namespace Serilog.Sinks.Graylog.Core.Transport.Http
@@ -19,7 +19,16 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Http
 
         public void Dispose()
         {
-            _transportClient?.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _transportClient?.Dispose();
+            }
         }
     }
 }
