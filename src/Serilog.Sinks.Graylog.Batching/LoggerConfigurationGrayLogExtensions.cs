@@ -4,6 +4,7 @@ using Serilog.Events;
 using Serilog.Sinks.Graylog.Core;
 using Serilog.Sinks.Graylog.Core.Helpers;
 using Serilog.Sinks.Graylog.Core.Transport;
+using Serilog.Sinks.PeriodicBatching;
 using System;
 
 namespace Serilog.Sinks.Graylog.Batching
@@ -19,8 +20,11 @@ namespace Serilog.Sinks.Graylog.Batching
         public static LoggerConfiguration Graylog(this LoggerSinkConfiguration loggerSinkConfiguration,
                                                   BatchingGraylogSinkOptions options)
         {
-            var sink = (ILogEventSink)new PeriodicBatchingGraylogSink(options);
-            return loggerSinkConfiguration.Sink(sink, options.MinimumLogEventLevel);
+            var sink = new PeriodicBatchingGraylogSink(options);
+
+            var batchingSink = new PeriodicBatchingSink(sink, options.PeriodicOptions);
+
+            return loggerSinkConfiguration.Sink(batchingSink, options.MinimumLogEventLevel);
         }
 
         /// <summary>
@@ -75,14 +79,16 @@ namespace Serilog.Sinks.Graylog.Batching
                 ShortMessageMaxLength = shortMessageMaxLength,
                 StackTraceDepth = stackTraceDepth,
                 Facility = facility,
-                BatchSizeLimit = batchSizeLimit,
-                Period = period,
-                QueueLimit = queueLimit,
+                PeriodicOptions = new PeriodicBatchingSinkOptions()
+                {
+                    BatchSizeLimit = batchSizeLimit,
+                    Period = period,
+                    QueueLimit = queueLimit,
+                },
                 MaxMessageSizeInUdp = maxMessageSizeInUdp,
                 IncludeMessageTemplate = includeMessageTemplate,
                 MessageTemplateFieldName = messageTemplateFieldName
             };
-            options.TransportType = TransportType.Udp;
             return loggerSinkConfiguration.Graylog(options);
         }
     }
