@@ -51,9 +51,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="..\..\README.md">
+        <None Include="..\..\README.md">
             <Link>README.md</Link>
-        </Content>
+        </None>
     </ItemGroup>
 
     <!--Hack to include referenced project as content dll -->
