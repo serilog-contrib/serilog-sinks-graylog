@@ -41,7 +41,7 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Udp
         {
             if (_ipEndPoint == null)
             {
-                var ipAddress = await GetIpAddress(_options.HostnameOrAddress) ?? throw new InvalidOperationException("IP address could not be resolved.");
+                var ipAddress = await GetIpAddress(_options.HostnameOrAddress).ConfigureAwait(false) ?? throw new InvalidOperationException("IP address could not be resolved.");
 
                 _ipEndPoint = new IPEndPoint(ipAddress, _options.Port.GetValueOrDefault(12201));
             }
@@ -53,9 +53,9 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Udp
         /// <param name="payload">The payload.</param>
         public async Task Send(byte[] payload)
         {
-            await EnsureTarget();
+            await EnsureTarget().ConfigureAwait(false);
 
-            await _client.SendAsync(payload, payload.Length, _ipEndPoint);
+            await _client.SendAsync(payload, payload.Length, _ipEndPoint).ConfigureAwait(false);
         }
 
         public void Dispose() => _client.Dispose();
