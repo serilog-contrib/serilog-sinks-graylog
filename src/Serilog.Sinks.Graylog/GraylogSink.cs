@@ -44,7 +44,7 @@ namespace Serilog.Sinks.Graylog
             var json = _converter.Value.GetGelfJson(logEvent);
             var payload = json.ToJsonString(_options);
 
-            await _transport.Value.Send(payload);
+            await _transport.Value.Send(payload).ConfigureAwait(false);
         }
 
         public void Dispose()
