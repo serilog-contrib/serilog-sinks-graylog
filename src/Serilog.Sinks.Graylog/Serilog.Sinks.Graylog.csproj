@@ -13,11 +13,11 @@
         <WarningsAsErrors/>
         <PackageId>Serilog.Sinks.Graylog</PackageId>
         <Title>Serilog.Sinks.Graylog</Title>
-        <Authors>Anton Volkov</Authors>
+        <Authors>Anton Volkov and Contributors</Authors>
         <Description>The Serilog Graylog Sink project is a sink (basically a writer) for the Serilog logging framework. Structured log events are written to sinks and each sink is responsible for writing it to its own backend, database, store etc. This sink delivers the data to Graylog2, a NoSQL search engine.</Description>
 
-        <PackageProjectUrl>https://github.com/whir1/serilog-sinks-graylog</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/whir1/serilog-sinks-graylog</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/serilog-contrib/serilog-sinks-graylog</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/serilog-contrib/serilog-sinks-graylog</RepositoryUrl>
         <PackageIcon>serilog-sink-nuget.png</PackageIcon>
 
         <RepositoryType>git</RepositoryType>
@@ -25,7 +25,7 @@
         <Copyright>Anton Volkov Copyright © 2023</Copyright>
         <NeutralLanguage>en</NeutralLanguage>
 
-        <Version>3.0.2</Version>
+        <Version>3.1.0</Version>
         <AssemblyVersion>3.0.0.0</AssemblyVersion>
         <FileVersion>3.0.0.0</FileVersion>
         <SignAssembly>true</SignAssembly>
@@ -33,7 +33,6 @@
         <AssemblyOriginatorKeyFile>sign.snk</AssemblyOriginatorKeyFile>
 
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-
         <PackageReleaseNotes>Delete newtonsoft.json dependency and refactoring</PackageReleaseNotes>
 
 
@@ -50,6 +49,12 @@
         <ProjectReference Include="..\Serilog.Sinks.Graylog.Core\Serilog.Sinks.Graylog.Core.csproj" PrivateAssets="all"/>
     </ItemGroup>
 
+    <ItemGroup Condition="('$(TargetFramework)'=='netstandard2.0')">
+      <PackageReference Include="System.Text.Json" Version="7.0.2"/>
+      <PackageReference Include="System.Memory" Version="4.5.5"/>
+      <PackageReference Include="System.Text.Encoding" Version="4.3.0"/>
+    </ItemGroup>
+  
     <ItemGroup>
         <None Include="..\..\README.md">
             <Link>README.md</Link>

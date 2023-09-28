@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace Serilog.Sinks.Graylog.Core.Transport.Udp
 {
+    using Debugging;
+
     /// <summary>
     /// Udp transport client
     /// </summary>
@@ -15,35 +17,28 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Udp
         private IPEndPoint? _ipEndPoint;
 
         private readonly GraylogSinkOptionsBase _options;
+        private readonly IDnsInfoProvider _dnsInfoProvider;
         private readonly UdpClient _client;
 
-        public UdpTransportClient(GraylogSinkOptionsBase options)
+        public UdpTransportClient(GraylogSinkOptionsBase options, IDnsInfoProvider dnsInfoProvider)
         {
             _options = options;
+            _dnsInfoProvider = dnsInfoProvider;
 
             _client = new UdpClient();
-        }
-
-        private static async Task<IPAddress?> GetIpAddress(string? hostnameOrAddress)
-        {
-            if (string.IsNullOrEmpty(hostnameOrAddress))
-            {
-                return null;
-            }
-
-            IDnsInfoProvider dns = new DnsWrapper();
-            IPAddress[] ipAddresses = await dns.GetHostAddresses(hostnameOrAddress!).ConfigureAwait(false);
-
-            return ipAddresses.FirstOrDefault(c => c.AddressFamily == AddressFamily.InterNetwork);
         }
 
         private async Task EnsureTarget()
         {
             if (_ipEndPoint == null)
             {
-                var ipAddress = await GetIpAddress(_options.HostnameOrAddress).ConfigureAwait(false) ?? throw new InvalidOperationException("IP address could not be resolved.");
-
-                _ipEndPoint = new IPEndPoint(ipAddress, _options.Port.GetValueOrDefault(12201));
+                var ipAddress = await _dnsInfoProvider.GetIpAddress(_options.HostnameOrAddress!).ConfigureAwait(false);
+                if (ipAddress == default)
+                {
+                    SelfLog.WriteLine("IP address could not be resolved.");
+                    return;
+                }
+                _ipEndPoint = new IPEndPoint(ipAddress, _options.Port.GetValueOrDefault());
             }
         }
 

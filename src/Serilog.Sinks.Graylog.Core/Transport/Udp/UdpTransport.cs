@@ -1,4 +1,4 @@
-using Serilog.Sinks.Graylog.Core.Extensions;
+﻿using Serilog.Sinks.Graylog.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Serilog.Sinks.Graylog.Core.Transport.Udp
 {
-    public class UdpTransport : ITransport
+    public sealed class UdpTransport : ITransport
     {
         private readonly ITransportClient<byte[]> _transportClient;
         private readonly IDataToChunkConverter _chunkConverter;
@@ -44,7 +44,7 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Udp
             GC.SuppressFinalize(this);
         }
 
-        protected virtual void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (disposing)
             {

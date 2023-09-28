@@ -1,4 +1,4 @@
-using Serilog.Debugging;
+﻿using Serilog.Debugging;
 using System;
 using System.IO;
 using System.Linq;
@@ -11,15 +11,19 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Tcp
 {
     public class TcpTransportClient : ITransportClient<byte[]>
     {
+        private const int DefaultPort = 12201;
+
         private Stream? _stream;
 
         private readonly GraylogSinkOptionsBase _options;
+        private readonly IDnsInfoProvider _dnsInfoProvider;
         private readonly TcpClient _client;
 
         /// <inheritdoc />
-        public TcpTransportClient(GraylogSinkOptionsBase options)
+        public TcpTransportClient(GraylogSinkOptionsBase options, IDnsInfoProvider dnsInfoProvider)
         {
             _options = options;
+            _dnsInfoProvider = dnsInfoProvider;
 
             _client = new TcpClient();
         }
@@ -38,19 +42,6 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Tcp
             await _stream.FlushAsync().ConfigureAwait(false);
         }
 
-        private static async Task<IPAddress?> GetIpAddress(string? hostnameOrAddress)
-        {
-            if (string.IsNullOrEmpty(hostnameOrAddress))
-            {
-                return null;
-            }
-
-            IDnsInfoProvider dns = new DnsWrapper();
-            IPAddress[] ipAddresses = await dns.GetHostAddresses(hostnameOrAddress!).ConfigureAwait(false);
-
-            return ipAddresses.FirstOrDefault(c => c.AddressFamily == AddressFamily.InterNetwork);
-        }
-
         private async Task EnsureConnection()
         {
             if (!_client.Connected)
@@ -61,8 +52,14 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Tcp
 
         private async Task Connect()
         {
-            IPAddress _address = await GetIpAddress(_options.HostnameOrAddress) ?? throw new InvalidOperationException("IP address could not be resolved.");
-            int port = _options.Port.GetValueOrDefault(12201);
+            IPAddress? _address = await _dnsInfoProvider.GetIpAddress(_options.HostnameOrAddress!);
+            if (_address == default)
+            {
+                SelfLog.WriteLine("IP address could not be resolved.");
+                return;
+            }
+
+            int port = _options.Port.GetValueOrDefault(DefaultPort);
             string? sslHost = _options.UseSsl ? _options.HostnameOrAddress : null;
 
             await _client.ConnectAsync(_address, port).ConfigureAwait(false);

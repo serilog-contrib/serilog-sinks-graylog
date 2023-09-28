@@ -1,4 +1,4 @@
-using Serilog.Debugging;
+﻿using Serilog.Debugging;
 using Serilog.Events;
 using Serilog.Sinks.Graylog.Core;
 using Serilog.Sinks.Graylog.Core.Transport;
@@ -35,8 +35,7 @@ namespace Serilog.Sinks.Graylog.Batching
                 IEnumerable<Task> sendTasks = batch.Select(async logEvent =>
                 {
                     JsonObject json = _converter.Value.GetGelfJson(logEvent);
-
-                    await _transport.Value.Send(json.ToString());
+                    await _transport.Value.Send(json.ToString()).ConfigureAwait(false);
                 });
 
                 return Task.WhenAll(sendTasks);

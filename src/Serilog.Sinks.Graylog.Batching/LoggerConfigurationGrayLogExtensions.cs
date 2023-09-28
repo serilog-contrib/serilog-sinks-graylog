@@ -1,5 +1,4 @@
-using Serilog.Configuration;
-using Serilog.Core;
+﻿using Serilog.Configuration;
 using Serilog.Events;
 using Serilog.Sinks.Graylog.Core;
 using Serilog.Sinks.Graylog.Core.Helpers;
@@ -11,12 +10,8 @@ namespace Serilog.Sinks.Graylog.Batching
 {
     public static class LoggerConfigurationGrayLogExtensions
     {
-        /// <summary>
-        /// Graylogs the specified options.
-        /// </summary>
         /// <param name="loggerSinkConfiguration">The logger sink configuration.</param>
         /// <param name="options">The options.</param>
-        /// <returns></returns>
         public static LoggerConfiguration Graylog(this LoggerSinkConfiguration loggerSinkConfiguration,
                                                   BatchingGraylogSinkOptions options)
         {
@@ -27,9 +22,6 @@ namespace Serilog.Sinks.Graylog.Batching
             return loggerSinkConfiguration.Sink(batchingSink, options.MinimumLogEventLevel);
         }
 
-        /// <summary>
-        /// Graylogs the specified hostname or address.
-        /// </summary>
         /// <param name="loggerSinkConfiguration">The logger sink configuration.</param>
         /// <param name="hostnameOrAddress">The hostname or address.</param>
         /// <param name="port">The port.</param>
@@ -45,7 +37,6 @@ namespace Serilog.Sinks.Graylog.Batching
         /// <param name="maxMessageSizeInUdp">the maxMessageSizeInUdp</param>
         /// <param name="includeMessageTemplate">if set to <c>true</c> if include message template to graylog.</param>
         /// <param name="messageTemplateFieldName">Name of the message template field.</param>
-        /// <returns></returns>
         public static LoggerConfiguration Graylog(this LoggerSinkConfiguration loggerSinkConfiguration,
                                                   string hostnameOrAddress,
                                                   int port,

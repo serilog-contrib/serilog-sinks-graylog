@@ -1,3 +1,4 @@
+using System;
 using Serilog.Events;
 using Serilog.Sinks.Graylog.Core.Helpers;
 using Serilog.Sinks.Graylog.Core.Transport;
@@ -7,17 +8,15 @@ using System.Text.Json;
 // ReSharper disable PublicConstructorInAbstractClass
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 // ReSharper disable PropertyCanBeMadeInitOnly.Global
-
 namespace Serilog.Sinks.Graylog.Core
 {
-    using System;
 
     /// <summary>
     /// Sync options for graylog
     /// </summary>
     public abstract class GraylogSinkOptionsBase
     {
-        public const string DefaultFacility = null;
+        public const string DefaultFacility = null!;
         public const int DefaultShortMessageMaxLength = 500;
         public const LogEventLevel DefaultMinimumLogEventLevel = LevelAlias.Minimum;
         public const int DefaultStackTraceDepth = 10;
@@ -27,7 +26,9 @@ namespace Serilog.Sinks.Graylog.Core
         /// <summary>
         /// The default option value (null) for GELF's "host" property. DNS hostname will be used instead.
         /// </summary>
-        public const string DefaultHost = null;
+        public const string DefaultHost = null!;
+
+        public const int DefaultPort = 12201;
 
         public const string DefaultMessageTemplateFieldName = "message_template";
 
@@ -53,10 +54,11 @@ namespace Serilog.Sinks.Graylog.Core
             ParseArrayValues = false;
             //use gzip by default
             UseGzip = true;
+            Port = DefaultPort;
         }
 
         /// <summary>
-        /// Should parse values in arrays 
+        /// Should parse values in arrays
         /// </summary>
         public bool ParseArrayValues { get; set; }
 
