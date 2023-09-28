@@ -26,25 +26,24 @@ namespace Serilog.Sinks.Graylog
             _converter = new Lazy<IGelfConverter>(() => sinkComponentsBuilder.MakeGelfConverter());
         }
 
-        public void Emit(LogEvent logEvent)
+        //should work
+        public async void Emit(LogEvent logEvent)
         {
             try
             {
-                EmitAsync(logEvent).ConfigureAwait(false)
-                                   .GetAwaiter()
-                                   .GetResult();
+                await EmitAsync(logEvent).ConfigureAwait(false);
             } catch (Exception exc)
             {
                 SelfLog.WriteLine("Oops something going wrong {0}", exc);
             }
         }
 
-        private async Task EmitAsync(LogEvent logEvent)
+        private Task EmitAsync(LogEvent logEvent)
         {
             var json = _converter.Value.GetGelfJson(logEvent);
             var payload = json.ToJsonString(_options);
 
-            await _transport.Value.Send(payload).ConfigureAwait(false);
+            return _transport.Value.Send(payload);
         }
 
         public void Dispose()

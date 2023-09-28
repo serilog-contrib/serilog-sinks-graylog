@@ -28,12 +28,12 @@ namespace Serilog.Sinks.Graylog.Core
 
             _builders = new Dictionary<BuilderType, Lazy<IMessageBuilder>>
             {
-                [BuilderType.Exception] = new Lazy<IMessageBuilder>(() =>
+                [BuilderType.Exception] = new(() =>
                 {
                     string hostName = Dns.GetHostName();
                     return new ExceptionMessageBuilder(hostName, _options);
                 }),
-                [BuilderType.Message] = new Lazy<IMessageBuilder>(() =>
+                [BuilderType.Message] = new(() =>
                 {
                     string hostName = Dns.GetHostName();
                     return new GelfMessageBuilder(hostName, _options);
@@ -49,7 +49,7 @@ namespace Serilog.Sinks.Graylog.Core
                     var chunkSettings = new ChunkSettings(_options.MessageGeneratorType, _options.MaxMessageSizeInUdp);
                     IDataToChunkConverter chunkConverter = new DataToChunkConverter(chunkSettings, new MessageIdGeneratorResolver());
 
-                    var udpClient = new UdpTransportClient(_options);
+                    var udpClient = new UdpTransportClient(_options, new DnsWrapper());
                     var udpTransport = new UdpTransport(udpClient, chunkConverter, _options);
 
                     return udpTransport;
@@ -58,7 +58,7 @@ namespace Serilog.Sinks.Graylog.Core
 
                     return new HttpTransport(httpClient);
                 case SinkTransportType.Tcp:
-                    var tcpClient = new TcpTransportClient(_options);
+                    var tcpClient = new TcpTransportClient(_options, new DnsWrapper());
 
                     return new TcpTransport(tcpClient);
                 case SinkTransportType.Custom:
