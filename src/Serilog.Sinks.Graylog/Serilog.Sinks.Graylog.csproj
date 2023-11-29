@@ -25,7 +25,7 @@
         <Copyright>Anton Volkov Copyright © 2023</Copyright>
         <NeutralLanguage>en</NeutralLanguage>
 
-        <Version>3.1.0</Version>
+        <Version>3.1.1</Version>
         <AssemblyVersion>3.0.0.0</AssemblyVersion>
         <FileVersion>3.0.0.0</FileVersion>
         <SignAssembly>true</SignAssembly>
@@ -54,7 +54,7 @@
       <PackageReference Include="System.Memory" Version="4.5.5"/>
       <PackageReference Include="System.Text.Encoding" Version="4.3.0"/>
     </ItemGroup>
-  
+
     <ItemGroup>
         <None Include="..\..\README.md">
             <Link>README.md</Link>
