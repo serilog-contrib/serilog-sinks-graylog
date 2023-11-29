@@ -30,7 +30,7 @@
         <NeutralLanguage>en</NeutralLanguage>
         <RepositoryType>git</RepositoryType>
         <SignAssembly>true</SignAssembly>
-        <Version>3.0.2</Version>
+        <Version>3.0.3</Version>
         <AssemblyOriginatorKeyFile>sign.snk</AssemblyOriginatorKeyFile>
         <AssemblyVersion>3.0.0.0</AssemblyVersion>
         <FileVersion>3.0.0.0</FileVersion>
@@ -49,7 +49,7 @@
     <ItemGroup>
         <PackageReference Include="Serilog.Sinks.PeriodicBatching" Version="3.1.0" />
     </ItemGroup>
-  
+
     <ItemGroup>
         <ProjectReference Include="..\Serilog.Sinks.Graylog.Core\Serilog.Sinks.Graylog.Core.csproj" PrivateAssets="all"/>
     </ItemGroup>
