@@ -1,4 +1,4 @@
-﻿using Serilog.Core;
+using Serilog.Core;
 using Serilog.Debugging;
 using Serilog.Events;
 using Serilog.Sinks.Graylog.Core;
@@ -26,16 +26,14 @@ namespace Serilog.Sinks.Graylog
             _converter = new Lazy<IGelfConverter>(() => sinkComponentsBuilder.MakeGelfConverter());
         }
 
-        //should work
-        public async void Emit(LogEvent logEvent)
+        public void Emit(LogEvent logEvent)
         {
-            try
-            {
-                await EmitAsync(logEvent).ConfigureAwait(false);
-            } catch (Exception exc)
-            {
-                SelfLog.WriteLine("Oops something going wrong {0}", exc);
-            }
+            EmitAsync(logEvent).ContinueWith(
+                task =>
+                {
+                    SelfLog.WriteLine("Oops something going wrong {0}", task.Exception);
+                },
+                TaskContinuationOptions.OnlyOnFaulted);
         }
 
         private Task EmitAsync(LogEvent logEvent)
