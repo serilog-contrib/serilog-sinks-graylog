@@ -17,15 +17,13 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Tcp
 
         private readonly GraylogSinkOptionsBase _options;
         private readonly IDnsInfoProvider _dnsInfoProvider;
-        private readonly TcpClient _client;
+        private TcpClient? _client;
 
         /// <inheritdoc />
         public TcpTransportClient(GraylogSinkOptionsBase options, IDnsInfoProvider dnsInfoProvider)
         {
             _options = options;
             _dnsInfoProvider = dnsInfoProvider;
-
-            _client = new TcpClient();
         }
 
         /// <inheritdoc />
@@ -33,18 +31,28 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Tcp
         {
             await EnsureConnection().ConfigureAwait(false);
 
+            try
+            {
 #if NETSTANDARD2_0
-            await _stream!.WriteAsync(payload, 0, payload.Length).ConfigureAwait(false);
+                await _stream!.WriteAsync(payload, 0, payload.Length).ConfigureAwait(false);
 #else
-            await _stream!.WriteAsync(payload).ConfigureAwait(false);
+                await _stream!.WriteAsync(payload).ConfigureAwait(false);
 #endif
 
-            await _stream.FlushAsync().ConfigureAwait(false);
+                await _stream.FlushAsync().ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                // The connection is broken (e.g. reset by a load balancer). Drop it so the
+                // next Send() opens a new one instead of reusing a dead socket.
+                CloseConnection();
+                throw;
+            }
         }
 
         private async Task EnsureConnection()
         {
-            if (!_client.Connected)
+            if (_client == null || !_client.Connected)
             {
                 await Connect().ConfigureAwait(false);
             }
@@ -61,6 +69,10 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Tcp
 
             int port = _options.Port.GetValueOrDefault(DefaultPort);
             string? sslHost = _options.UseSsl ? _options.HostnameOrAddress : null;
+
+            // A TcpClient cannot connect again once its socket has been used, so always start fresh.
+            CloseConnection();
+            _client = new TcpClient();
 
             await _client.ConnectAsync(_address, port).ConfigureAwait(false);
 
@@ -98,9 +110,16 @@ namespace Serilog.Sinks.Graylog.Core.Transport.Tcp
         {
             if (disposing)
             {
-                _stream?.Dispose();
-                _client.Dispose();
+                CloseConnection();
             }
+        }
+
+        private void CloseConnection()
+        {
+            _stream?.Dispose();
+            _stream = null;
+            _client?.Dispose();
+            _client = null;
         }
     }
 }
